@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-baseURL: 'https://unitdecom.unitdtechnologies.com:3006',
+baseURL: 'http://192.64.114.83:2013',
 // baseURL: 'http://localhost:3000',
 });
 
