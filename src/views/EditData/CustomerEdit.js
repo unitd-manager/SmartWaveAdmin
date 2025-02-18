@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col, Form, FormGroup, Button, Label, Input } from 'reactstrap';
+import { Row, Col, Form, FormGroup, Button, Label, Input,TabContent, TabPane } from 'reactstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import '../form-editor/editor.scss';
@@ -8,24 +8,55 @@ import BreadCrumbs from '../../layouts/breadcrumbs/BreadCrumbs';
 import ComponentCardV2 from '../../components/ComponentCardV2';
 import message from '../../components/Message';
 import api from '../../constants/api';
+import Tab from '../../components/ProjectTabs/Tab';
 import ComponentCard from '../../components/ComponentCard';
 import creationdatetime from '../../constants/creationdatetime';
+import EnquiriesLinkedTable from '../../components/SupplierModal/EnquiriesLinked';
+import QuotesLinkedTable from '../../components/SupplierModal/QuotationsLinked';
+import InvoiceLinkedTable from '../../components/SupplierModal/InvoiceLinked';
+import AttachmentPortalsTab from '../../components/EmployeeTable/AttachmentPortalsTab';
 
 const ContentUpdate = () => {
   // All state variables
   const [contentDetails, setContentDetails] = useState();
-
+  const [activeTab, setActiveTab] = useState('1');
   // Navigation and Parameter Constants
   const { id } = useParams();
   const navigate = useNavigate();
-
+  const [attachmentModal, setAttachmentModal] = useState(false);
+  const [attachmentData, setDataForAttachment] = useState({
+    modelType: '',
+  });
+  const [pictureData, setDataForPicture] = useState({
+    modelType: '',
+  });
+  const tabs = [
+    { id: '1', name: 'Invoice Linked' },
+    { id: '2', name: 'Enquiries Linked' },
+    { id: '3', name: 'Quotations Linked' },
+    { id: '4', name: 'Attachments' }
+  ];
+  const toggle = (tab) => {
+    setActiveTab(tab);
+  };
   //Setting data in contentDetails
   const handleInputs = (e) => {
     setContentDetails({ ...contentDetails, [e.target.name]: e.target.value });
   };
   //setting data in Description Modal contentDetails
 
+  const dataForAttachment = () => {
+    setDataForAttachment({
+      modelType: 'attachment',
+    });
+  };
 
+  //Pictures
+  const dataForPicture = () => {
+    setDataForPicture({
+      modelType: 'picture',
+    });
+  };
   // Get content data By content id
   const getContentById = () => {
     api
@@ -187,8 +218,45 @@ const ContentUpdate = () => {
           </ComponentCard>
           </FormGroup>
       </Form>
-     
-     
+      <ComponentCard title="More Details">
+        <Tab toggle={toggle} tabs={tabs} />
+        <TabContent className="p-4" activeTab={activeTab}>
+      <TabPane tabId="1">
+            <Row>
+              <InvoiceLinkedTable
+               
+              />
+            </Row>
+          </TabPane>
+          <TabPane tabId="2">
+            <Row>
+              <EnquiriesLinkedTable
+              />
+            </Row>
+          </TabPane>
+          <TabPane tabId="3">
+            <Row>
+              <QuotesLinkedTable
+              />
+            </Row>
+          </TabPane>
+          <TabPane tabId="4">
+            {/* Picture and Attachments Form */}
+            <Row>
+              <AttachmentPortalsTab
+                dataForPicture={dataForPicture}
+                dataForAttachment={dataForAttachment}
+                id={id}
+                attachmentModal={attachmentModal}
+                setAttachmentModal={setAttachmentModal}
+                pictureData={pictureData}
+                attachmentData={attachmentData}
+              />
+            </Row>
+          </TabPane>
+         
+        </TabContent>
+      </ComponentCard>
     </>
   );
 };
