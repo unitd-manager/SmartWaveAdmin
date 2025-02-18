@@ -93,14 +93,33 @@ const EditLineItemModal = ({ editTrackModal, setEditTrackModal,FetchTrackItemDat
         
           getCompany();
         
-        }, [id]);
+        }, []);
 
+
+        const handleCompanyChange = (e) => {
+          const selectedCompanyId = e.target.value;
+        
+          // Update lineItemData with the selected company ID
+          handleData(e); // Update company_id in settingdetails
+
+          // Find selected company details
+          const selectedCompany = company.find((comp) => String(comp.contact_id) === selectedCompanyId);
+        
+          if (selectedCompany) {
+            // Update shipper address
+            setLineItemData((prevDetails) => ({
+              ...prevDetails,
+              shipper_address: selectedCompany.address1 || '',
+            }));
+          }
+        };
+        
   return (
     <Modal size="lg" isOpen={editTrackModal} toggle={() => setEditTrackModal(false)}>
       <ModalHeader toggle={() => setEditTrackModal(false)}>Edit Line Item</ModalHeader>
       <ModalBody>
       <Row>
-  <Col sm="3">
+  <Col md="4">
     <FormGroup>
       <Label>Carrier Name</Label>
       <Input
@@ -111,7 +130,7 @@ const EditLineItemModal = ({ editTrackModal, setEditTrackModal,FetchTrackItemDat
       />
     </FormGroup>
   </Col>
-  <Col sm="3">
+  <Col md="4">
     <FormGroup>
       <Label>Tracking Number</Label>
       <Input
@@ -122,40 +141,55 @@ const EditLineItemModal = ({ editTrackModal, setEditTrackModal,FetchTrackItemDat
       />
     </FormGroup>
   </Col>
-  <Col sm="3">
+  <Col md="4">
     <FormGroup>
       <Label>Shipment</Label>
+  
+
       <Input
-        type="select"
-        name="shipment_id"
-        value={lineItemData?.shipment_id || ''}
-        onChange={handleData}
-      >
-        <option value="">Please Select</option>
-        {company &&
-          company.map((ele) => (
-            <option key={ele.contact_id} value={ele.contact_id}>
-              {ele.first_name}
-            </option>
-          ))}
-      </Input>
+  type="select"
+  name="shipment_id"
+  onChange={handleCompanyChange}
+  value={lineItemData?.shipment_id ? String(lineItemData.shipment_id) : ''} // Ensure it's updating correctly
+>
+  <option value="">Please Select</option>
+  {company?.map((ele) => (
+      <option key={ele.contact_id} value={String(ele.contact_id)}>
+        {ele.first_name} {/* Make sure this is the correct property */}
+      </option>
+    ))}
+</Input>
+
     </FormGroup>
   </Col>
-  <Col sm="3">
-    <FormGroup>
-      <Label>Shipment Date</Label>
-      <Input
-        type="date"
-        name="shipment_date"
-        value={lineItemData?.shipment_date || ''}
-        onChange={handleData}
-      />
-    </FormGroup>
-  </Col>
+ 
 </Row>
 
 <Row>
-<Col sm="3">
+<Col md="4">
+
+<FormGroup>
+    <Label>Shipper Address</Label>
+    <Input
+      type="text"
+      name="shipper_address"
+      value={lineItemData?.shipper_address || ''}
+      onChange={handleData}
+    />
+  </FormGroup>
+</Col>
+<Col md="4">
+  <FormGroup>
+    <Label>Shipment Date</Label>
+    <Input
+      type="date"
+      name="shipment_date"
+      value={lineItemData?.shipment_date || ''}
+      onChange={handleData}
+    />
+  </FormGroup>
+</Col>
+<Col md="4">
     <FormGroup>
       <Label>Actual Delivery Date</Label>
       <Input
@@ -166,7 +200,8 @@ const EditLineItemModal = ({ editTrackModal, setEditTrackModal,FetchTrackItemDat
       />
     </FormGroup>
   </Col>
-  <Col sm="3">
+  </Row><Row>
+  <Col md="4">
     <FormGroup>
       <Label>Expected Delivery Date</Label>
       <Input
@@ -177,7 +212,7 @@ const EditLineItemModal = ({ editTrackModal, setEditTrackModal,FetchTrackItemDat
       />
     </FormGroup>
   </Col>
-  <Col sm="3">
+  <Col md="4">
 
   <FormGroup>
       <Label>Recipient Name</Label>
@@ -189,7 +224,7 @@ const EditLineItemModal = ({ editTrackModal, setEditTrackModal,FetchTrackItemDat
       />
     </FormGroup>
   </Col>
-  <Col sm="3">
+  <Col md="4">
 
   <FormGroup>
       <Label>Recipient Address</Label>
@@ -203,7 +238,7 @@ const EditLineItemModal = ({ editTrackModal, setEditTrackModal,FetchTrackItemDat
   </Col>
 </Row>
 <Row>
-<Col sm="3">
+<Col md="4">
 
   <FormGroup>
       <Label>Package Weight</Label>
@@ -215,7 +250,7 @@ const EditLineItemModal = ({ editTrackModal, setEditTrackModal,FetchTrackItemDat
       />
     </FormGroup>
   </Col>
-  <Col sm="3">
+  <Col md="4">
 
   <FormGroup>
       <Label>Package Height</Label>
@@ -227,7 +262,7 @@ const EditLineItemModal = ({ editTrackModal, setEditTrackModal,FetchTrackItemDat
       />
     </FormGroup>
   </Col>
-  <Col sm="3">
+  <Col md="4">
 
   <FormGroup>
       <Label>Package Length</Label>
@@ -239,7 +274,7 @@ const EditLineItemModal = ({ editTrackModal, setEditTrackModal,FetchTrackItemDat
       />
     </FormGroup>
   </Col>
-  <Col sm="3">
+  <Col md="4">
 
   <FormGroup>
       <Label>Package Width</Label>
@@ -251,6 +286,18 @@ const EditLineItemModal = ({ editTrackModal, setEditTrackModal,FetchTrackItemDat
       />
     </FormGroup>
   </Col>
+  <Col md="4">
+
+<FormGroup>
+    <Label>Status</Label>
+    <Input
+      type="text"
+      name="shipment_status"
+      value={lineItemData?.shipment_status || ''}
+      onChange={handleData}
+    />
+  </FormGroup>
+</Col>
 
 </Row>
 

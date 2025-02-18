@@ -1,9 +1,11 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext,useEffect } from 'react';
 import {
   Card,
   Row,
   Col,
   Form,
+  FormGroup,
+  Label,
   Input,
   Button,
   Modal,
@@ -26,7 +28,6 @@ const QuoteLineItem = ({ addTrackItemModal, setAddTrackItemModal, quoteTrack }) 
 
   const { loggedInuser } = useContext(AppContext);
 
-  // State to manage form data
   const [formData, setFormData] = useState({
     carrier_name: '',
     tracking_number: '',
@@ -34,9 +35,17 @@ const QuoteLineItem = ({ addTrackItemModal, setAddTrackItemModal, quoteTrack }) 
     actual_delivery_date: '',
     expected_delivery_date: '',
     enquiry_id: '',
+    shipment_id: '',
+    shipper_address: '',
+    recipient_name: '',
+    recipient_address: '',
+    package_weight: '',
+    package_height: '',
+    package_length: '',
+    package_width: '',
+    shipment_status: '',
   });
 
-  // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -45,7 +54,6 @@ const QuoteLineItem = ({ addTrackItemModal, setAddTrackItemModal, quoteTrack }) 
     }));
   };
 
-  // Submit form data to API
   const handleSubmit = () => {
     const obj = {
       ...formData,
@@ -71,106 +79,248 @@ const QuoteLineItem = ({ addTrackItemModal, setAddTrackItemModal, quoteTrack }) 
     }
   };
 
+  const [company, setCompany] = useState();
+      const getCompany = () => {
+        api.get('/company/getContact').then((res) => {
+          setCompany(res.data.data);
+        });
+      };
+
+
+        useEffect(() => {
+        
+          getCompany();
+        
+        }, []);
+
+  
+  const handleCompanyChange = (e) => {
+    const selectedCompanyId = e.target.value;
+  
+    // Update lineItemData with the selected company ID
+    handleInputChange(e); // Update company_id in settingdetails
+
+    // Find selected company details
+    const selectedCompany = company.find((comp) => String(comp.contact_id) === selectedCompanyId);
+  
+    if (selectedCompany) {
+      // Update shipper address
+      setFormData((prevDetails) => ({
+        ...prevDetails,
+        shipper_address: selectedCompany.address1 || '',
+      }));
+    }
+  };
+
   return (
-    <>
-      <Modal size="xl" isOpen={addTrackItemModal}>
-        <ModalHeader>
-          Add Carrier Tracking
-          <Button
-            className="shadow-none"
-            color="secondary"
-            onClick={() => setAddTrackItemModal(false)}
-          >
-            X
-          </Button>
-        </ModalHeader>
-        <ModalBody>
-          <Row>
-            <Col md="12">
-              <Form>
-                <Card>
-                  <table className="lineitem">
-                    <thead>
-                      <tr>
-                        <th scope="col">Carrier Name</th>
-                        <th scope="col">Tracking Number</th>
-                        <th scope="col">Shipment Date</th>
-                        <th scope="col">Actual Delivery Date</th>
-                        <th scope="col">Expected Delivery Date</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td data-label="Carrier Name">
-                          <Input
-                            type="text"
-                            name="carrier_name"
-                            value={formData.carrier_name}
-                            onChange={handleInputChange}
-                          />
-                        </td>
-                        <td data-label="Tracking Number">
-                          <Input
-                            type="text"
-                            name="tracking_number"
-                            value={formData.tracking_number}
-                            onChange={handleInputChange}
-                          />
-                        </td>
-                        <td data-label="Shipment Date">
-                          <Input
-                            type="date"
-                            name="shipment_date"
-                            value={formData.shipment_date}
-                            onChange={handleInputChange}
-                          />
-                        </td>
-                        <td data-label="Actual Delivery Date">
-                          <Input
-                            type="date"
-                            name="actual_delivery_date"
-                            value={formData.actual_delivery_date}
-                            onChange={handleInputChange}
-                          />
-                        </td>
-                        <td data-label="Expected Delivery Date">
-                          <Input
-                            type="date"
-                            name="expected_delivery_date"
-                            value={formData.expected_delivery_date}
-                            onChange={handleInputChange}
-                          />
-                        </td>
-                        <td data-label="Enquiry id">
-                          <Input
-                            type="hidden"
-                            name="enquiry_id"
-                            value={formData.quoteTrack}
-                            onChange={handleInputChange}
-                          />
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </Card>
-                <ModalFooter>
-                  <Button className="shadow-none" color="primary" onClick={handleSubmit}>
-                    Submit
-                  </Button>
-                  <Button
-                    className="shadow-none"
-                    color="secondary"
-                    onClick={() => setAddTrackItemModal(false)}
-                  >
-                    Cancel
-                  </Button>
-                </ModalFooter>
-              </Form>
+    <Modal size="lg" isOpen={addTrackItemModal}>
+      <ModalHeader>
+        Add Carrier Tracking
+        <Button className="shadow-none" color="secondary" onClick={() => setAddTrackItemModal(false)}>
+          X
+        </Button>
+      </ModalHeader>
+      <ModalBody>
+        <Form>
+          <Card body>
+            <Row>
+              <Col md="4">
+                <FormGroup>
+                  <Label>Carrier Name</Label>
+                  <Input
+                    type="text"
+                    name="carrier_name"
+                    value={formData.carrier_name}
+                    onChange={handleInputChange}
+                    placeholder="Enter Carrier Name"
+                  />
+                </FormGroup>
+              </Col>
+              <Col md="4">
+                <FormGroup>
+                  <Label>Tracking Number</Label>
+                  <Input
+                    type="text"
+                    name="tracking_number"
+                    value={formData.tracking_number}
+                    onChange={handleInputChange}
+                    placeholder="Enter Tracking Number"
+                  />
+                </FormGroup>
+              </Col>
+               <Col md="4">
+                  <FormGroup>
+                    <Label>Shipment</Label>
+                
+              
+                    <Input
+                type="select"
+                name="shipment_id"
+                onChange={handleCompanyChange}
+                value={formData?.shipment_id ? String(formData.shipment_id) : ''} // Ensure it's updating correctly
+
+              >
+                <option value="">Please Select</option>
+                {company?.map((ele) => (
+                    <option key={ele.contact_id} value={String(ele.contact_id)}>
+                      {ele.first_name} {/* Make sure this is the correct property */}
+                    </option>
+                  ))}
+              </Input>
+              
+                  </FormGroup>
+                </Col>
+            </Row>
+            <Row>
+<Col md="4">
+
+<FormGroup>
+    <Label>Shipper Address</Label>
+    <Input
+      type="text"
+      name="shipper_address"
+      value={formData.shipper_address}
+      onChange={handleInputChange}
+    />
+  </FormGroup>
+</Col>
+ <Col md="4">
+
+  <FormGroup>
+      <Label>Recipient Name</Label>
+      <Input
+        type="text"
+        name="recipient_name"
+        value={formData.recipient_name}
+        onChange={handleInputChange}
+      />
+    </FormGroup>
+  </Col>
+  <Col md="4">
+
+  <FormGroup>
+      <Label>Recipient Address</Label>
+      <Input
+        type="text"
+        name="recipient_address"
+        value={formData.recipient_address}
+        onChange={handleInputChange}
+      />
+    </FormGroup>
+  </Col>
+
+            </Row>
+
+            <Row>
+              <Col md="4">
+                <FormGroup>
+                  <Label>Shipment Date</Label>
+                  <Input
+                    type="date"
+                    name="shipment_date"
+                    value={formData.shipment_date}
+                    onChange={handleInputChange}
+                  />
+                </FormGroup>
+              </Col>
+              <Col md="4">
+                <FormGroup>
+                  <Label>Actual Delivery Date</Label>
+                  <Input
+                    type="date"
+                    name="actual_delivery_date"
+                    value={formData.actual_delivery_date}
+                    onChange={handleInputChange}
+                  />
+                </FormGroup>
+              </Col>
+              <Col md="4">
+                <FormGroup>
+                  <Label>Expected Delivery Date</Label>
+                  <Input
+                    type="date"
+                    name="expected_delivery_date"
+                    value={formData.expected_delivery_date}
+                    onChange={handleInputChange}
+                  />
+                </FormGroup>
+              </Col>
+            </Row>
+            <Row>
+            <Col md="4">
+            
+              <FormGroup>
+                  <Label>Package Weight</Label>
+                  <Input
+                    type="text"
+                    name="package_weight"
+                    value={formData.package_weight}
+                    onChange={handleInputChange}
+                  />
+                </FormGroup>
+              </Col>
+              <Col md="4">
+            
+              <FormGroup>
+                  <Label>Package Height</Label>
+                  <Input
+                    type="text"
+                    name="package_height"
+                    value={formData.package_height}
+                    onChange={handleInputChange}
+                  />
+                </FormGroup>
+              </Col>
+              <Col md="4">
+            
+              <FormGroup>
+                  <Label>Package Length</Label>
+                  <Input
+                    type="text"
+                    name="package_length"
+                    value={formData.package_length}
+                    onChange={handleInputChange}
+                  />
+                </FormGroup>
+              </Col>
+              <Col md="4">
+            
+              <FormGroup>
+                  <Label>Package Width</Label>
+                  <Input
+                    type="text"
+                    name="package_width"
+                    value={formData.package_width}
+                    onChange={handleInputChange}
+                  />
+                </FormGroup>
+              </Col>
+              <Col md="4">
+            
+            <FormGroup>
+                <Label>Status</Label>
+                <Input
+                  type="text"
+                  name="shipment_status"
+                  value={formData.shipment_status}
+                  onChange={handleInputChange}
+                />
+              </FormGroup>
             </Col>
-          </Row>
-        </ModalBody>
-      </Modal>
-    </>
+            
+            </Row>
+          </Card>
+        </Form>
+      </ModalBody>
+      <ModalFooter>
+        <Button className="shadow-none" color="primary" onClick={handleSubmit}>
+          Submit
+        </Button>
+        <Button className="shadow-none" color="secondary" onClick={() => setAddTrackItemModal(false)}>
+          Cancel
+        </Button>
+      </ModalFooter>
+    </Modal>
   );
 };
 
