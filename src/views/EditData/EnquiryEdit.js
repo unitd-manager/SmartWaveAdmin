@@ -19,6 +19,8 @@ import creationdatetime from '../../constants/creationdatetime';
 // import DeleteButton from '../../components/DeleteButton';
 import QuoteLineItem from '../../components/ProjectTable/QuoteLineItem';
 import EditLineItemModal from '../../components/ProjectTable/EditLineItemModal';
+import QuoteTrackItem from '../../components/ProjectTable/QuoteTrackItem';
+import EditTrackItemModal from '../../components/ProjectTable/EditTrckitemModal';
 
 const EnquiryEdit = () => {
   //All state variable
@@ -28,10 +30,16 @@ const EnquiryEdit = () => {
     const [addLineItemModal, setAddLineItemModal] = useState(false);
     const [lineItem, setLineItem] = useState();
     const [viewLineModal, setViewLineModal] = useState(false);
+    const [addTrackItemModal, setAddTrackItemModal] = useState(false);
+    const [TrackItem, setTrackItem] = useState();
+    const [viewTrackModal, setViewTrackModal] = useState(false);
     const [editQuoteModal, setEditQuoteModal] = useState(false);
 
     const [editLineModelItem, setEditLineModelItem] = useState(null);
     const [editLineModal, setEditLineModal] = useState(false);
+
+    const [editTrackModelItem, setEditTrackModelItem] = useState(null);
+    const [editTrackModal, setEditTrackModal] = useState(false);
   
   //navigation and parameters
   const { id } = useParams();
@@ -45,14 +53,23 @@ const EnquiryEdit = () => {
   const addQuoteItemsToggle = () => {
     setAddLineItemModal(!addLineItemModal);
   };
+
+  const addTrackItemsToggle = () => {
+    setAddTrackItemModal(!addTrackItemModal);
+  };
+
+  const viewTrackToggle = () => {
+    setViewTrackModal(!viewTrackModal);
+  };
  
   const viewLineToggle = () => {
     setViewLineModal(!viewLineModal);
   };
-  console.log(viewLineToggle);
+  console.log(viewLineToggle,viewTrackToggle);
   const tabs = [
     { id: '1', name: 'Enquiry' },
     { id: '2', name: 'Quotation' },
+    { id: '3', name: 'Carrier Tracking' },
   ];
   const toggle = (tab) => {
     setActiveTab(tab);
@@ -100,6 +117,13 @@ const EnquiryEdit = () => {
     });
   };
 
+  const getTrackItem = () => {
+    api.post('/tracking/getQuoteTrackItemsById', { enquiry_id: id }).then((res) => {
+      setTrackItem(res.data.data);
+      //setAddLineItemModal(true);
+    });
+  };
+
 
   const columns1 = [
     {
@@ -127,6 +151,34 @@ const EnquiryEdit = () => {
       name: 'Action ',
     },
   ];
+
+  const columns2 = [
+    {
+      name: '#',
+    },
+    {
+      name: 'Carrier Name',
+    },
+    {
+      name: 'Tracking No',
+    },
+    {
+      name: 'Shipment Date',
+    },
+    {
+      name: 'Actual Delivery Date',
+    },
+    {
+      name: 'Expected Delivery Date',
+    },
+    {
+      name: 'Updated By ',
+    },
+    {
+      name: 'Action ',
+    },
+  ];
+
   const deleteRecord = (deleteID) => {
     Swal.fire({
       title: `Are you sure? ${deleteID}`,
@@ -146,6 +198,27 @@ const EnquiryEdit = () => {
     });
   };
 
+
+  const deleteTrackRecord = (trackID) => {
+    Swal.fire({
+      title: `Are you sure? ${trackID}`,
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        api.post('/tracking/deleteTrackEditItem', { carrier_tracking_id: trackID }).then(() => {
+          Swal.fire('Deleted!', 'Your Line Items has been deleted.', 'success');
+          window.location.reload();
+        });
+      }
+    });
+  };
+
+
   const [quote, setQuote] = useState({});
 
     // Get Quote By Id
@@ -156,7 +229,18 @@ const EnquiryEdit = () => {
         }
       });
     };
-    console.log("aaaaaaaa",quote);
+
+    const [track, settrack] = useState({});
+
+    // Get track By Id
+    const gettrack = () => {
+      api.post('/tracking/getQuoteById', { enquiry_id: id }).then((res) => {
+        if (res.data.data && res.data.data.length > 0) {
+          settrack(res.data.data[0]);
+        }
+      });
+    };
+
     const [quoteForm, setQuoteForm] = useState({
       quote_date: '',
       quote_code: '',
@@ -195,8 +279,10 @@ const EnquiryEdit = () => {
   useEffect(() => {
     getEnquiryById();
     getLineItem();
+    getTrackItem();
     getCompany();
     getQuote();
+    gettrack();
   }, [id]);
 
   return (
@@ -465,6 +551,94 @@ const EnquiryEdit = () => {
               getQuote={getQuote}
             ></TenderQuotation>
           
+          </TabPane>
+
+          <TabPane tabId="3">
+            <Row>
+              <Col md="6">
+                <Button
+                  className="shadow-none"
+                  color="primary"
+                  to=""
+                  onClick={addTrackItemsToggle.bind(null)}
+                >
+                  Add Carrier Tracking
+                </Button>
+              </Col>
+            </Row>
+            <br />
+            <Row>
+              <div className="container">
+                <Table id="example" className="display border border-secondary rounded">
+                  <thead>
+                    <tr>
+                      {columns2.map((cell) => {
+                        return <td key={cell.name}>{cell.name}</td>;
+                      })}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {TrackItem &&
+                      TrackItem.map((e, index) => {
+                        return (
+                          <tr key={e.enquiry_id}>
+                            <td>{index + 1}</td>
+                            <td data-label="Title">{e.carrier_name}</td>
+                            <td data-label="Description">{e.tracking_number}</td>
+                            <td data-label="Quantity">{new Date(e.shipment_date).toLocaleDateString()}</td>
+<td data-label="Unit Price">{new Date(e.actual_delivery_date).toLocaleDateString()}</td>
+<td data-label="Amount">{new Date(e.expected_delivery_date).toLocaleDateString()}</td>
+<td data-label="Updated By">
+  {e.modification_date
+    ? `${e.modified_by} (Modified on ${e.modification_date.split('T')[0]})`
+    : `${e.created_by} (Created on ${e.creation_date.split('T')[0]})`}
+</td>
+
+                            <td data-label="Actions">
+                              <span
+                                className="addline"
+                                onClick={() => {
+                                  setEditTrackModelItem(e);
+                                  setEditTrackModal(true);
+                                }}
+                              >
+                                <Icon.Edit2 />
+                              </span>
+                              <span
+                                className="addline"
+                                onClick={() => {
+                                  deleteTrackRecord(e.carrier_tracking_id);
+                                }}
+                              >
+                                <Icon.Trash2 />
+                              </span>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                  </tbody>
+                </Table>
+              </div>
+            </Row>
+            {/* End View Line Item Modal */}
+            <EditTrackItemModal
+              editTrackModal={editTrackModal}
+              setEditTrackModal={setEditTrackModal}
+              FetchTrackItemData={editTrackModelItem}
+              getTrackItem={getTrackItem}
+              setViewTrackModal={setViewTrackModal}
+              quoteTrack={id}
+              gettrack={gettrack}
+              track={track}
+            ></EditTrackItemModal>
+            {addTrackItemModal && (
+              <QuoteTrackItem
+                //projectInfo={tenderId}
+                addTrackItemModal={addTrackItemModal}
+                setAddTrackItemModal={setAddTrackItemModal}
+                quoteTrack={id}
+              ></QuoteTrackItem>
+            )}
           </TabPane>
         </TabContent>
       </ComponentCard>

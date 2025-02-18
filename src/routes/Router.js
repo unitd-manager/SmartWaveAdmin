@@ -14,6 +14,9 @@ const EditCostingSummaryModal = Loadable(
   lazy(() => import('../components/Tender/EditCostingSummaryModal')),
 );
 const EnquiryTable = Loadable(lazy(() => import('../views/smartconTables/Enquiry')));
+const CarrierTrackingTable = Loadable(lazy(() => import('../views/smartconTables/CarrierTracking')));
+
+
 
 const EditQuoteModal = Loadable(lazy(() => import('../components/Tender/EditQuoteModal')));
 const EditLineItemModal = Loadable(lazy(() => import('../components/Tender/EditLineItemModal')));
@@ -228,6 +231,11 @@ const Routernew = () => {
             path="/Enquiry"
             name="enquirydata"
             element={<EnquiryTable />}
+            ></Route>
+            <Route
+            path="/CarrierTracking"
+            name="enquirydata"
+            element={<CarrierTrackingTable />}
             ></Route>
                 <Route
             path="/EnquiryDetails"
