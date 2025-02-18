@@ -150,12 +150,13 @@ const CustomerDetailsTable = Loadable(lazy(() => import('../views/detailTable/Cu
 const SubCategoryTable = Loadable(lazy(() => import('../views/smartconTables/SubCategory')));
 const BlogDetailsTable = Loadable(lazy(() => import('../views/detailTable/BlogDetails')));
 const SupplierDetailsTable = Loadable(lazy(() => import('../views/detailTable/SupplierDetails')));
-
+const ProductOwnerDetailsTable = Loadable(lazy(() => import('../views/detailTable/ProductOwnerDetails')));
 
 const SubCategoryDetailsTable = Loadable(
   lazy(() => import('../views/detailTable/SubCategoryDetails')),
 );
 const SupplierTable = Loadable(lazy(() => import('../views/smartconTables/Supplier')));
+const ProductOwnerTable = Loadable(lazy(() => import('../views/smartconTables/ProductOwner')));
 const ValuelistTable = Loadable(lazy(() => import('../views/smartconTables/Valuelist')));
 const ValuelistDetailsTable = Loadable(lazy(() => import('../views/detailTable/ValuelistDetails')));
 const PurchaseOrderDetailTable = Loadable(lazy(() => import('../views/detailTable/PurchaseOrderDetail')));
@@ -196,6 +197,7 @@ const EnquiryDetailsTable = Loadable(
 );
 const InventoryEdit = Loadable(lazy(() => import('../views/EditData/InventoryEdit')));
 const SupplierEdit = Loadable(lazy(() => import('../views/EditData/SupplierEdit')));
+const ProductOwnerEdit = Loadable(lazy(() => import('../views/EditData/ProductOwnerEdit')));
 //Reports
 const ProjectReportTable = Loadable(lazy(() => import('../views/Reports/ProjectReport')));
 const OverallSalesReportTable = Loadable(lazy(() => import('../views/Reports/OverAllSalesSummaryReport')));
@@ -251,6 +253,7 @@ const Routernew = () => {
           <Route path="/BlogEdit/:id" name="blogdata" element={<BlogEdit />}></Route>
           <Route path="/InventoryEdit/:id" name="inventorydata" element={<InventoryEdit />}></Route>
                    <Route path="/SupplierEdit/:id" name="supplierdata" element={<SupplierEdit />}></Route>
+                   <Route path="/ProductOwnerEdit/:id" name="productownerdata" element={<ProductOwnerEdit />}></Route>
           <Route path="/sectionEdit/:id" name="sectiondata" element={<SectionEdit />}></Route>
          
           
@@ -364,6 +367,7 @@ const Routernew = () => {
           {/* Tender */}
           <Route path="/BlogDetails" name="blogDetaildata" element={<BlogDetailsTable />}></Route>
           <Route path="/SupplierDetails" name="supplierDetaildata" element={<SupplierDetailsTable />}></Route>
+          <Route path="/ProductOwnerDetails" name="ProductOwnerDetaildata" element={<ProductOwnerDetailsTable />}></Route>
           <Route path="/Task" name="taskdata" element={<TaskTable />}></Route>
           <Route path="/Staff" name="staffdata" element={<StaffTable />}></Route>
           <Route path="/ProductDetails" name="productDetaildata" element={<ProductDetailsTable />}></Route>
@@ -432,7 +436,7 @@ const Routernew = () => {
           <Route path="/IR8AReport" name="ir8areportdata" element={<IR8AReport />}></Route>
           <Route path="/PurchaseGstReport" name="purchasegstreportdata" element={<PurchaseGstReport />}></Route>
           <Route path="/Supplier" name="supplierdata" element={<SupplierTable />}></Route>
-        
+          <Route path="/ProductOwner" name="ProductOwnerdata" element={<ProductOwnerTable />}></Route>
         </Route>
 
         
