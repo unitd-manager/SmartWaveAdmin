@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Col } from 'reactstrap';
+import * as Icon from 'react-feather';
+import { Button } from 'reactstrap';
+import { Link, useParams } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'datatables.net-fixedheader';
 import 'datatables.net-dt/js/dataTables.dataTables';
 import 'datatables.net-dt/css/jquery.dataTables.min.css';
 import $ from 'jquery';
@@ -9,185 +10,204 @@ import 'datatables.net-buttons/js/buttons.colVis';
 import 'datatables.net-buttons/js/buttons.flash';
 import 'datatables.net-buttons/js/buttons.html5';
 import 'datatables.net-buttons/js/buttons.print';
-import { Link } from 'react-router-dom';
+import api from '../../constants/api';
 import BreadCrumbs from '../../layouts/breadcrumbs/BreadCrumbs';
 import CommonTable from '../../components/CommonTable';
-import { columns } from '../../data/Tender/ProductData';
-import api from '../../constants/api';
-import message from '../../components/Message';
+import Publish from '../../components/Publish';
 
-const Test = () => {
+ 
+const SectionDetails = () => {
+  //Const Variables
+  const [section, setSection] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const changePublishStatus = (publishValue, id) => {
-    setLoading(true);
+  // Navigation and Parameter Constants
+  const { id } = useParams();
+
+  // get section
+  const getSection = () => {
     api
-      .post('/commonApi/updatePublish', {
-        tablename: 'product',
-        idColumn: 'product_id',
-        idValue: id,
-        value: parseInt(publishValue, 10),
-      })
+      .get('/product/getProductAdmin')
       .then((res) => {
-        if (res.status === 200) {
-          window.location.reload();
-        } else {
-          message('Unable to edit record.', 'error');
-        }
+        setSection(res.data.data);
+    
+        setLoading(false);
       })
       .catch(() => {
-        message('Network connection error.');
+        setLoading(false);
       });
   };
-  const getAllProducts = () => {
-    /* eslint-disable */
-    setLoading(true);
-    $('#example').DataTable({
-      dom: 'Bfrtip',
-      serverSide: true,
-      searching: true,
-      scrollX: true,
-      lengthChange: false,
-      pageLength: 50,
-      buttons: ['excel'],
-      bDestroy: true,
-      ajax: {
-        type: 'POST',
-        url: 'http://43.228.126.245:3005/product/getProductsPagination',
-      },
-      lengthMenu: [
-        [10, 100, -1],
-        [10, 100, 'All'],
-      ],
-      drawCallback: function (settings) {
-        $(document).on('click', '#publish', function (e) {
-          e.preventDefault();
-          changePublishStatus($(this).attr('data-status'), $(this).attr('data-value'));
-        });
-        $(document).on('click', '.notes', function (e) {
-          e.preventDefault();
-          toggle();
-        });
-      },
-      select: true,
-      colReorder: true,
-      columns: [
-        {
-          render: function (data, type, row, meta) {
-            return row.product_id;
-          },
-        },
-        {
-          render: function (data, type, row, meta) {
-            return '<a href="' + '#/ProductEdit/' + row.product_id + '">Edit</a>';
-          },
-        },
-        {
-          render: function (data, type, row, meta) {
-            return row.product_code;
-          },
-        },
-        {
-          render: function (data, type, row, meta) {
-            return row.title;
-          },
-        },
-        {
-          render: function (data, type, row, meta) {
-            return row.product_type;
-          },
-        },
-        {
-          render: function (data, type, row, meta) {
-            return row.price;
-          },
-        },
-        {
-          render: function (data, type, row, meta) {
-            return row.unit;
-          },
-        },
-        {
-          render: function (data, type, row, meta) {
-            return row.qty_in_stock;
-          },
-        },
-        {
-          render: function (data, type, row, meta) {
-            return row.modified_by;
-          },
-        },
-        {
-          render: function (data, type, row, meta) {
-            if (row.published == 1) {
-              return `<span data-status='0' data-value=${row.product_id} id="publish" class="cursor-pointer badge bg-success"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></span>`;
-            } else {
-              return `<span data-status='1' data-value=${row.product_id} id="publish" class="cursor-pointer badge bg-danger"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></span>`;
-            }
-          },
-        },
-      ],
-    });
-
-    setLoading(false);
-  };
-
   useEffect(() => {
-    getAllProducts();
-  }, []);
+    setTimeout(() => {
+      $('#example').DataTable({
+        pagingType: 'full_numbers',
+        pageLength: 20,
+        processing: true,
+        dom: 'Bfrtip',
+        buttons: [
+          {
+            extend: 'print',
+            text: 'Print',
+            className: 'shadow-none btn btn-primary',
+          },
+        ],
+      });
+    }, 1000);
+
+    getSection();
+  }, [id]);
+
+  // useEffect(() => {
+  //   getSection();
+  // }, [id]);
+  //  stucture of Section list view
+  const columns = [
+    {
+      name: '#',
+      grow: 0,
+      wrap: true,
+      width: '4%',
+    },
+    {
+      name: 'Edit',
+      selector: 'edit',
+      cell: () => <Icon.Edit2 />,
+      grow: 0,
+      width: 'auto',
+      button: true,
+      sortable: false,
+    },
+
+    {
+      name: 'Product Code',
+      selector: 'product_code',
+      sortable: true,
+      grow: 0,
+      wrap: true,
+    },
+    {
+      name: 'Title',
+      selector: 'title',
+      sortable: true,
+      grow: 2,
+      wrap: true,
+    },
+    {
+      name: 'Product Type',
+      selector: 'product_type',
+      sortable: true,
+      grow: 0,
+    },
+    {
+      name: 'Unit',
+      selector: 'unit',
+      sortable: true,
+      width: 'auto',
+      grow: 3,
+    },
+    {
+      name: 'Price',
+      selector: 'price',
+      sortable: true,
+      width: 'auto',
+      grow: 3,
+    },
+    // {
+    //   name: 'Qty in Stock',
+    //   selector: 'qty_in_stock',
+    //   sortable: true,
+    //   grow: 2,
+    //   width: 'auto',
+    // },
+    // {
+    //   name: 'Modified By',
+    //   selector: 'modified_by',
+    //   sortable: true,
+    //   grow: 2,
+    //   width: 'auto',
+    // },
+    {
+      name: 'Published',
+      selector: 'published',
+      sortable: true,
+      grow: 2,
+      width: 'auto',
+    },
+   
+  ];
 
   return (
     <div className="MainDiv">
       <div className=" pt-xs-25">
         <BreadCrumbs />
+        {/* Section Add new button */}
 
         <CommonTable
           loading={loading}
-          additionalClasses={'table'}
           title="Product List"
           Button={
-            <>
-              <Col>
-                <Link to="/ProductDetails">
-                  <Button color="primary" className="shadow-none">
-                    Add New
-                  </Button>
-                </Link>
-              </Col>
-              <Col>
-                <a
-                  href="http://43.228.126.245/smartco-api/storage/excelsheets/Product.xlsx"
-                  download
-                >
-                  <Button color="primary" className="shadow-none">
-                    Sample
-                  </Button>
-                </a>
-              </Col>
-            </>
+            <Link to="/ProductDetails">
+              <Button color="primary" className="shadow-none">
+                Add New
+              </Button>
+            </Link>
           }
         >
           <thead>
-            <tr className="filters">
+            <tr>
               {columns.map((cell) => {
-                return (
-                  <th key={cell.name}>
-                    {cell.name}
-                    {cell.sorttype && cell.sorttype === 'select' && (
-                      <div className={'select'}></div>
-                    )}
-                    {cell.sorttype && cell.sorttype === 'input' && <div className={'input'}></div>}
-                    {!cell.sorttype && <div></div>}
-                  </th>
-                );
+                return <td key={cell.name}>{cell.name}</td>;
               })}
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody>
+            {section &&
+              section.map((element, index) => {
+                return (
+                  <tr key={element.product_id}>
+                    <td>{index + 1}</td>
+                    <td>
+                      <Link to={`/ProductEdit/${element.product_id}`}>
+                        <Icon.Edit2 />
+                      </Link>
+                    </td>
+                    
+                    <td>
+                    <Link to={`/InventoryEdit/${element.inventory_id}`}>
+                      {element.product_code}
+                      </Link>
+                    </td>
+                    <td>{element.title}</td>
+                    <td>{element.product_type}</td>
+                    <td>{element.unit}</td>
+                    <td>{element.price}</td>
+                    {/* <td>{element.qty_in_stock}</td> */}
+                    {/* <td>{element.modified_by}</td> */}
+                    <td>
+                      <Publish
+                        idColumn="product_id"
+                        tablename="product"
+                        idValue={element.product_id.toString()}
+                        value={element.published}
+                      ></Publish>
+                    </td>
+                    {/* <td>
+                      <SortOrder
+                        idValue={element.product_id}
+                        idColumn="product_id"
+                        tablename="section"
+                        value={element.sort_order}
+                      ></SortOrder>
+                    </td> */}
+                  </tr>
+                );
+              })}
+          </tbody>
         </CommonTable>
+        {/* setion table */}
       </div>
     </div>
   );
 };
 
-export default Test;
+export default SectionDetails;

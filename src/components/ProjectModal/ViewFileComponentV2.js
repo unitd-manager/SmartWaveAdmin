@@ -70,7 +70,7 @@ function ViewFileComponentV2({ moduleId, roomName }) {
                 <tr key={res.media_id}>
                   <td style={tableStyle}>
                       <a
-                        href={`http://43.228.126.245/united-ecomm-api/storage/uploads/${res.name}`}
+                        href={`https://smartwaveadmin.unitdtechnologies.com/storage/uploads/${res.name}`}
                         target="_blank"
                         rel="noreferrer"
                       >

@@ -16,8 +16,8 @@ import ProductEditButtons from '../../components/Product/ProductEditButtons';
 import ViewFileComponentV2 from '../../components/ProjectModal/ViewFileComponentV2';
 import AttachmentModalV2 from '../../components/Tender/AttachmentModalV2';
 import ProductDetail from '../../components/ProductTable/ProductDetail';
-import ProductColor from '../../components/ProductTable/ProductColor';
-import ProductSize from '../../components/ProductTable/ProductSize';
+// import ProductColor from '../../components/ProductTable/ProductColor';
+// import ProductSize from '../../components/ProductTable/ProductSize';
 
 const ProductUpdate = () => {
   // All state variables
@@ -140,7 +140,7 @@ const ProductUpdate = () => {
                 Product Description
               </NavLink>
             </NavItem>
-            <NavItem>
+            {/* <NavItem>
               <NavLink
                 className={activeTab === '2' ? 'active' : ''}
                 onClick={() => {
@@ -149,8 +149,8 @@ const ProductUpdate = () => {
               >
                Product Color
               </NavLink>
-            </NavItem>
-            <NavItem>
+            </NavItem> */}
+            {/* <NavItem>
               <NavLink
                 className={activeTab === '3' ? 'active' : ''}
                 onClick={() => {
@@ -159,7 +159,7 @@ const ProductUpdate = () => {
               >
                 Product Size
               </NavLink>
-            </NavItem>
+            </NavItem> */}
             <NavItem>
               <NavLink
                 className={activeTab === '4' ? 'active' : ''}
@@ -188,7 +188,7 @@ const ProductUpdate = () => {
         </TabPane>
 
         {/* Customer Details Form */}
-        <TabPane tabId="2">
+        {/* <TabPane tabId="2">
           <ComponentCard title="Product Color">
           <ProductColor
            projectId={id}
@@ -201,7 +201,7 @@ const ProductUpdate = () => {
             projectId={id}
           ></ProductSize>
           </ComponentCard>
-        </TabPane>
+        </TabPane> */}
         <TabPane tabId="4">
         <ComponentCard title="Attachments">
             <Row>
