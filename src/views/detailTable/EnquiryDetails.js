@@ -11,7 +11,6 @@ import AppContext from '../../context/AppContext';
 
 const OpportunityDetails = () => {
   const [company, setCompany] = useState();
-  const [order, setOrder] = useState();
 
   const [formSubmitted, setFormSubmitted] = useState(false);
   const { id } = useParams();
@@ -25,58 +24,8 @@ const OpportunityDetails = () => {
     });
   };
 
-  const getOrder = () => {
-    api.get('/company/getOrders').then((res) => {
-      setOrder(res.data.data);
-    });
-  };
 
-  // //Logic for adding company in db
-  // const [companyInsertData, setCompanyInsertData] = useState({
-  //   company_name: '',
-  //   address_street: '',
-  //   address_town: '',
-  //   address_country: 'Singapore',
-  //   address_po_code: '',
-  //   phone: '',
-  //   fax: '',
-  //   website: '',
-  //   supplier_type: '',
-  //   industry: '',
-  //   company_size: '',
-  //   source: '',
-  // });
 
-  // const handleInputs = (e) => {
-  //   console.log("companyInsertData",{ ...companyInsertData, [e.target.name]: e.target.value })
-  //   setCompanyInsertData({ ...companyInsertData, [e.target.name]: e.target.value });
-  // };
-
-  // const insertCompany = () => {
-  //   if (
-  //     companyInsertData.company_name !== '' &&
-  //     companyInsertData.address_street !== '' &&
-  //     companyInsertData.address_po_code !== '' &&
-  //     companyInsertData.address_country !== ''
-  //   ) {
-  //     api
-  //       .post('/company/insertCompany', companyInsertData)
-  //       .then(() => {
-  //         message('Company inserted successfully.', 'success');
-  //         getCompany();
-  //         setTimeout(() => {
-  //           toggle()
-  //         }, 1000)
-
-  //       })
-  //       .catch(() => {
-  //         message('Network connection error.', 'error');
-  //       });
-  //   } else {
-  //     setAddFormSubmitted(true)
-  //     message('Please fill all required fields.', 'warning');
-  //   }
-  // };
 
   //Logic for adding tender in db
   const [tenderForms, setTenderForms] = useState({
@@ -152,7 +101,6 @@ const OpportunityDetails = () => {
 
   useEffect(() => {
     getCompany();
-    getOrder();
     // getAllCountries();
   }, [id]);
 
@@ -222,44 +170,7 @@ const OpportunityDetails = () => {
                  
                 </Row>
               </FormGroup>
-              <FormGroup>
-                <Row>
-                  <Col md="9">
-                    <Label>
-                      Order <span className="required"> *</span>{' '}
-                    </Label>
-                    <Input
-                      type="select"
-                      name="order_id"
-                      className={`form-control ${formSubmitted && tenderForms && (tenderForms.order_id === undefined || tenderForms.order_id.trim() === '')
-                          ? 'highlight'
-                          : ''
-                        }`}
-                      //value={tenderForms && tenderForms.order_id}
-                      // onChange={handleInputsTenderForms}
-                      onChange={(e) => {
-                        handleInputsTenderForms(e)
-                      }}
-
-                    >
-                      <option value=''>Please Select</option>
-                      {order &&
-                        order.map((ele) => {
-                          return (
-                            <option key={ele.order_id} value={ele.order_id}>
-                              {ele.order_code}
-                            </option>
-                          );
-                        })}
-                    </Input>
-                    {formSubmitted && tenderForms && (tenderForms.order_id === undefined || tenderForms.order_id.trim() === '') && (
-                      <div className="error-message">Please select the order</div>
-                    )}
-                  </Col>
-                 
-                </Row>
-              </FormGroup>
-            
+             
               
               <Row>
                 <div className="pt-3 mt-3 d-flex align-items-center gap-2">

@@ -276,6 +276,35 @@ const EnquiryEdit = () => {
           insertQuote('');
         });
     };
+
+
+    const updateOrder = (code) => {
+      enquiryDetails.modification_date = creationdatetime;
+      enquiryDetails.order_code = code;
+        api
+          .post('/enquiry/updateOrderCode', enquiryDetails)
+          .then(() => {
+            message('Updated successfully', 'success');
+            setTimeout(() => {
+              window.location.reload();
+            }, 300);
+          })
+          .catch(() => {
+            message('Unable to edit record.', 'error');
+          });
+     
+    };
+  
+    const generateOrder = async () => {
+      api
+      .post('/commonApi/getCodeValue', { type: 'orders' })
+      .then((res) => {
+        updateOrder(res.data.data);
+      })
+      .catch(() => {
+        updateOrder('');
+      });
+  };
   
   
 
@@ -291,6 +320,7 @@ const EnquiryEdit = () => {
   return (
     <>
       <BreadCrumbs />
+     
       <Form>
         <FormGroup>
           <ToastContainer></ToastContainer>
@@ -323,24 +353,7 @@ const EnquiryEdit = () => {
                   Apply
                 </Button>
               </Col>
-              {/* <Col>
-                <Button
-                  type="submit"
-                  className="btn btn-dark shadow-none"
-                  onClick={(e) => {
-                    if (window.confirm('Are you sure you want to cancel? ')) {
-                      navigate('/Enquiry');
-                    } else {
-                      e.preventDefault();
-                    }
-                  }}
-                >
-                  Cancel
-                </Button>
-              </Col>
-              <Col>
-                <DeleteButton id={id} columnname="enquiry_id" tablename="enquiry"></DeleteButton>
-              </Col> */}
+             
               <Col>
                 <Button
                   className="shadow-none"
@@ -352,6 +365,34 @@ const EnquiryEdit = () => {
                   Back to List
                 </Button>
               </Col>
+            </Row>
+          </ComponentCardV2>
+        </FormGroup>
+      </Form>
+
+
+
+      <Form>
+        <FormGroup>
+          <ToastContainer></ToastContainer>
+          {/* Enquiry Button */}
+          <ComponentCardV2>
+            <Row>
+              <Col>
+                <Button
+                  className="shadow-none"
+                  color="primary"
+                  onClick={() => {
+                   generateOrder();
+                    
+                  }}
+                  disabled={!!enquiryDetails && enquiryDetails.order_code}
+                >
+                 {enquiryDetails && enquiryDetails.order_code ? "Order Generated" : "Generate Order"}
+               
+                </Button>
+              </Col>
+
             </Row>
           </ComponentCardV2>
         </FormGroup>
@@ -438,7 +479,33 @@ const EnquiryEdit = () => {
                         </Input>
                         </FormGroup>
                       </Col>
-              
+                      <Col md="4">
+                <FormGroup>
+                  <Label>Order Code</Label>
+                  <Input
+                    type="text"
+                    onChange={handleInputs}
+                    value={enquiryDetails && enquiryDetails.order_code}
+                    name="order_code"
+                    disabled
+
+                  ></Input>
+                </FormGroup>
+              </Col>
+              <Col md="4">
+                <FormGroup>
+                  <Label>Shipping Address</Label>
+                  <Input
+                    type="text"
+                    onChange={handleInputs}
+                    value={enquiryDetails && enquiryDetails.shipping_address}
+                    name="shipping_address"
+                    disabled
+
+                  ></Input>
+                </FormGroup>
+              </Col>
+
             </Row>
           </ComponentCard>
         </FormGroup>
