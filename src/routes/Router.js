@@ -174,6 +174,8 @@ const PurchaseOrderEdit = Loadable(lazy(() => import('../views/EditData/Purchase
 //SupplierModal
 
 const SupportDetails = Loadable(lazy(() => import('../views/detailTable/SupportDetails')));
+const SupplierHistory = Loadable(lazy(() => import('../components/SupplierModal/SupplierHistory')));
+
 
 // Table Edit's
 
@@ -387,6 +389,11 @@ const Routernew = () => {
             path="/SubCategoryDetails"
             name="subcategorydetailsdata"
             element={<SubCategoryDetailsTable />}
+          ></Route>
+            <Route
+            path="/SupplierHistory/:id"
+            name="clienttdata"
+            element={<SupplierHistory />}
           ></Route>
 
           <Route path="/Valuelist" name="valuelistdata" element={<ValuelistTable />}></Route>

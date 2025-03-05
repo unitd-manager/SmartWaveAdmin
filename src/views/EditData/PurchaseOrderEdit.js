@@ -130,6 +130,9 @@ const PurchaseOrderEdit = () => {
             .post('/inventory/editInventoryStock', elem)
             .then(() => {
               message('Quantity added successfully.', 'success');
+              setTimeout(() => {
+                window.location.reload();
+              }, 300);
             })
             .catch(() => {
               message('Unable to add quantity.', 'danger');
@@ -208,7 +211,9 @@ const PurchaseOrderEdit = () => {
       .post('/purchaseorder/editTabPurchaseOrderLineItem', product)
       .then(() => {
         message('Product edited successfully.', 'success');
-     
+        setTimeout(() => {
+          window.location.reload();
+        }, 300);
       })
       .catch(() => {
         message('Unable to edit product.', 'danger');
