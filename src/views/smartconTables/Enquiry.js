@@ -108,6 +108,8 @@ const Enquiry = () => {
               <th>Enquiry Code</th>
               <th>Title</th>
               <th>Enquiry Type</th>
+              <th>Name</th>
+              <th>Email</th>
             </tr>
           </thead>
           <tbody>
@@ -122,6 +124,8 @@ const Enquiry = () => {
                 <td>{element.enquiry_code}</td>
                 <td>{element.title}</td>
                 <td>{element.enquiry_type}</td>
+                <td>{element.first_name} {element.last_name}</td>
+                <td>{element.email}</td>
               </tr>
             ))}
           </tbody>

@@ -68,113 +68,98 @@ const PurchaseOrderLinked = ({ editPurchaseOrderLinked, setEditPurchaseOrderLink
       });
   };
 
-  // const editPurchasePartialStatus = (supplierId, Status) => {
-  //   api
-  //     .post('/supplier/editPartialPurchaseStatus', {
-  //       purchase_order_id: supplierId,
-  //       status: Status,
-  //     })
-  //     .then(() => {
-  //       message('data inserted successfully.');
-  //     })
-  //     .catch(() => {
-  //       message('Network connection error.');
-  //     });
-  // };
+  const editPurchasePartialStatus = (supplierId, Status) => {
+    api
+      .post('/supplier/editPartialPurchaseStatus', {
+        purchase_order_id: supplierId,
+        payment_status: Status,
+      })
+      .then(() => {
+        message('data inserted successfully.');
+      })
+      .catch(() => {
+        message('Network connection error.');
+      });
+  };
   
-//Logic for deducting receipt amount
-const finalCalculation = (receipt, amount) => {
-  let leftAmount = parseFloat(amount);
 
-  for (let j = 0; j < selectedSupplier.length; j++) {
-    const currentRemainingAmount = parseFloat(selectedSupplier[j].remainingAmount);
+  //Logic for deducting receipt amount
+  const finalCalculation = (receipt) => {
+    let leftamount = totalAmount;
+    
+    for (let j = 0; j < selectedSupplier.length; j++) {
+      
+      if (selectedSupplier[j].remainingAmount <= leftamount) {
+        leftamount = parseFloat(leftamount) - selectedSupplier[j].remainingAmount
+       selectedSupplier[j].paid = true;
+        editPurchaseStatus(selectedSupplier[j].purchase_order_id, 'Paid');
+       
+        insertReceiptHistory({
+          creation_date: moment().format(),
+          modification_date: moment().format(),
+          purchase_order_date: '',
+          invoice_paid_status: 'Paid',
+          title: '',
+          installment_id: '',
+          receipt_type: '',
+          related_purchase_order_id: '',
+          gst_amount: '',
+          purchase_order_id: selectedSupplier[j].purchase_order_id,
+          supplier_receipt_id: receipt,
+          published: '1',
+          flag: '1',
 
-    if (currentRemainingAmount <= leftAmount) {
-      leftAmount -= currentRemainingAmount;
-      selectedSupplier[j].paid = true;
-      editPurchaseStatus(selectedSupplier[j].purchase_order_id, 'Paid');
-
-      insertReceiptHistory({
-        creation_date: moment().format(),
-        modification_date: moment().format(),
-        purchase_order_date: moment().format(),
-        invoice_paid_status: 'Paid',
-        title: '',
-        installment_id: '',
-        receipt_type: '',
-        related_purchase_order_id: '',
-        gst_amount: '',
-        purchase_order_id: selectedSupplier[j].purchase_order_id,
-        supplier_receipt_id: receipt,
-        published: '1',
-        flag: '1',
-        created_by: 'admin',
-        modified_by: 'admin',
-        amount: currentRemainingAmount,
-      });
-    } else {
-      selectedSupplier[j].paid = true;
-      editPurchaseStatus(selectedSupplier[j].purchase_order_id, 'Partially Paid');
-      insertReceiptHistory({
-        creation_date: moment().format(),
-        modification_date: moment().format(),
-        purchase_order_date: moment().format(),
-        invoice_paid_status: 'Partially paid',
-        title: '',
-        installment_id: '',
-        receipt_type: '',
-        related_purchase_order_id: '',
-        gst_amount: '',
-        purchase_order_id: selectedSupplier[j].purchase_order_id,
-        supplier_receipt_id: receipt,
-        published: '1',
-        flag: '1',
-        created_by: 'admin',
-        modified_by: 'admin',
-        amount: leftAmount,
-      });
-
-      // No need to continue after the remaining amount has been deducted
-      break;
-    }
-  }
-};
-
- //Insert Receipt
-const insertReceipt = () => {
-  createSupplier.supplier_id = id;
-  let totalSelectedAmount = 0;
-
-  // Calculate the total amount of selected invoices
-  selectedSupplier.forEach((el) => {
-    totalSelectedAmount += parseFloat(el.remainingAmount);
-  });
-
-  if (selectedSupplier.length > 0) {
-    if (createSupplier.amount && createSupplier.mode_of_payment) {
-      if (parseFloat(createSupplier.amount) <= parseFloat(totalSelectedAmount)) {
-        api.post('/supplier/insert-SupplierReceipt', createSupplier)
-          .then((res) => {
-            message('data inserted successfully.');
-            finalCalculation(res.data.data.insertId, createSupplier.amount);
-            setTimeout(() => {
-              setEditPurchaseOrderLinked(false);
-              window.location.reload();
-            }, 2000);
-          })
-          .catch(() => {});
+          created_by: 'admin',
+          modified_by: 'admin',
+          amount: selectedSupplier[j].remainingAmount,
+        })
       } else {
-        message('Your amount exceeds the limit.', 'warning');
+        selectedSupplier[j].paid = true;
+        editPurchasePartialStatus(selectedSupplier[j].purchase_order_id, 'Partially Paid');
+        insertReceiptHistory({
+          creation_date: moment().format(),
+          modification_date: moment().format(),
+
+          purchase_order_date: '',
+          invoice_paid_status: 'Partially paid',
+          title: '',
+          installment_id: '',
+          receipt_type: '',
+          related_purchase_order_id: '',
+          gst_amount: '',
+          purchase_order_id: selectedSupplier[j].purchase_order_id,
+          supplier_receipt_id: receipt,
+          published: '1',
+          flag: '1',
+
+          created_by: 'admin',
+          modified_by: 'admin',
+          amount: leftamount,
+        });
       }
-    } else {
-      message('Please fill the required Fields.', 'warning');
+    
     }
-  } else {
-    message('Please select Purchase order to pay.', 'warning');
-  }
-};
 
+   
+  };
 
+  //Insert Receipt
+  const insertReceipt = () => {
+    createSupplier.supplier_id = id
+
+    if (createSupplier.amount &&
+      createSupplier.mode_of_payment && (selectedSupplier.length>0)) {
+      api
+      .post('/supplier/insert-SupplierReceipt', createSupplier)
+      .then((res) => {
+        message('data inserted successfully.');
+        
+        finalCalculation(res.data.data.insertId);
+      })
+      .catch(() => {
+      });
+    }
+  };
   let invoices = [];
   const removeObjectWithId = (arr, poCode) => {
     const objWithIdIndex = arr.findIndex((obj) => obj.po_code === poCode);
@@ -325,8 +310,12 @@ const insertReceipt = () => {
             color="primary"
             onClick={() => {
               insertReceipt();
-              
-              
+              setEditPurchaseOrderLinked(false);
+              setTimeout(() => {
+                console.log('Data saved successfully.');
+                // Reload the page after saving data
+                window.location.reload();
+              }, 2000);
             }}
           >
             {' '}

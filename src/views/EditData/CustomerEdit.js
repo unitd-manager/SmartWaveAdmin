@@ -321,7 +321,7 @@ const ContentUpdate = () => {
                   to=""
                   onClick={addTrackItemsToggle.bind(null)}
                 >
-                  Add Shipper Address
+                  Add Shipping Address
                 </Button>
               </Col>
             </Row>

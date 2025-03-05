@@ -207,10 +207,10 @@ const AddPoModal = ({
   });
 };
 
-const insertProduct = (ProductCode, ItemCode) => {
+const insertProduct = (ProductCode) => {
   if (productDetail.title !== '') {
     productDetail.product_code = ProductCode;
-    productDetail.item_code = ItemCode;
+    productDetail.item_code = ProductCode;
     productDetail.creation_date = creationdatetime;
     productDetail.created_by = loggedInuser.first_name;
     api
@@ -244,23 +244,23 @@ const insertProduct = (ProductCode, ItemCode) => {
     }
   };
 
-  //Auto generation code
+
+
   const generateCode = () => {
     api
-      .post('/product/getCodeValue', { type: 'ProductCode' })
+      .post('/commonApi/getCodeValue', { type: 'product' })
       .then((res) => {
-        const ProductCode = res.data.data
-      api
-      .post('/product/getCodeValue', { type: 'ItemCode' })
-      .then((response) => {
-        const ItemCode = response.data.data
-        insertProduct(ProductCode, ItemCode);
-      })
+        const ProductCode = res.data.data;
+       console.log('ProductCode',ProductCode)
+          insertProduct(ProductCode);
       })
       .catch(() => {
         insertProduct('');
       });
   };
+
+
+
 
   // Materials Purchased
   const TabMaterialsPurchased = () => {

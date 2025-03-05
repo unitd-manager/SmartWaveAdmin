@@ -23,9 +23,9 @@ export default function SupplierDetails({
   return (
     <Form>
       <FormGroup>
-        <ComponentCard title="Supplier Details" creationModificationDate={supplier}>
+        <ComponentCard title="Supplier Details">
           <Row>
-            <Col md="3">
+            <Col md="4">
               <FormGroup>
                 <Label>
                   Name <span className="required"> *</span>
@@ -38,7 +38,7 @@ export default function SupplierDetails({
                 />
               </FormGroup>
             </Col>
-            <Col md="3">
+            <Col md="4">
               <FormGroup>
                 <Label>Email</Label>
                 <Input
@@ -49,7 +49,7 @@ export default function SupplierDetails({
                 />
               </FormGroup>
             </Col>
-            <Col md="3">
+            <Col md="4">
               <FormGroup>
                 <Label>Fax</Label>
                 <Input
@@ -60,7 +60,9 @@ export default function SupplierDetails({
                 />
               </FormGroup>
             </Col>
-            <Col md="3">
+          </Row>
+          <Row>
+            <Col md="4">
               <FormGroup>
                 <Label>Mobile</Label>
                 <Input
@@ -71,9 +73,7 @@ export default function SupplierDetails({
                 />
               </FormGroup>
             </Col>
-            </Row>
-            <Row>
-            <Col md="3">
+            <Col md="4">
               <FormGroup>
                 <Label>Status</Label>
                 <Input
@@ -92,7 +92,7 @@ export default function SupplierDetails({
                 </Input>
               </FormGroup>
             </Col>
-            <Col md="3">
+            <Col md="4">
               <FormGroup>
                 <Label>GST NO</Label>
                 <Input
@@ -103,7 +103,9 @@ export default function SupplierDetails({
                 />
               </FormGroup>
             </Col>
-            <Col md="3">
+          </Row>
+          <Row>
+            <Col md="4">
               <FormGroup>
                 <Label>Payment Details</Label>
                 <Input
@@ -114,7 +116,7 @@ export default function SupplierDetails({
                 />
               </FormGroup>
             </Col>
-            <Col md="3">
+            <Col md="4">
               <FormGroup>
                 <Label>Terms</Label>
                 <Input
@@ -125,9 +127,7 @@ export default function SupplierDetails({
                 />
               </FormGroup>
             </Col>
-            </Row>
-            <Row>
-            <Col md="3">
+            <Col md="4">
               <FormGroup>
                 <Label>Contact Person</Label>
                 <Input
@@ -144,7 +144,7 @@ export default function SupplierDetails({
       <FormGroup>
         <ComponentCard title="Address">
           <Row>
-            <Col md="3">
+            <Col md="4">
               <FormGroup>
                 <Label>Address 1</Label>
                 <Input
@@ -155,7 +155,7 @@ export default function SupplierDetails({
                 />
               </FormGroup>
             </Col>
-            <Col md="3">
+            <Col md="4">
               <FormGroup>
                 <Label>Address 2</Label>
                 <Input
@@ -166,7 +166,7 @@ export default function SupplierDetails({
                 />
               </FormGroup>
             </Col>
-            <Col md="3">
+            <Col md="4">
               <FormGroup>
                 <Label>State/Zip</Label>
                 <Input
@@ -177,7 +177,9 @@ export default function SupplierDetails({
                 />
               </FormGroup>
             </Col>
-            <Col md="3">
+          </Row>
+          <Row>
+            <Col md="4">
               <FormGroup>
                 <Label>Country</Label>
                 <Input
@@ -194,9 +196,7 @@ export default function SupplierDetails({
                 </Input>
               </FormGroup>
             </Col>
-            </Row>
-            <Row>
-            <Col md="3">
+            <Col md="4">
               <FormGroup>
                 <Label>Pin Code</Label>
                 <Input

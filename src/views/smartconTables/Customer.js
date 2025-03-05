@@ -74,13 +74,13 @@ const Customer = () => {
       button: true,
       sortable: false,
     },
-    {
-      name: 'ID',
-      selector: 'contact_id ',
-      sortable: true,
-      width: 'auto',
-      grow: 3,
-    },
+    // {
+    //   name: 'ID',
+    //   selector: 'contact_id ',
+    //   sortable: true,
+    //   width: 'auto',
+    //   grow: 3,
+    // },
     {
       name: 'Name',
       selector: 'first_name',
@@ -151,7 +151,7 @@ const Customer = () => {
                       <Icon.Edit2 />
                     </Link>
                   </td>
-                  <td>{element.contact_id}</td>
+                  {/* <td>{element.contact_id}</td> */}
                   <td>{element.first_name}</td>
                   <td>{element.email}</td>
                   <td>{element.pass_word}</td>

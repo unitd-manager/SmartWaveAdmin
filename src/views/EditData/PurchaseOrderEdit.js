@@ -106,48 +106,43 @@ const PurchaseOrderEdit = () => {
       });
   };
 
-  const handlePOInputs = (e) => {
-    setProduct({ ...product, [e.target.name]: e.target.value });
-  };
 
-  //Add to stocks
-  const addQtytoStocks = () => {
-    if (selectedPoProducts) {
-      selectedPoProducts.forEach((elem) => {
-        if (elem.status !== 'Closed') {
-          elem.status = 'Closed';
-          elem.qty_updated = elem.qty_delivered;
-          elem.qty_in_stock += parseFloat(elem.qty_delivered);
-          api.post('/product/edit-ProductQty', elem);
-          api
-            .post('/purchaseorder/editTabPurchaseOrderLineItem', elem)
-            .then(() => {
-              api
-                .post('/inventory/editInventoryStock', elem)
-                .then(() => {
-                  message('Quantity updated in inventory successfully.', 'success');
-                  
-                })
-                .catch(() => {
-                  message('unable to update quantity in inventory.', 'danger');
-                });
-              message('Quantity added successfully.', 'success');
-              setTimeout(() => {
-                window.location.reload();
-              }, 300);
-            })
-            .catch(() => {
-              message('unable to add quantity.', 'danger');
-            });
-        } else {
-          message('This product is already added', 'danger');
-        }
-      });
-    } else {
-      alert('Please select atleast one product');
+
+   //checked objects
+   const getCheckedPoProducts = (checkboxVal, index, Obj) => {
+    if (checkboxVal.target.checked === true) {
+      setSelectedPoProducts([...selectedPoProducts, Obj]);
+    }
+    if (checkboxVal.target.checked !== true) {
+      const copyselectedPoProducts = [...selectedPoProducts];
+      copyselectedPoProducts.splice(index, 1);
+      setSelectedPoProducts(copyselectedPoProducts);
     }
   };
 
+  const addQtytoStocks = () => {
+    if (selectedPoProducts && selectedPoProducts.length > 0) { 
+      selectedPoProducts.forEach((elem) => {
+        if (elem.status !== 'closed') {
+       
+  
+          api
+            .post('/inventory/editInventoryStock', elem)
+            .then(() => {
+              message('Quantity added successfully.', 'success');
+            })
+            .catch(() => {
+              message('Unable to add quantity.', 'danger');
+            });
+        } else {
+          message('This product is already added.', 'danger');
+        }
+      });
+    } else {
+      Swal.fire('Please select at least one product!');
+    }
+  };
+  
   //Delivery order
   const deliverOrder = () => {
     if (selectedPoDelivers) {
@@ -201,20 +196,24 @@ const PurchaseOrderEdit = () => {
       });
   };
 
+  const handlePOInputs = (e) => {
+    setProduct({ ...product, [e.target.name]: e.target.value });
+  };
+
   //Edit poproductdata
   const editPoProductData = () => {
+
+
     api
       .post('/purchaseorder/editTabPurchaseOrderLineItem', product)
       .then(() => {
-        message('product edited successfully.', 'success');
-        setTimeout(() => {
-          window.location.reload();
-        }, 300);
+        message('Product edited successfully.', 'success');
+     
       })
       .catch(() => {
-        message('unable to edit product.', 'danger');
+        message('Unable to edit product.', 'danger');
       });
-  };
+};
 
   const deletePoProduct = (poProductId) => {
     Swal.fire({
@@ -242,17 +241,7 @@ const PurchaseOrderEdit = () => {
     });
   };
 
-  //checked objects
-  const getCheckedPoProducts = (checkboxVal, index, Obj) => {
-    if (checkboxVal.target.checked === true) {
-      setSelectedPoProducts([...selectedPoProducts, Obj]);
-    }
-    if (checkboxVal.target.checked !== true) {
-      const copyselectedPoProducts = [...selectedPoProducts];
-      copyselectedPoProducts.splice(index, 1);
-      setSelectedPoProducts(copyselectedPoProducts);
-    }
-  };
+ 
   //checked Dos
   const getCheckedDeliverProducts = (checkboxVal, index, Obj) => {
     if (checkboxVal.target.checked === true) {

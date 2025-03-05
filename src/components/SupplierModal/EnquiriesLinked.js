@@ -1,15 +1,45 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types'
-import moment from 'moment';
 import {  Form, Table } from 'reactstrap';
+import api from '../../constants/api';
+import message from '../Message';
 import ComponentCard from '../ComponentCard';
 
-export default function EnquiriesLinkedTable({purchaseOrder}) {
+export default function EnquiriesLinkedTable({id}) {
     EnquiriesLinkedTable.propTypes = {
-        purchaseOrder: PropTypes.array,
+        id: PropTypes.func,
       }
+  const [contentDetails, setContentDetails] = useState([]);
+
+
+  const getContentById = () => {
+    api
+      .post('/contact/getEnquiryById', { contact_id: id })
+      .then((res) => {
+        const { data } = res; // Destructure `data` from `res`
+        const { data: enquiryData } = data; // Destructure `data` from `res.data`
+  
+        if (Array.isArray(enquiryData)) {
+          setContentDetails(enquiryData); // If it's already an array, use it
+        } else {
+          setContentDetails([]); // Fallback to an empty array
+        }
+      })
+      .catch(() => {
+        message('Content Data Not Found', 'info');
+        setContentDetails([]); // Ensure it remains an array
+      });
+  };
+  
+
+       useEffect(() => {
+          getContentById();
+        }, [id]);
 // structure of makesupplier payment tables
       const supplierTableColumn = [
+        {
+          name: "Title",
+        },
         {
           name: "Enquiry Type",
         },
@@ -18,13 +48,10 @@ export default function EnquiriesLinkedTable({purchaseOrder}) {
           
         },
         {
-          name: "Enquiry Date",
+          name: "Order Code",
           
         },
-        {
-          name: " Amount",
-         
-        }
+      
         
       ]
 
@@ -43,17 +70,16 @@ export default function EnquiriesLinkedTable({purchaseOrder}) {
             </tr>
         </thead>
         <tbody>
-          {purchaseOrder && purchaseOrder.map(element=>{
-              return (<tr key={element.product_enquiry_id}>
-                <td >{moment(element.enquiry_type).format('YYYY-MM-DD')}</td>
-                <td>{element.enquiry_code}</td>
-              <td>{element.enquiry_date}</td>
-              <td>{parseFloat(element.enquiry_amount)}</td>
-           
-              
-              </tr>)
-          })}
-        </tbody>
+  {Array.isArray(contentDetails) && contentDetails.map(element => (
+    <tr key={element.product_enquiry_id}>
+      <td>{element.title}</td>
+      <td>{element.enquiry_type}</td>
+      <td>{element.enquiry_code}</td>
+      <td>{element.order_code}</td>
+    </tr>
+  ))}
+</tbody>
+
     </Table> 
         </div>
       </div>
