@@ -96,7 +96,7 @@ const Test = () => {
 
         <CommonTable
           loading={loading}
-          title="Supplier List"
+          title="Product Owner List"
           Button={
             <Link to="/ProductOwnerDetails">
               <Button color="primary" className="shadow-none">
