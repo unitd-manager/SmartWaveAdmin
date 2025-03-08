@@ -92,6 +92,12 @@ const Staff = () => {
       grow: 2,
       wrap: true,
     },
+    {
+      name: 'Tracking Link',
+      sortable: true,
+      grow: 2,
+      wrap: true,
+    },
   
  
   ];
@@ -102,7 +108,7 @@ const Staff = () => {
       <BreadCrumbs />
       <CommonTable
           loading={loading}
-          title="Track List"
+          title="Carrier Tracking List"
          
         >
           <thead>
@@ -124,6 +130,7 @@ const Staff = () => {
                     <td>{element.actual_delivery_date}</td>
                     <td>{element.expected_delivery_date}</td>
                     <td>{element.shipment}</td>
+                    <td>{element.tracking_link}</td>
                
                   </tr>
                 );

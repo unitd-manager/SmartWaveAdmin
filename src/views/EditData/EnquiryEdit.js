@@ -13,7 +13,8 @@ import ComponentCardV2 from '../../components/ComponentCardV2';
 import message from '../../components/Message';
 import Tab from '../../components/ProjectTable/Tab';
 import TenderQuotation from '../../components/ProjectTable/TenderQuotation';
-
+import ViewFileComponentV2 from '../../components/ProjectModal/ViewFileComponentV2';
+import AttachmentModalV2 from '../../components/Tender/AttachmentModalV2';
 import api from '../../constants/api';
 import creationdatetime from '../../constants/creationdatetime';
 // import DeleteButton from '../../components/DeleteButton';
@@ -40,6 +41,18 @@ const EnquiryEdit = () => {
 
     const [editTrackModelItem, setEditTrackModelItem] = useState(null);
     const [editTrackModal, setEditTrackModal] = useState(false);
+      const [attachmentModal, setAttachmentModal] = useState(false);
+    
+      const [attachmentData, setDataForAttachment] = useState({
+        modelType: '',
+      });
+
+      const dataForAttachment = () => {
+        setDataForAttachment({
+          modelType: 'attachment',
+        });
+        console.log('inside DataForAttachment');
+      };
   
   //navigation and parameters
   const { id } = useParams();
@@ -67,9 +80,10 @@ const EnquiryEdit = () => {
   };
   console.log(viewLineToggle,viewTrackToggle);
   const tabs = [
-    { id: '1', name: 'Enquiry' },
+    { id: '1', name: 'Product' },
     { id: '2', name: 'Quotation' },
     { id: '3', name: 'Carrier Tracking' },
+    { id: '4', name: 'Attachment' },
   ];
   const toggle = (tab) => {
     setActiveTab(tab);
@@ -130,20 +144,20 @@ const EnquiryEdit = () => {
       name: '#',
     },
     {
-      name: 'Title',
+      name: 'Name',
     },
     {
-      name: 'Description',
+      name: 'Category',
     },
     {
       name: 'Qty',
     },
-    {
-      name: 'Unit Price',
-    },
-    {
-      name: 'Amount',
-    },
+    // {
+    //   name: 'Unit Price',
+    // },
+    // {
+    //   name: 'Amount',
+    // },
     {
       name: 'Updated By ',
     },
@@ -161,6 +175,9 @@ const EnquiryEdit = () => {
     },
     {
       name: 'Tracking No',
+    },
+    {
+      name: 'Tracking Link',
     },
     {
       name: 'Shipment Date',
@@ -233,16 +250,16 @@ const EnquiryEdit = () => {
       });
     };
 
-    const [track, settrack] = useState({});
+    // const [track, settrack] = useState({});
 
-    // Get track By Id
-    const gettrack = () => {
-      api.post('/tracking/getQuoteById', { enquiry_id: id }).then((res) => {
-        if (res.data.data && res.data.data.length > 0) {
-          settrack(res.data.data[0]);
-        }
-      });
-    };
+    // // Get track By Id
+    // const gettrack = () => {
+    //   api.post('/tracking/getQuoteById', { enquiry_id: id }).then((res) => {
+    //     if (res.data.data && res.data.data.length > 0) {
+    //       settrack(res.data.data[0]);
+    //     }
+    //   });
+    // };
 
     const [quoteForm, setQuoteForm] = useState({
       quote_date: '',
@@ -257,6 +274,8 @@ const EnquiryEdit = () => {
       newQuoteId.enquiry_id = id;
       newQuoteId.quote_code = code;
       newQuoteId.status = 'In Progress';
+      newQuoteId.quote_date = new Date(); // Saves date in YYYY-MM-DD format
+
 
       api.post('/enquiry/insertquote', newQuoteId).then(() => {
         message('Quote inserted successfully.', 'success');
@@ -314,7 +333,7 @@ const EnquiryEdit = () => {
     getTrackItem();
     getCompany();
     getQuote();
-    gettrack();
+    // gettrack();
   }, [id]);
 
   return (
@@ -524,7 +543,7 @@ const EnquiryEdit = () => {
                   to=""
                   onClick={addQuoteItemsToggle.bind(null)}
                 >
-                  Add Quote Items
+                  Add Items
                 </Button>
               </Col>
             </Row>
@@ -546,10 +565,10 @@ const EnquiryEdit = () => {
                           <tr key={e.enquiry_id}>
                             <td>{index + 1}</td>
                             <td data-label="Title">{e.product_title}</td>
-                            <td data-label="Description">{e.description}</td>
+                            <td data-label="Description">{e.category_title}</td>
                             <td data-label="Quantity">{e.quantity}</td>
-                            <td data-label="Unit Price">{e.unit_price}</td>
-                            <td data-label="Amount">{e.amount}</td>
+                            {/* <td data-label="Unit Price">{e.unit_price}</td>
+                            <td data-label="Amount">{e.amount}</td> */}
                             <td data-label="Updated By">
                                 {e.modification_date
                                   ? `${e.modified_by} (Modified on ${e.modification_date})`
@@ -651,10 +670,11 @@ const EnquiryEdit = () => {
                     {TrackItem &&
                       TrackItem.map((e, index) => {
                         return (
-                          <tr key={e.enquiry_id}>
+                          <tr key={e.carrier_tracking_id}>
                             <td>{index + 1}</td>
                             <td data-label="Title">{e.carrier_name}</td>
                             <td data-label="Description">{e.tracking_number}</td>
+                            <td data-label="Title">{e.tracking_link}</td>
                             <td data-label="Quantity">{new Date(e.shipment_date).toLocaleDateString()}</td>
 <td data-label="Unit Price">{new Date(e.actual_delivery_date).toLocaleDateString()}</td>
 <td data-label="Amount">{new Date(e.expected_delivery_date).toLocaleDateString()}</td>
@@ -696,12 +716,8 @@ const EnquiryEdit = () => {
               editTrackModal={editTrackModal}
               setEditTrackModal={setEditTrackModal}
               FetchTrackItemData={editTrackModelItem}
-              getTrackItem={getTrackItem}
               setViewTrackModal={setViewTrackModal}
-              quoteTrack={id}
-              gettrack={gettrack}
-              track={track}
-            ></EditTrackItemModal>
+            > {' '}</EditTrackItemModal>
             {addTrackItemModal && (
               <QuoteTrackItem
                 //projectInfo={tenderId}
@@ -710,6 +726,38 @@ const EnquiryEdit = () => {
                 quoteTrack={id}
               ></QuoteTrackItem>
             )}
+          </TabPane>
+
+          <TabPane tabId="4">
+          <Form>
+        <FormGroup>
+          <ComponentCard title="Attachments">
+            <Row>
+              <Col xs="12" md="3" className="mb-3">
+                <Button
+                  color="primary"
+                  onClick={() => {
+                    dataForAttachment();
+                    setAttachmentModal(true);
+                  }}
+                >
+                  Add
+                </Button>
+              </Col>
+            </Row>
+            <AttachmentModalV2
+              moduleId={id}
+              roomName="Enquiry"
+              altTagData="Enquiry Data"
+              desc="Enquiry Data"
+              modelType={attachmentData.modelType}
+              attachmentModal={attachmentModal}
+              setAttachmentModal={setAttachmentModal}
+            />
+            <ViewFileComponentV2 moduleId={id} roomName="Enquiry" />
+          </ComponentCard>
+        </FormGroup>
+      </Form>
           </TabPane>
         </TabContent>
       </ComponentCard>

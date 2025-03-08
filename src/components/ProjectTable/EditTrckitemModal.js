@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Row,
   Col,
@@ -12,75 +12,77 @@ import {
   ModalFooter,
 } from 'reactstrap';
 import PropTypes from 'prop-types';
-import { useParams } from 'react-router-dom';
 import api from '../../constants/api';
 import message from '../Message';
-import creationdatetime from '../../constants/creationdatetime';
-import AppContext from '../../context/AppContext';
+// import AppContext from '../../context/AppContext';
 
-const EditLineItemModal = ({ editTrackModal, setEditTrackModal,FetchTrackItemDat,gettrack }) => {
+const EditLineItemModal = ({ editTrackModal, setEditTrackModal,FetchTrackItemData}) => {
   EditLineItemModal.propTypes = {
     editTrackModal: PropTypes.bool.isRequired,
     setEditTrackModal: PropTypes.func.isRequired,
-    FetchTrackItemDat: PropTypes.object,
-        gettrack: PropTypes.any,
+    FetchTrackItemData: PropTypes.object,
+       
     
   };
 
-  const { id } = useParams();
-  const { loggedInuser } = useContext(AppContext);
+  // const { loggedInuser } = useContext(AppContext);
 
-  const [lineItemData, setLineItemData] = useState(FetchTrackItemDat || {});
-
-
-
-  const getQuote = () => {
-    api.post('/tracking/getQuoteById', { enquiry_id: id }).then((res) => {
-      if (res.data.data.length > 0) {
-        setLineItemData(res.data.data[0]);
-      }
-    });
-  };
-
-  useEffect(() => {
-      setLineItemData(FetchTrackItemDat);
-    getQuote();
-  }, [FetchTrackItemDat]);
-
+  const [lineItemData, setLineItemData] = useState(null);
 
   const handleData = (e) => {
     setLineItemData({ ...lineItemData, [e.target.name]: e.target.value });
-    //setSelectedFormat(e.target.value);
   };
 
+ 
+
+  useEffect(() => {
+      setLineItemData(FetchTrackItemData);
+  }, [FetchTrackItemData]);
 
   const UpdateData = () => {
-    if (!lineItemData?.carrier_name || !lineItemData?.tracking_number) {
-      message('Please fill all required fields.', 'error');
-      return;
-    }
-
-    const updatedData = {
-      ...lineItemData,
-      modification_date: creationdatetime,
-      modified_by: loggedInuser?.first_name || 'Unknown',
-    };
 
     api
-      .post('/tracking/editEquipmentRequestItem', updatedData)
+      .post('/tracking/editEquipmentRequestItem', lineItemData)
       .then((res) => {
-        console.log('Edit Line Item Response:', res.data);
-        message('Edit Updated Successfully.', 'success');
-        gettrack();
-          setTimeout(() => {
+        console.log('edit Line Item', res.data.data);
+        message('Edit Line Item Udated Successfully.', 'success');
+        setTimeout(() => {
           window.location.reload();
-        }, 1000);
+        }, 300);
       })
-      .catch((error) => {
-        console.error('Update Error:', error);
-        message('Unable to edit item. Please try again.', 'error');
+      .catch(() => {
+        message('Unable to edit quote. please fill all fields', 'error');
       });
   };
+
+
+  // const UpdateData = () => {
+  //   if (!lineItemData?.carrier_name || !lineItemData?.tracking_number) {
+  //     message('Please fill all required fields.', 'error');
+  //     return;
+  //   }
+
+  //   const updatedData = {
+  //     ...lineItemData,
+  //     modification_date: creationdatetime,
+  //     modified_by: loggedInuser?.first_name || 'Unknown',
+  //   };
+
+  //   api
+  //     .post('/tracking/editEquipmentRequestItem', updatedData)
+  //     .then((res) => {
+  //       console.log('Edit Line Item Response:', res.data);
+  //       message('Edit Updated Successfully.', 'success');
+  //       // gettrack();
+  //         setTimeout(() => {
+  //         window.location.reload();
+  //       }, 1000);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Update Error:', error);
+  //       message('Unable to edit item. Please try again.', 'error');
+  //     });
+  // };
       const [company, setCompany] = useState();
       const getCompany = () => {
         api.get('/company/getContact').then((res) => {
@@ -115,8 +117,8 @@ const EditLineItemModal = ({ editTrackModal, setEditTrackModal,FetchTrackItemDat
         };
         
   return (
-    <Modal size="lg" isOpen={editTrackModal} toggle={() => setEditTrackModal(false)}>
-      <ModalHeader toggle={() => setEditTrackModal(false)}>Edit Line Item</ModalHeader>
+    <Modal size="lg" isOpen={editTrackModal} >
+      <ModalHeader >Edit Carrier Tracking</ModalHeader>
       <ModalBody>
       <Row>
   <Col md="4">
@@ -298,7 +300,18 @@ const EditLineItemModal = ({ editTrackModal, setEditTrackModal,FetchTrackItemDat
     />
   </FormGroup>
 </Col>
+<Col md="4">
 
+<FormGroup>
+    <Label>Tracking Link</Label>
+    <Input
+      type="text"
+      name="tracking_link"
+      value={lineItemData?.tracking_link || ''}
+      onChange={handleData}
+    />
+  </FormGroup>
+</Col>
 </Row>
 
       </ModalBody>

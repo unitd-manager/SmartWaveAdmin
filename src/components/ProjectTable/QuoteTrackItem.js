@@ -44,6 +44,7 @@ const QuoteLineItem = ({ addTrackItemModal, setAddTrackItemModal, quoteTrack }) 
     package_length: '',
     package_width: '',
     shipment_status: '',
+    tracking_link: '',
   });
 
   const handleInputChange = (e) => {
@@ -308,6 +309,18 @@ const QuoteLineItem = ({ addTrackItemModal, setAddTrackItemModal, quoteTrack }) 
               </FormGroup>
             </Col>
             
+            <Col md="4">
+            
+            <FormGroup>
+                <Label>Tracking Link</Label>
+                <Input
+                  type="text"
+                  name="tracking_link"
+                  value={formData.tracking_link}
+                  onChange={handleInputChange}
+                />
+              </FormGroup>
+            </Col>
             </Row>
           </Card>
         </Form>

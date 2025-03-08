@@ -123,7 +123,7 @@ const EditQuoteModal = ({
                       name="status"
                     >
                       <option selected="selected" value="New">
-                       In Progress
+                       Please Select
                       </option>
                       <option value="In Progress">In Progress</option>
                       <option value="Hold">Hold</option>
@@ -132,7 +132,7 @@ const EditQuoteModal = ({
                     </Input>
                   </FormGroup>
                 </Col>
-                <Col md="4">
+                {/* <Col md="4">
                   <FormGroup>
                     <Label>Amount</Label>
                     <Input
@@ -142,7 +142,7 @@ const EditQuoteModal = ({
                       onChange={handleData}
                     />
                   </FormGroup>
-                </Col>
+                </Col> */}
               </Row>
              
             

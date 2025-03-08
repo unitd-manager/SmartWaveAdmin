@@ -148,12 +148,12 @@ const QuoteLineItem = ({
   const [unitdetails, setUnitDetails] = useState();
   // Fetch data from API
     const getUnit = () => {
-      api.get('/product/getUnitFromValueList', unitdetails)
+      api.get('/category/getCategory', unitdetails)
         .then((res) => {
           const items = res.data.data
           const finaldat = []
           items.forEach(item => {
-            finaldat.push({ value: item.value, label: item.value })
+            finaldat.push({ value: item.category_id, label: item.category_title })
           })
           setUnitDetails(finaldat)
         })
@@ -175,29 +175,29 @@ const QuoteLineItem = ({
     };
 
   //Invoice Items Calculation
-  const calculateTotal = () => {
-    let totalValue = 0;
-    const result = [];
-    $('.lineitem tbody tr').each(function input() {
-      const allValues = {};
-      $(this)
-        .find('input')
-        .each(function output() {
-          const fieldName = $(this).attr('name');
-          allValues[fieldName] = $(this).val();
-          allValues.amount = allValues.quantity * allValues.unit_price;
-        });
-      result.push(allValues);
-    });
-    result.forEach((e) => {
-      if (e.amount) {
-        totalValue += parseFloat(e.amount);
-      }
-    });
-    console.log(result);
-    setAddLineItem(result);
-    setTotalAmount(totalValue);
-  };
+  // const calculateTotal = () => {
+  //   let totalValue = 0;
+  //   const result = [];
+  //   $('.lineitem tbody tr').each(function input() {
+  //     const allValues = {};
+  //     $(this)
+  //       .find('input')
+  //       .each(function output() {
+  //         const fieldName = $(this).attr('name');
+  //         allValues[fieldName] = $(this).val();
+  //         allValues.amount = allValues.quantity * allValues.unit_price;
+  //       });
+  //     result.push(allValues);
+  //   });
+  //   result.forEach((e) => {
+  //     if (e.amount) {
+  //       totalValue += parseFloat(e.amount);
+  //     }
+  //   });
+  //   console.log(result);
+  //   setAddLineItem(result);
+  //   setTotalAmount(totalValue);
+  // };
   // Clear row value
   const ClearValue = (ind) => {
     setAddLineItem((current) =>
@@ -290,13 +290,12 @@ const QuoteLineItem = ({
                     <table className="lineitem">
                       <thead>
                         <tr>
-                          <th scope="col">Title </th>
-                          <th scope="col">Description</th>
-                          <th scope="col">Unit </th>
+                          <th scope="col">Product Name </th>
+                          <th scope="col">Category </th>
                           <th scope="col">Qty</th>
-                          <th scope="col">Unit Price</th>
+                          {/* <th scope="col">Unit Price</th>
                           <th scope="col">Amount</th>
-                          <th scope="col">Remarks</th>
+                          <th scope="col">Remarks</th> */}
                           <th scope="col"></th>
                         </tr>
                       </thead>
@@ -322,7 +321,7 @@ const QuoteLineItem = ({
                   <Input value={item.product_id} type="hidden" name="product_id"></Input>
                   <Input value={item.title} type="hidden" name="title"></Input>
                 </td>
-                                                <td data-label="Description">
+                                                {/* <td data-label="Description">
                                                 <Input 
                                   value={item.description} 
                                   onChange={(e) => {
@@ -334,20 +333,20 @@ const QuoteLineItem = ({
                                   type="text" 
                                   name="description" 
                                 />
-                                </td>
-                                <td data-label="Unit">
+                                </td> */}
+                                <td data-label="Category">
                                   <Select
-                                    name="unit"
+                                    name="category_id"
                                     onChange={(selectedOption) => {
                                       onchangeItem(selectedOption);
                                     }}
                                     options={unitdetails}
                                   />
                                 </td>
-                                <td data-label="Qty">
+                               <td data-label="Qty">
                                   <Input Value={item.quantity} type="number" name="quantity" />
                                 </td>
-                                <td data-label="Unit Price">
+                                 {/* <td data-label="Unit Price">
                                   <Input
                                     Value={item.unit_price}
                                     onBlur={() => {
@@ -359,10 +358,10 @@ const QuoteLineItem = ({
                                 </td>
                                 <td data-label="Amount">
                                   <Input Value={item.amount} type="text" name="amount" disabled />
-                                </td>
-                                <td data-label="Remarks">
+                                </td> */}
+                                {/* <td data-label="Remarks">
                                   <Input Value={item.remarks} type="text" name="remarks" />
-                                </td>
+                                </td> */}
                                 <td data-label="Action">
                                   <Input type="hidden" name="id" Value={item.id}></Input>
                                   <span

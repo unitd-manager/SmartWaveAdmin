@@ -26,26 +26,25 @@ const EditLineItemModal = ({ editLineModal, setEditLineModal, FetchLineItemData 
   };
 const {id}=useParams();
   const [lineItemData, setLineItemData] = useState(null);
-  const [totalAmount, setTotalAmount] = useState();
+  // const [totalAmount, setTotalAmount] = useState();
   const { loggedInuser } = React.useContext(AppContext);
 
   const handleData = (e) => {
     setLineItemData({ ...lineItemData, [e.target.name]: e.target.value });
   };
-  const handleCalc = (Qty, UnitPrice, TotalPrice) => {
-    if (!Qty) Qty = 0;
-    if (!UnitPrice) UnitPrice = 0;
-    if (!TotalPrice) TotalPrice = 0;
+  // const handleCalc = (Qty, UnitPrice, TotalPrice) => {
+  //   if (!Qty) Qty = 0;
+  //   if (!UnitPrice) UnitPrice = 0;
+  //   if (!TotalPrice) TotalPrice = 0;
 
-    setTotalAmount(parseFloat(Qty) * parseFloat(UnitPrice));
-  };
+  //   setTotalAmount(parseFloat(Qty) * parseFloat(UnitPrice));
+  // };
 
   const UpdateData = () => {
     lineItemData.equipment_request_id=id;
     //lineItemData.amount=totalAmount;
     lineItemData.modification_date = creationdatetime;
     lineItemData.modified_by = loggedInuser.first_name;
-    lineItemData.amount = parseFloat(lineItemData.quantity) * parseFloat(lineItemData.unit_price) 
     api
       .post('/enquiry/editEquipmentRequestItem', lineItemData)
       .then((res) => {
@@ -63,7 +62,7 @@ const {id}=useParams();
  //Api call for getting Unit From Valuelist
  const getUnit = () => {
   api
-    .get('/product/getUnitFromValueList')
+    .get('/category/getCategory')
     .then((res) => {
       setUnitDetails(res.data.data);
     })
@@ -82,7 +81,7 @@ const {id}=useParams();
   return (
     <>
       <Modal isOpen={editLineModal}>
-        <ModalHeader>Line Items</ModalHeader>
+        <ModalHeader>Edit Items</ModalHeader>
         <ModalBody>
           <FormGroup>
             <Row>
@@ -100,14 +99,24 @@ const {id}=useParams();
           </FormGroup>
           <FormGroup>
             <Row>
-              <Label sm="2">Description</Label>
+              <Label sm="2">Category</Label>
               <Col sm="10">
                 <Input
-                  type="text"
-                  name="description"
-                  defaultValue={lineItemData && lineItemData.description}
+                  type="select"
+                  name="category_id"
+                  defaultValue={lineItemData && lineItemData.category_id}
                   onChange={handleData}
-                />
+                >
+                <option defaultValue="selected">Please Select</option>
+                  {unitdetails &&
+                    unitdetails.map((ele) => {
+                      return (
+                        <option key={ele.category_id} value={ele.category_id}>
+                          {ele.category_title}
+                        </option>
+                      );
+                    })}
+                </Input>
               </Col>
             </Row>
           </FormGroup>
@@ -119,38 +128,14 @@ const {id}=useParams();
                   type="text"
                   name="quantity"
                   defaultValue={lineItemData && lineItemData.quantity}
-                  onChange={(e)=>{handleData(e);
-                    handleCalc(e.target.value, lineItemData.unit_price,lineItemData.amount
-                      )}}
+                  onChange={handleData}
                  
                 />
               </Col>
             </Row>
           </FormGroup>
-          <FormGroup>
-            <Row>
-              <Label sm="2">UNIT</Label>
-              <Col sm="10">
-                <Input
-                  type="select"
-                  name="unit"
-                  defaultValue={lineItemData && lineItemData.unit}
-                  onChange={handleData}
-                >
-                <option defaultValue="selected">Please Select</option>
-                  {unitdetails &&
-                    unitdetails.map((ele) => {
-                      return (
-                        <option key={ele.value} value={ele.value}>
-                          {ele.value}
-                        </option>
-                      );
-                    })}
-                </Input>
-              </Col>
-            </Row>
-          </FormGroup>
-          <FormGroup>
+         
+          {/* <FormGroup>
             <Row>
               <Label sm="2">Unit Price</Label>
               <Col sm="10">
@@ -181,7 +166,7 @@ const {id}=useParams();
                 />
               </Col>
             </Row>
-          </FormGroup>
+          </FormGroup> */}
         </ModalBody>
         <ModalFooter>
           <Button
