@@ -27,7 +27,7 @@ import ProductOwnerDetails from '../../components/SupplierModal/ProductOwnerDeta
 //import EnquiriesLinked from "./EnquiriesLinked"; // Replace with actual path
 //import QuotationsLinked from "./QuotationsLinked"; // Replace with actual path
 import ProductLinkedTable from '../../components/SupplierModal/ProductLinked';
-import QuotaionsLinkedTable from '../../components/SupplierModal/QuotationsLinked';
+//import QuotaionsLinkedTable from '../../components/SupplierModal/QuotationsLinked';
 import EnquiriesLinkedTable from '../../components/SupplierModal/EnquiriesLinked';
 
 const SupplierEdit = () => {
@@ -41,7 +41,7 @@ const SupplierEdit = () => {
   const [activeTab, setActiveTab] = useState("1");
   // Edit States for Tabs
   const [enquiries, setEnquiries] = useState([]);
-  const [quotes, setQuotes] = useState([]);
+  //const [quotes, setQuotes] = useState([]);
   
 
   // Toggle Tab Function
@@ -53,7 +53,7 @@ const SupplierEdit = () => {
   //navigation and params
   const { id } = useParams();
   const navigate = useNavigate();
-  const applyChanges = () => {};
+  // const applyChanges = () => {};
 
   // Get Supplier By Id
   const editSupplierById = () => {
@@ -144,24 +144,27 @@ const SupplierEdit = () => {
       });
   };
   
-  const getQuotes = () => {
-    api
-      .post('/supplier/getQuotesLinked',{product_owner_id:id})
-      .then((res) => {
-        setQuotes(res.data.data);
-      })
-      .catch(() => {
-        message('Status Data Not Found', 'info');
-      });
-  };
+  // const getQuotes = () => {
+  //   api
+  //     .post('/supplier/getQuotesLinked',{product_owner_id:id})
+  //     .then((res) => {
+  //       setQuotes(res.data.data);
+  //     })
+  //     .catch(() => {
+  //       message('Status Data Not Found', 'info');
+  //     });
+  // };
   useEffect(() => {
     getpurchaseOrder();
     suppliereditdetails();
     getSupplierStatus();
     Status();
     getEnquiries();
-    getQuotes();
+    // getQuotes();
   }, []);
+  const backToList = () => {
+    navigate('/ProductOwner');
+  };
 
   return (
     <>
@@ -201,7 +204,7 @@ const SupplierEdit = () => {
                   color="dark"
                   className="shadow-none"
                   onClick={() => {
-                    applyChanges();
+                    backToList();
                   }}
                 >
                   Back to List
@@ -244,14 +247,14 @@ const SupplierEdit = () => {
               </NavLink>
             </NavItem>
 
-            <NavItem>
+            {/* <NavItem>
               <NavLink
                 className={classnames({ active: activeTab === "3" })}
                 onClick={() => toggleTab("3")}
               >
                 Quotations Linked
               </NavLink>
-            </NavItem>
+            </NavItem> */}
           </Nav>
 
           {/* Tab Content */}
@@ -271,11 +274,11 @@ const SupplierEdit = () => {
             </TabPane>
 
             {/* Quotations Linked Tab */}
-            <TabPane tabId="3">
+            {/* <TabPane tabId="3">
               <QuotaionsLinkedTable
                purchaseOrder={quotes}
               />
-            </TabPane>
+            </TabPane> */}
           </TabContent>
         <ToastContainer></ToastContainer>
      

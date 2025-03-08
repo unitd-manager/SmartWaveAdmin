@@ -56,7 +56,10 @@ const Enquiry = () => {
   // Filter Function
   useEffect(() => {
     if (filterType) {
-      setFilteredEnquiry(enquiry.filter((item) => item.enquiry_type === filterType));
+      setFilteredEnquiry(
+        enquiry.filter((item) => (filterType ? item.enquiry_type === filterType : true))
+      );
+      
     } else {
       setFilteredEnquiry(enquiry);
     }

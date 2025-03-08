@@ -7,7 +7,7 @@ import BreadCrumbs from '../../layouts/breadcrumbs/BreadCrumbs';
 import ComponentCard from '../../components/ComponentCard';
 import message from '../../components/Message';
 import api from '../../constants/api';
-import creationdatetime from '../../constants/creationdatetime';
+//import creationdatetime from '../../constants/creationdatetime';
 
 const CustomerDetails = () => {
   //All const variables
@@ -29,11 +29,11 @@ const CustomerDetails = () => {
       setContent(res.data.data);
       console.log(content);
     });
-  };
+  }; 
   //Insert Custmer Data
   const insertCustomerData = () => {
     if (contentDetails.first_name !== '') {
-      contentDetails.creation_date = creationdatetime;
+      contentDetails.creation_date = new Date();
       api
         .post('/contact/insertContact', contentDetails)
         .then((res) => {

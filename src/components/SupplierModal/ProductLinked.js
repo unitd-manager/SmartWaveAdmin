@@ -1,7 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import moment from 'moment'
-import { Link } from 'react-router-dom'
 import {  Form, Table } from 'reactstrap';
 import ComponentCard from '../ComponentCard';
 
@@ -12,7 +10,7 @@ export default function ProductLinkedTable({purchaseOrder}) {
 // structure of makesupplier payment tables
       const supplierTableColumn = [
         {
-          name: "PO Date",
+          name: "CATEGORY",
         },
         {
           name: "PRODUCT CODE",
@@ -46,10 +44,10 @@ export default function ProductLinkedTable({purchaseOrder}) {
         <tbody>
           {purchaseOrder && purchaseOrder.map(element=>{
               return (<tr key={element.supplier_id}>
-                <td >{moment(element.po_date).format('YYYY-MM-DD')}</td>
-              <td><Link to={`/PurchaseOrderEdit/${element.purchase_order_id}`} >{element.product_code}</Link></td>
-              <td>{element.product_name}</td>
-              <td>{parseFloat(element.qty) }</td>
+                <td >{element.category_title}</td>
+              <td>{element.product_code}</td>
+              <td>{element.title}</td>
+              <td>{element.qty_in_stock }</td>
              
               </tr>)
           })}

@@ -105,13 +105,13 @@ const SectionDetails = () => {
       width: 'auto',
       grow: 3,
     },
-    {
-      name: 'Price',
-      selector: 'price',
-      sortable: true,
-      width: 'auto',
-      grow: 3,
-    },
+    // {
+    //   name: 'Price',
+    //   selector: 'price',
+    //   sortable: true,
+    //   width: 'auto',
+    //   grow: 3,
+    // },
     // {
     //   name: 'Qty in Stock',
     //   selector: 'qty_in_stock',
@@ -180,7 +180,7 @@ const SectionDetails = () => {
                     <td>{element.title}</td>
                     <td>{element.product_type}</td>
                     <td>{element.unit}</td>
-                    <td>{element.price}</td>
+                    {/* <td>{element.price}</td> */}
                     {/* <td>{element.qty_in_stock}</td> */}
                     {/* <td>{element.modified_by}</td> */}
                     <td>

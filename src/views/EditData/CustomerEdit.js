@@ -105,6 +105,21 @@ const ContentUpdate = () => {
         const [TrackItem, setTrackItem] = useState();
         const [viewTrackModal, setViewTrackModal] = useState(false);
             const [track, settrack] = useState({});
+              const [enquiries, setEnquiries] = useState([]);
+              const getEnquiries = () => {
+                api
+                  .post('/contact/getEnquiryById',{contact_id:id})
+                  .then((res) => {
+                    setEnquiries(res.data.data);
+                  })
+                  .catch(() => {
+                    message('Status Data Not Found', 'info');
+                  });
+              };
+
+               useEffect(() => {
+                  getEnquiries();
+                }, []);
         
 
   const addTrackItemsToggle = () => {
@@ -127,6 +142,9 @@ const ContentUpdate = () => {
     getContentById();
     getTrackItem();
   }, [id]);
+
+
+
   
 
 
@@ -399,12 +417,10 @@ const ContentUpdate = () => {
           <TabPane tabId="2">
             <Row>
               <EnquiriesLinkedTable
-                  id={id}
-
+                  purchaseOrder={enquiries}
               />
             </Row>
           </TabPane>
-
           <TabPane tabId="4">
             {/* Picture and Attachments Form */}
             <Row>

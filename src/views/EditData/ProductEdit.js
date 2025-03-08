@@ -23,6 +23,7 @@ const ProductUpdate = () => {
   // All state variables
   const [productDetails, setProductDetails] = useState();
   const [categoryLinked, setCategoryLinked] = useState([]);
+  const [productOwnerLinked, setproductOwnerLinked] = useState([]);
   const [productDescription, setProductDescription] = useState('');
   const [RoomName, setRoomName] = useState('');
   const [fileTypes, setFileTypes] = useState('');
@@ -100,6 +101,17 @@ const ProductUpdate = () => {
       });
   };
 
+  const getProductOwner = () => {
+    api
+      .get('/supplier/getProductOwner')
+      .then((res) => {
+        setproductOwnerLinked(res.data.data);
+      })
+      .catch(() => {
+        message('Unable to get categories', 'error');
+      });
+  };
+
   //Attachments
   const dataForAttachment = () => {
     setDataForAttachment({
@@ -112,6 +124,7 @@ const ProductUpdate = () => {
   useEffect(() => {
     getCategory();
     getProductById();
+    getProductOwner();
   }, [id]);
 
   return (
@@ -126,6 +139,7 @@ const ProductUpdate = () => {
             productDetails={productDetails}
             handleInputs={handleInputs}
             categoryLinked={categoryLinked}
+            productOwnerLinked={productOwnerLinked}
           ></ProductDetail>
           {/* Product Details Form */}
           <Row>

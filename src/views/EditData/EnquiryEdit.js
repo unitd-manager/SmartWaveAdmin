@@ -324,7 +324,19 @@ const EnquiryEdit = () => {
         updateOrder('');
       });
   };
+
+    const [productOwnerLinked, setproductOwnerLinked] = useState([]);
   
+    const getProductOwner = () => {
+      api
+        .get('/supplier/getProductOwner')
+        .then((res) => {
+          setproductOwnerLinked(res.data.data);
+        })
+        .catch(() => {
+          message('Unable to get categories', 'error');
+        });
+    };
   
 
   useEffect(() => {
@@ -333,6 +345,8 @@ const EnquiryEdit = () => {
     getTrackItem();
     getCompany();
     getQuote();
+    getProductOwner();
+
     // gettrack();
   }, [id]);
 
@@ -472,6 +486,27 @@ const EnquiryEdit = () => {
                                </Input>
                           
                              </Col>
+                                 <Col md="4">
+                                             <FormGroup>
+                                               <Label>Product Owner</Label>
+                                               <Input
+                                                 type="select"
+                                                 name="product_owner_id"
+                                                 value={enquiryDetails && enquiryDetails.product_owner_id}
+                                                 onChange={handleInputs}
+                                               >
+                                                 <option defaultValue="selected">Please Select</option>
+                                                 {productOwnerLinked &&
+                                                   productOwnerLinked.map((ele) => {
+                                                     return (
+                                                       <option key={ele.product_owner_id} value={ele.product_owner_id}>
+                                                         {ele.company_name}
+                                                       </option>
+                                                     );
+                                                   })}
+                                               </Input>
+                                             </FormGroup>
+                                           </Col>
                             
             
               <Col md="4">

@@ -5,11 +5,12 @@ import { ToastContainer } from 'react-toastify';
 import ComponentCard from '../ComponentCard';
 
 
-export default function ProductDetail({ productDetails, handleInputs,categoryLinked }) {
+export default function ProductDetail({ productDetails, handleInputs,categoryLinked,productOwnerLinked }) {
     ProductDetail.propTypes = {
     productDetails: PropTypes.object,
     handleInputs: PropTypes.func,
     categoryLinked: PropTypes.array,
+    productOwnerLinked: PropTypes.array,
   };
   return (
     <>
@@ -64,6 +65,30 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
               </Col>
               <Col md="3">
                 <FormGroup>
+                  <Label>Product Owner</Label>
+                  <Input
+                    type="select"
+                    name="product_owner_id"
+                    value={productDetails && productDetails.product_owner_id}
+                    onChange={handleInputs}
+                  >
+                    <option defaultValue="selected">Please Select</option>
+                    {productOwnerLinked &&
+                      productOwnerLinked.map((ele) => {
+                        return (
+                          <option key={ele.product_owner_id} value={ele.product_owner_id}>
+                            {ele.company_name}
+                          </option>
+                        );
+                      })}
+                  </Input>
+                </FormGroup>
+              </Col>
+         
+            </Row>
+            <Row>
+            <Col md="3">
+                <FormGroup>
                   <Label>Type</Label>
                   <Input
                     type="select"
@@ -77,11 +102,9 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                   </Input>
                 </FormGroup>
               </Col>
-            </Row>
-            <Row>
               <Col md="3">
                 <FormGroup>
-                  <Label> Quantity in Stock </Label>
+                  <Label>Quantity</Label>
                   <Input
                     type="text"
                     onChange={handleInputs}
@@ -90,7 +113,7 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                   />
                 </FormGroup>
               </Col>
-              <Col md="3">
+              {/* <Col md="3">
                 <FormGroup>
                   <Label> List Price </Label>
                   <Input
@@ -100,7 +123,7 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                     name="price"
                   />
                 </FormGroup>
-              </Col>
+              </Col> */}
               <Col md="3">
                 <FormGroup>
                   <Label>Tag </Label>
