@@ -144,6 +144,17 @@ const EditLineItemModal = ({ editTrackModal, setEditTrackModal,FetchTrackItemDat
   </Col>
   <Col md="4">
     <FormGroup>
+      <Label>City</Label>
+      <Input
+        type="text"
+        name="address_city"
+        value={lineItemData?.address_city || ''}
+        onChange={handleData}
+      />
+    </FormGroup>
+  </Col>
+  <Col md="4">
+    <FormGroup>
       <Label>Country</Label>
       <Input
         type="text"

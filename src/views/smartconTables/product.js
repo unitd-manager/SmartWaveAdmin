@@ -92,12 +92,12 @@ const SectionDetails = () => {
       grow: 2,
       wrap: true,
     },
-    {
-      name: 'Product Type',
-      selector: 'product_type',
-      sortable: true,
-      grow: 0,
-    },
+    // {
+    //   name: 'Product Type',
+    //   selector: 'product_type',
+    //   sortable: true,
+    //   grow: 0,
+    // },
     {
       name: 'Unit',
       selector: 'unit',
@@ -178,7 +178,7 @@ const SectionDetails = () => {
                       </Link>
                     </td>
                     <td>{element.title}</td>
-                    <td>{element.product_type}</td>
+                    {/* <td>{element.product_type}</td> */}
                     <td>{element.unit}</td>
                     {/* <td>{element.price}</td> */}
                     {/* <td>{element.qty_in_stock}</td> */}

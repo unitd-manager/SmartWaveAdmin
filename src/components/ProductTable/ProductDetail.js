@@ -87,7 +87,7 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
          
             </Row>
             <Row>
-            <Col md="3">
+            {/* <Col md="3">
                 <FormGroup>
                   <Label>Type</Label>
                   <Input
@@ -101,7 +101,7 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                     <option value="tools">Tools</option>
                   </Input>
                 </FormGroup>
-              </Col>
+              </Col> */}
               <Col md="3">
                 <FormGroup>
                   <Label>Quantity</Label>
@@ -150,7 +150,7 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                 <FormGroup>
                   <Label> Short Description </Label>
                   <Input
-                    type="text"
+                    type="textarea"
                     onChange={handleInputs}
                     value={productDetails && productDetails.description_short}
                     name="description_short"
@@ -168,7 +168,7 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                   />
                 </FormGroup>
               </Col>
-              <Col md="3">
+              {/* <Col md="3">
                 <FormGroup>
                   <Label> Discount Percentage </Label>
                   <Input
@@ -178,7 +178,7 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                     name="discount_percentage"
                   />
                 </FormGroup>
-              </Col>
+              </Col> */}
               <Col md="3">
                 <Label>Most Popular</Label>
                 <FormGroup>

@@ -463,7 +463,7 @@ const EnquiryEdit = () => {
               </Col>
             <Col md="4">
                                <Label>
-                                 Company Name <span className="required"> *</span>{' '}
+                                 Customer <span className="required"> *</span>{' '}
                                </Label>
                                <Input
                                  type="select"
@@ -516,6 +516,7 @@ const EnquiryEdit = () => {
                           <option value="">Select Type</option>
                           <option value="Enquiry product for container">Enquiry product for container</option>
                           <option value="Enquiry and order for Retail products.">Enquiry and order for Retail products.</option>
+                          <option value="General">General</option>
 
                         </Input>
                         </FormGroup>
@@ -550,7 +551,7 @@ const EnquiryEdit = () => {
                 <FormGroup>
                   <Label>Shipping Address</Label>
                   <Input
-                    type="text"
+                    type="textarea"
                     onChange={handleInputs}
                     value={enquiryDetails && enquiryDetails.shipping_address}
                     name="shipping_address"
