@@ -332,8 +332,8 @@ const ContentUpdate = () => {
                   <Input
                     type="text"
                     onChange={handleInputs}
-                    value={contentDetails && contentDetails.ner_aproductowddress}
-                    name="address1"
+                    value={contentDetails && contentDetails.productowner_address}
+                    name="productowner_address"
                   />
                 </FormGroup>
               </Col>
@@ -379,8 +379,8 @@ const ContentUpdate = () => {
                             <td>{e.shipper_name}</td>
                             <td>{e.address_flat}</td>
                             <td>{e.address_street}</td>
-                            <td>{e.address_city}</td>
                             <td>{e.address_state}</td>
+                            <td>{e.address_city}</td>
                             <td>{e.address_town}</td>
 <td >{e.address_country}</td>
 <td>{e.address_po_code}</td>
