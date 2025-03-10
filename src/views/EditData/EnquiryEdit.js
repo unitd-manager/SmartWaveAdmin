@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useContext } from 'react';
 import { Row, Col, Form, FormGroup, Label, Input, Button ,TabPane, TabContent,Table} from 'reactstrap';
 import { ToastContainer } from 'react-toastify';
 import * as Icon from 'react-feather';
 import Swal from 'sweetalert2';
-
 import { useNavigate, useParams } from 'react-router-dom';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import '../form-editor/editor.scss';
@@ -16,6 +15,7 @@ import TenderQuotation from '../../components/ProjectTable/TenderQuotation';
 import ViewFileComponentV2 from '../../components/ProjectModal/ViewFileComponentV2';
 import AttachmentModalV2 from '../../components/Tender/AttachmentModalV2';
 import api from '../../constants/api';
+import AppContext from '../../context/AppContext';
 import creationdatetime from '../../constants/creationdatetime';
 // import DeleteButton from '../../components/DeleteButton';
 import QuoteLineItem from '../../components/ProjectTable/QuoteLineItem';
@@ -46,6 +46,8 @@ const EnquiryEdit = () => {
       const [attachmentData, setDataForAttachment] = useState({
         modelType: '',
       });
+      const { loggedInuser } = useContext(AppContext);
+
 
       const dataForAttachment = () => {
         setDataForAttachment({
@@ -112,6 +114,8 @@ const EnquiryEdit = () => {
   };
   //Update Setting
   const editEnquiryData = () => {
+    enquiryDetails.modification_date = creationdatetime;
+    enquiryDetails.modified_by = loggedInuser.first_name;
     enquiryDetails.modification_date = creationdatetime;
       api
         .post('/enquiry/editEnquiry', enquiryDetails)

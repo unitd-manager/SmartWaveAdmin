@@ -17,7 +17,7 @@ export default function ContentMoreDetails({
       };
   return (
     <div>
-   <ComponentCard title="Content details">
+   <ComponentCard title="Content details" creationModificationDate={contentDetails}>
             <ToastContainer></ToastContainer>
             <Row>
               <Col md="3">

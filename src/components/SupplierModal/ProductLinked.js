@@ -9,9 +9,7 @@ export default function ProductLinkedTable({purchaseOrder}) {
       }
 // structure of makesupplier payment tables
       const supplierTableColumn = [
-        {
-          name: "CATEGORY",
-        },
+        
         {
           name: "PRODUCT CODE",
           
@@ -19,6 +17,9 @@ export default function ProductLinkedTable({purchaseOrder}) {
         {
           name: "PRODUCT NAME",
           
+        },
+        {
+          name: "CATEGORY",
         },
         {
           name: "QTY",
@@ -44,9 +45,9 @@ export default function ProductLinkedTable({purchaseOrder}) {
         <tbody>
           {purchaseOrder && purchaseOrder.map(element=>{
               return (<tr key={element.supplier_id}>
-                <td >{element.category_title}</td>
               <td>{element.product_code}</td>
               <td>{element.title}</td>
+              <td >{element.category_title}</td>
               <td>{element.qty_in_stock }</td>
              
               </tr>)

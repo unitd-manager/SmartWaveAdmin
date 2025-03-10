@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState ,useContext} from 'react';
 import { Row, Col, Form, FormGroup, Button, Label, Input,TabContent, TabPane,Table } from 'reactstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
@@ -10,9 +10,10 @@ import BreadCrumbs from '../../layouts/breadcrumbs/BreadCrumbs';
 import ComponentCardV2 from '../../components/ComponentCardV2';
 import message from '../../components/Message';
 import api from '../../constants/api';
+import AppContext from '../../context/AppContext';
+import creationdatetime from '../../constants/creationdatetime';
 import Tab from '../../components/ProjectTabs/Tab';
 import ComponentCard from '../../components/ComponentCard';
-import creationdatetime from '../../constants/creationdatetime';
 import EnquiriesLinkedTable from '../../components/SupplierModal/EnquiriesLinked';
 import QuoteTrackItem from '../../components/ClientTable/QuoteTrackItem';
 import EditTrackItemModal from '../../components/ClientTable/EditTrckitemModal';
@@ -32,7 +33,9 @@ const ContentUpdate = () => {
   });
   const [pictureData, setDataForPicture] = useState({
     modelType: '',
-  });
+  }); 
+  const { loggedInuser } = useContext(AppContext);
+
   const tabs = [
     { id: '1', name: 'Shipping' },
     { id: '2', name: 'Enquiries Linked' },
@@ -73,6 +76,7 @@ const ContentUpdate = () => {
   //Edit Content
   const editContentData = () => {
     contentDetails.modification_date = creationdatetime;
+    contentDetails.modified_by = loggedInuser.first_name;
     console.log(contentDetails);
     if (
       contentDetails.content_title !== '' &&

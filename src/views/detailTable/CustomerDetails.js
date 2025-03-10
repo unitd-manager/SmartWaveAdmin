@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect ,useContext} from 'react';
 import { Row, Col, Form, FormGroup, Label, Input, Button } from 'reactstrap';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
@@ -6,8 +6,9 @@ import { ToastContainer } from 'react-toastify';
 import BreadCrumbs from '../../layouts/breadcrumbs/BreadCrumbs';
 import ComponentCard from '../../components/ComponentCard';
 import message from '../../components/Message';
+import AppContext from '../../context/AppContext';
 import api from '../../constants/api';
-//import creationdatetime from '../../constants/creationdatetime';
+import creationdatetime from '../../constants/creationdatetime';
 
 const CustomerDetails = () => {
   //All const variables
@@ -19,6 +20,8 @@ const CustomerDetails = () => {
     content_date: moment(),
     content_type: '',
   });
+  const { loggedInuser } = useContext(AppContext);
+
   //setting data in customerDetails
   const handleInputs = (e) => {
     setContentDetails({ ...contentDetails, [e.target.name]: e.target.value });
@@ -32,8 +35,9 @@ const CustomerDetails = () => {
   }; 
   //Insert Custmer Data
   const insertCustomerData = () => {
+    contentDetails.creation_date = creationdatetime;
+    contentDetails.created_by = loggedInuser.first_name;
     if (contentDetails.first_name !== '') {
-      contentDetails.creation_date = new Date();
       api
         .post('/contact/insertContact', contentDetails)
         .then((res) => {

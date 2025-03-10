@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import { Row, Col, Form, FormGroup, Label, Input, Button } from 'reactstrap';
 import { ToastContainer } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import BreadCrumbs from '../../layouts/breadcrumbs/BreadCrumbs';
 import ComponentCard from '../../components/ComponentCard';
+import creationdatetime from '../../constants/creationdatetime';
+import AppContext from '../../context/AppContext';
 import api from '../../constants/api';
 import message from '../../components/Message';
 
@@ -12,6 +14,8 @@ const SupplierDetails = () => {
   const [supplierForms, setSupplierForms] = useState({
     company_name: '',
   });
+  const { loggedInuser } = useContext(AppContext);
+
   //navigation and params
   const navigate = useNavigate();
   //supplierData in supplier details
@@ -20,6 +24,8 @@ const SupplierDetails = () => {
   };
   //inserting supplier data
   const insertProductOwner = () => {
+    supplierForms.creation_date = creationdatetime;
+    supplierForms.created_by = loggedInuser.first_name;
     if (supplierForms.company_name !== '')
       api.post('/supplier/insert-ProductOwner', supplierForms)
         .then((res) => {

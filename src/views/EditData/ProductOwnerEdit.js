@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Row, Col, Form, FormGroup, Button,Nav,
   NavItem,
   NavLink,
@@ -20,6 +20,8 @@ import ComponentCard from '../../components/ComponentCard';
 import ComponentCardV2 from '../../components/ComponentCardV2';
 import message from '../../components/Message';
 import api from '../../constants/api';
+import AppContext from '../../context/AppContext';
+import creationdatetime from '../../constants/creationdatetime';
 import PurchaseOrderLinked from '../../components/SupplierModal/Purchaseorderlinked';
 //import SupplierTable from '../../components/SupplierModal/SupplierTable';
 //import SupplierDetails from '../../components/SupplierModal/SupplierDetails';
@@ -42,6 +44,8 @@ const SupplierEdit = () => {
   // Edit States for Tabs
   const [enquiries, setEnquiries] = useState([]);
   //const [quotes, setQuotes] = useState([]);
+  const { loggedInuser } = useContext(AppContext);
+
   
 
   // Toggle Tab Function
@@ -72,7 +76,9 @@ const SupplierEdit = () => {
   };
   //Logic for edit data in db
   const editSupplierData = () => {
-    if (supplier.company_name !== '')
+    supplier.modification_date = creationdatetime;
+    supplier.modified_by = loggedInuser.first_name;
+    if (supplier.company_name !== '') 
       api
         .post('/supplier/edit-ProductOwner', supplier)
         .then(() => {

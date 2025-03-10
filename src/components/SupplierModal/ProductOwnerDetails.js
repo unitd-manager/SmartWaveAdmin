@@ -18,7 +18,7 @@ export default function ProductOwnerDetails({  handleInputs ,supplier ,allCountr
   return (
     <Form>
     <FormGroup>
-  <ComponentCard title="Product Owner Details">
+  <ComponentCard title="Product Owner Details" creationModificationDate={supplier}>
     <Row>
       <Col md="4">
         <FormGroup>
@@ -101,7 +101,7 @@ export default function ProductOwnerDetails({  handleInputs ,supplier ,allCountr
         <FormGroup>
           <Label>Payment Details</Label>
           <Input
-            type="text"
+            type="textarea"
             onChange={handleInputs}
             value={supplier && supplier.payment_details}
             name="payment_details" />
@@ -111,7 +111,7 @@ export default function ProductOwnerDetails({  handleInputs ,supplier ,allCountr
         <FormGroup>
           <Label>Terms</Label>
           <Input
-            type="text"
+            type="textarea"
             onChange={handleInputs}
             value={supplier && supplier.terms}
             name="terms" />
@@ -127,6 +127,7 @@ export default function ProductOwnerDetails({  handleInputs ,supplier ,allCountr
             name="contact_person"  />
         </FormGroup>
       </Col>
+    
     </Row>
   </ComponentCard>
 </FormGroup>
@@ -180,6 +181,16 @@ export default function ProductOwnerDetails({  handleInputs ,supplier ,allCountr
             </option>
             {allCountries && allCountries.map(country=>(<option value={country.country_code}>{country.name}</option>))}
   </Input>
+        </FormGroup>
+      </Col>
+      <Col md="4">
+        <FormGroup>
+          <Label>City</Label>
+          <Input
+            type="text"
+            onChange={handleInputs}
+            value={supplier && supplier.city}
+            name="city"  />
         </FormGroup>
       </Col>
       <Col md="4">
