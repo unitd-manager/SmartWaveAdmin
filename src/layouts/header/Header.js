@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import SimpleBar from 'simplebar-react';
+//import SimpleBar from 'simplebar-react';
 import {
   Navbar,
   Nav,
@@ -10,15 +10,15 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem,
+  // DropdownItem,
   Button,
 } from 'reactstrap';
-import { MessageSquare } from 'react-feather';
-import * as Icon from 'react-feather';
+//import { MessageSquare } from 'react-feather';
+// import * as Icon from 'react-feather';
 import { ReactComponent as LogoWhite } from '../../assets/images/logos/logo.svg';
-import MessageDD from './MessageDD';
-import MegaDD from './MegaDD';
-import NotificationDD from './NotificationDD';
+//import MessageDD from './MessageDD';
+// import MegaDD from './MegaDD';
+// import NotificationDD from './NotificationDD';
 import user1 from '../../assets/images/users/user1.jpg';
 
 import { ToggleMiniSidebar, ToggleMobileSidebar } from '../../store/customizer/CustomizerSlice';
@@ -79,9 +79,9 @@ const Header = () => {
        
         
         <NavItem>
-          <Link to="/about" className="nav-link">
+          {/* <Link to="/about" className="nav-link">
             About
-          </Link>
+          </Link> */}
         </NavItem>
       </Nav>
       {/******************************/}
@@ -91,7 +91,7 @@ const Header = () => {
         {/******************************/}
         {/**********Mega DD**********/}
         {/******************************/}
-        <UncontrolledDropdown className="mega-dropdown mx-1">
+        {/* <UncontrolledDropdown className="mega-dropdown mx-1">
           <DropdownToggle className="bg-transparent border-0" color={topbarColor}>
             <Icon.Grid size={18} />
           </DropdownToggle>
@@ -118,11 +118,11 @@ const Header = () => {
               </Button>
             </div>
           </DropdownMenu>
-        </UncontrolledDropdown>
+        </UncontrolledDropdown> */}
         {/******************************/}
         {/**********Message DD**********/}
         {/******************************/}
-        <UncontrolledDropdown className="mx-1">
+        {/* <UncontrolledDropdown className="mx-1">
           <DropdownToggle color={topbarColor}>
             <MessageSquare size={18} />
           </DropdownToggle>
@@ -141,7 +141,7 @@ const Header = () => {
               </Button>
             </div>
           </DropdownMenu>
-        </UncontrolledDropdown>
+        </UncontrolledDropdown> */}
         {/******************************/}
         {/**********Profile DD**********/}
         {/******************************/}

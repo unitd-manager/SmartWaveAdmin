@@ -33,6 +33,7 @@ const QuoteLineItem = ({ addTrackItemModal, setAddTrackItemModal, quoteTrack }) 
    address_street: '',
     address_town: '',
     address_state: '',
+    address_city: '',
     address_country: '',
     address_po_code: '',
     shipper_name: '',
@@ -145,6 +146,18 @@ const QuoteLineItem = ({ addTrackItemModal, setAddTrackItemModal, quoteTrack }) 
                   />
                 </FormGroup>
               
+              </Col>
+              <Col md="4">
+                <FormGroup>
+                  <Label>City</Label>
+                  <Input
+                    type="text"
+                    name="address_city"
+                    value={formData.address_city}
+                    onChange={handleInputChange}
+                  
+                  />
+                </FormGroup>
               </Col>
               <Col md="4">
               <FormGroup>

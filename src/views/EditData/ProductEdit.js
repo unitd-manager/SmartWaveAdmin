@@ -157,7 +157,7 @@ const ProductUpdate = () => {
                   toggle('1');
                 }}
               >
-                Product Description
+                Additional information
               </NavLink>
             </NavItem>
             {/* <NavItem>
@@ -194,7 +194,7 @@ const ProductUpdate = () => {
         </Row>
         {/* Delivery address Form */}
         <TabPane tabId="1">
-        <ComponentCard title="Product Description">
+        <ComponentCard title="Additional Info">
                 <Editor
                   editorState={productDescription}
                   wrapperClassName="demo-wrapper mb-0"

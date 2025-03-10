@@ -6,6 +6,7 @@ import '../form-editor/editor.scss';
 import * as Icon from 'react-feather';
 import Swal from 'sweetalert2';
 import { ToastContainer } from 'react-toastify';
+
 import BreadCrumbs from '../../layouts/breadcrumbs/BreadCrumbs';
 import ComponentCardV2 from '../../components/ComponentCardV2';
 import message from '../../components/Message';
@@ -169,6 +170,9 @@ const ContentUpdate = () => {
       name: 'State',
     },
     {
+      name: 'City',
+    },
+    {
       name: 'Town',
     },
     {
@@ -257,7 +261,7 @@ const ContentUpdate = () => {
           <ComponentCard title="Customer details" creationModificationDate={contentDetails}>
             <ToastContainer></ToastContainer>
             <Row>
-              <Col md="3">
+              {/* <Col md="3">
                 <FormGroup>
                   <Label> Contact Id </Label>
                   <Input
@@ -267,7 +271,7 @@ const ContentUpdate = () => {
                     name="contact_id"
                   />
                 </FormGroup>
-              </Col>
+              </Col> */}
               <Col md="3">
                 <FormGroup>
                 <Label>Name</Label>
@@ -326,6 +330,18 @@ const ContentUpdate = () => {
                   />
                 </FormGroup>
               </Col>
+              <Col md="3">
+                <FormGroup>
+                <Label>Product Owner Address</Label>
+                  <Input
+                    type="text"
+                    onChange={handleInputs}
+                    value={contentDetails && contentDetails.productowner_address}
+                    name="productowner_address"
+                  />
+                </FormGroup>
+              </Col>
+             
              
             </Row>
           </ComponentCard>
@@ -368,6 +384,7 @@ const ContentUpdate = () => {
                             <td>{e.address_flat}</td>
                             <td>{e.address_street}</td>
                             <td>{e.address_state}</td>
+                            <td>{e.address_city}</td>
                             <td>{e.address_town}</td>
 <td >{e.address_country}</td>
 <td>{e.address_po_code}</td>
