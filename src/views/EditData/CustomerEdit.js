@@ -270,7 +270,7 @@ const ContentUpdate = () => {
             </Row>
           </ComponentCardV2>
           {/* Content Details Form */}
-          <ComponentCard title="Customer details" creationModificationDate={contentDetails}>
+          <ComponentCard title={<h4 className="mb-0">Customer details</h4>} creationModificationDate={contentDetails}>
             <ToastContainer></ToastContainer>
             <Row>
               {/* <Col md="3">

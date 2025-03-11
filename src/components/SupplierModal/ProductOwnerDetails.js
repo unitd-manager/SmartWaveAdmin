@@ -18,7 +18,7 @@ export default function ProductOwnerDetails({  handleInputs ,supplier ,allCountr
   return (
     <Form>
     <FormGroup>
-  <ComponentCard title="Product Owner Details" creationModificationDate={supplier}>
+  <ComponentCard  title={<h4 className="mb-0">Product Owner Details</h4>}  creationModificationDate={supplier}>
     <Row>
       <Col md="4">
         <FormGroup>
@@ -98,25 +98,29 @@ export default function ProductOwnerDetails({  handleInputs ,supplier ,allCountr
       </Row>
       <Row>
       <Col md="4">
-        <FormGroup>
-          <Label>Payment Details</Label>
-          <Input
-            type="textarea"
-            onChange={handleInputs}
-            value={supplier && supplier.payment_details}
-            name="payment_details" />
-        </FormGroup>
-      </Col>
-      <Col md="4">
-        <FormGroup>
-          <Label>Terms</Label>
-          <Input
-            type="textarea"
-            onChange={handleInputs}
-            value={supplier && supplier.terms}
-            name="terms" />
-        </FormGroup>
-      </Col>
+  <FormGroup>
+    <Label>Payment Details</Label>
+    <Input
+      type="textarea"
+      onChange={handleInputs}
+      value={supplier && supplier.payment_details}
+      name="payment_details"
+      style={{ height: '100px' }} // Adjust height as needed
+    />
+  </FormGroup>
+</Col>
+<Col md="4">
+  <FormGroup>
+    <Label>Terms</Label>
+    <Input
+      type="textarea"
+      onChange={handleInputs}
+      value={supplier && supplier.terms}
+      name="terms"
+      style={{ height: '100px' }} // Adjust height as needed
+    />
+  </FormGroup>
+</Col>
       <Col md="4">
         <FormGroup>
           <Label>Contact Person</Label>

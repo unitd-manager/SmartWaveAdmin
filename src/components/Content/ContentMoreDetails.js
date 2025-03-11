@@ -23,7 +23,7 @@ export default function ContentMoreDetails({
       };
   return (
     <div>
-   <ComponentCard title="Content details" creationModificationDate={contentDetails}>
+   <ComponentCard title={<h4 className="mb-0">Content details</h4>} creationModificationDate={contentDetails}>
             <ToastContainer></ToastContainer>
             <Row>
               <Col md="3">

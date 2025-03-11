@@ -9,7 +9,7 @@ export default function CreationModification({ details = null, title }) {
   };
 
   return (
-    <CardTitle tag="h5" className="border-bottom px-4 py-3 mb-0">
+    <CardTitle className="border-bottom px-4 py-3 mb-0">
       <Row>
         <Col>
           <small className="text-muted">{title}</small>
@@ -17,10 +17,10 @@ export default function CreationModification({ details = null, title }) {
         {details && (
           <Col>
             <Row>
-              <small className="text-muted">Modification Date: {details.modification_date}  {details.modified_by}</small>
+              <small className="text-muted">Modification Date: {details.modified_by} {details.modification_date}  </small>
             </Row>
             <Row className="d-flex">
-              <small className="text-muted">Creation Date: {details.creation_date}  {details.created_by}</small>
+              <small className="text-muted">Creation Date:  {details.created_by} {details.creation_date} </small>
             </Row>
           </Col>
         )}
