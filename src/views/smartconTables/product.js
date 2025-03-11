@@ -111,7 +111,7 @@ const SectionDetails = () => {
         <div className="mb-3 d-flex justify-content-between">
           <Input
             type="text"
-            placeholder="Search by Product Code or Title"
+            placeholder="Search by Title.."
             value={filterText}
             onChange={e => setFilterText(e.target.value)}
             className="w-25"

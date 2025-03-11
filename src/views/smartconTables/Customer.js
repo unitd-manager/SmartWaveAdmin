@@ -59,9 +59,7 @@ const Customer = () => {
     <div className="MainDiv pt-xs-25">
       <BreadCrumbs />
       <div className="d-flex justify-content-between mb-3">
-        <Link to="/CustomerDetails">
-          <Button color="primary" className="shadow-none">Add New</Button>
-        </Link>
+       
         <Input
           type="text"
           placeholder="Search..."
@@ -69,6 +67,9 @@ const Customer = () => {
           onChange={(e) => setSearchText(e.target.value)}
           style={{ width: '250px' }}
         />
+         <Link to="/CustomerDetails">
+          <Button color="primary" className="shadow-none">Add New</Button>
+        </Link>
       </div>
       <DataTable 
         title="Customer List"

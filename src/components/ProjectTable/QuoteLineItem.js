@@ -255,7 +255,7 @@ const QuoteLineItem = ({
     <>
       <Modal size="xl" isOpen={addLineItemModal}>
         <ModalHeader>
-          Add Quote Items
+          Add Items
           <Button
             className="shadow-none"
             color="secondary"
