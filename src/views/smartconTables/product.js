@@ -1,210 +1,138 @@
 import React, { useEffect, useState } from 'react';
 import * as Icon from 'react-feather';
-import { Button } from 'reactstrap';
+import { Button, Input } from 'reactstrap';
 import { Link, useParams } from 'react-router-dom';
+import DataTable from 'react-data-table-component';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'datatables.net-dt/js/dataTables.dataTables';
-import 'datatables.net-dt/css/jquery.dataTables.min.css';
-// import $ from 'jquery';
-import 'datatables.net-buttons/js/buttons.colVis';
-import 'datatables.net-buttons/js/buttons.flash';
-import 'datatables.net-buttons/js/buttons.html5';
-import 'datatables.net-buttons/js/buttons.print';
 import api from '../../constants/api';
 import BreadCrumbs from '../../layouts/breadcrumbs/BreadCrumbs';
-import CommonTable from '../../components/CommonTable';
 import Publish from '../../components/Publish';
+//import SortOrder from '../../components/SortOrder';
 
- 
 const SectionDetails = () => {
-  //Const Variables
-  const [section, setSection] = useState(null);
+  // State Variables
+  const [section, setSection] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  // Navigation and Parameter Constants
+  const [filterText, setFilterText] = useState('');
+  
+  // Get Parameter from URL
   const { id } = useParams();
 
-  // get section
+  // Fetch Section Data
   const getSection = () => {
+    setLoading(true);
     api
       .get('/product/getProductAdmin')
       .then((res) => {
         setSection(res.data.data);
-    
         setLoading(false);
       })
       .catch(() => {
         setLoading(false);
       });
   };
-  useEffect(() => {
-    // setTimeout(() => {
-    //   $('#example').DataTable({
-    //     pagingType: 'full_numbers',
-    //     pageLength: 20,
-    //     processing: true,
-    //     dom: 'Bfrtip',
-    //     buttons: [
-    //       {
-    //         extend: 'print',
-    //         text: 'Print',
-    //         className: 'shadow-none btn btn-primary',
-    //       },
-    //     ],
-    //   });
-    // }, 1000);
 
+  useEffect(() => {
     getSection();
   }, [id]);
 
-  // useEffect(() => {
-  //   getSection();
-  // }, [id]);
-  //  stucture of Section list view
+  // Filtered Data based on search input
+  const filteredData = section.filter(item =>
+    (item.title?.toLowerCase().includes(filterText.toLowerCase()) || '') ||
+    (item.category_title?.toLowerCase().includes(filterText.toLowerCase()) || '')
+  );
+  
+
+  // Table Columns
   const columns = [
     {
       name: '#',
-      grow: 0,
-      wrap: true,
+      selector: (row, index) => index + 1,
       width: '4%',
+      sortable: true,
     },
     {
       name: 'Edit',
-      selector: 'edit',
-      cell: () => <Icon.Edit2 />,
-      grow: 0,
+      cell: (row) => (
+        <Link to={`/ProductEdit/${row.product_id}`}>
+          <Icon.Edit2 />
+        </Link>
+      ),
       width: 'auto',
       button: true,
-      sortable: false,
     },
-
     {
       name: 'Product Code',
-      selector: 'product_code',
+      selector: row => row.product_code,
       sortable: true,
-      grow: 0,
-      wrap: true,
+      cell: row => (
+        <Link to={`/InventoryEdit/${row.inventory_id}`}>
+          {row.product_code}
+        </Link>
+      ),
     },
     {
       name: 'Title',
-      selector: 'title',
+      selector: row => row.title,
       sortable: true,
-      grow: 2,
-      wrap: true,
     },
-    // {
-    //   name: 'Product Type',
-    //   selector: 'product_type',
-    //   sortable: true,
-    //   grow: 0,
-    // },
     {
       name: 'Unit',
-      selector: 'unit',
+      selector: row => row.unit,
       sortable: true,
-      width: 'auto',
-      grow: 3,
     },
-    // {
-    //   name: 'Price',
-    //   selector: 'price',
-    //   sortable: true,
-    //   width: 'auto',
-    //   grow: 3,
-    // },
-    // {
-    //   name: 'Qty in Stock',
-    //   selector: 'qty_in_stock',
-    //   sortable: true,
-    //   grow: 2,
-    //   width: 'auto',
-    // },
-    // {
-    //   name: 'Modified By',
-    //   selector: 'modified_by',
-    //   sortable: true,
-    //   grow: 2,
-    //   width: 'auto',
-    // },
+    {
+      name: 'Category',
+      selector: row => row.category_title,
+      sortable: true,
+    },
     {
       name: 'Published',
-      selector: 'published',
+      selector: row => row.published,
       sortable: true,
-      grow: 2,
-      width: 'auto',
+      cell: row => (
+        <Publish
+          idColumn="product_id"
+          tablename="product"
+          idValue={row.product_id.toString()}
+          value={row.published}
+        />
+      ),
     },
    
   ];
 
   return (
     <div className="MainDiv">
-      <div className=" pt-xs-25">
+      <div className="pt-xs-25">
         <BreadCrumbs />
-        {/* Section Add new button */}
+        
+        {/* Search Input */}
+        <div className="mb-3 d-flex justify-content-between">
+          <Input
+            type="text"
+            placeholder="Search by Product Code or Title"
+            value={filterText}
+            onChange={e => setFilterText(e.target.value)}
+            className="w-25"
+          />
+          <Link to="/ProductDetails">
+            <Button color="primary" className="shadow-none">
+              Add New
+            </Button>
+          </Link>
+        </div>
 
-        <CommonTable
-          loading={loading}
+        {/* Data Table */}
+        <DataTable
           title="Product List"
-          Button={
-            <Link to="/ProductDetails">
-              <Button color="primary" className="shadow-none">
-                Add New
-              </Button>
-            </Link>
-          }
-        >
-          <thead>
-            <tr>
-              {columns.map((cell) => {
-                return <td key={cell.name}>{cell.name}</td>;
-              })}
-            </tr>
-          </thead>
-          <tbody>
-            {section &&
-              section.map((element, index) => {
-                return (
-                  <tr key={element.product_id}>
-                    <td>{index + 1}</td>
-                    <td>
-                      <Link to={`/ProductEdit/${element.product_id}`}>
-                        <Icon.Edit2 />
-                      </Link>
-                    </td>
-                    
-                    <td>
-                    <Link to={`/InventoryEdit/${element.inventory_id}`}>
-                      {element.product_code}
-                      </Link>
-                    </td>
-                    <td>{element.title}</td>
-                    {/* <td>{element.product_type}</td> */}
-                    <td>{element.unit}</td>
-                    {/* <td>{element.price}</td> */}
-                    {/* <td>{element.qty_in_stock}</td> */}
-                    {/* <td>{element.modified_by}</td> */}
-                    <td>
-                      <Publish
-                        idColumn="product_id"
-                        tablename="product"
-                        idValue={element.product_id.toString()}
-                        value={element.published}
-                      ></Publish>
-                    </td>
-                    {/* <td>
-                      <SortOrder
-                        idValue={element.product_id}
-                        idColumn="product_id"
-                        tablename="section"
-                        value={element.sort_order}
-                      ></SortOrder>
-                    </td> */}
-                  </tr>
-                );
-              })}
-          </tbody>
-        </CommonTable>
-        {/* setion table */}
+          columns={columns}
+          data={filteredData}
+          progressPending={loading}
+          pagination
+          highlightOnHover
+          responsive
+        />
       </div>
     </div>
   );

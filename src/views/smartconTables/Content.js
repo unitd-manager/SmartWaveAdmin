@@ -1,205 +1,158 @@
 import React, { useEffect, useState } from 'react';
 import * as Icon from 'react-feather';
-import { Button } from 'reactstrap';
+import { Button, Input } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'datatables.net-dt/js/dataTables.dataTables';
-import 'datatables.net-dt/css/jquery.dataTables.min.css';
 import moment from 'moment';
-// import $ from 'jquery';
-import 'datatables.net-buttons/js/buttons.colVis';
-import 'datatables.net-buttons/js/buttons.flash';
-import 'datatables.net-buttons/js/buttons.html5';
-import 'datatables.net-buttons/js/buttons.print';
 import { Link } from 'react-router-dom';
+import DataTable from 'react-data-table-component';
 import message from '../../components/Message';
 import api from '../../constants/api';
 import BreadCrumbs from '../../layouts/breadcrumbs/BreadCrumbs';
-import CommonTable from '../../components/CommonTable';
 import Publish from '../../components/Publish';
 import SortOrder from '../../components/SortOrder';
 
 const Content = () => {
-  //Const Variables
-  const [content, setContent] = useState(null);
+  const [content, setContent] = useState([]);
+  const [searchText, setSearchText] = useState('');
+  const [filteredContent, setFilteredContent] = useState([]);
 
-  //getting data from content
+  
+
   const getContent = () => {
-    api
-      .get('/content/getContent')
+    api.get('/content/getContent')
       .then((res) => {
         setContent(res.data.data);
+        setFilteredContent(res.data.data);
       })
       .catch(() => {
         message('Cannot get Content Data', 'error');
       });
   };
   useEffect(() => {
-    // setTimeout(() => {
-    //   $('#example').DataTable({
-    //     pagingType: 'full_numbers',
-    //     pageLength: 20,
-    //     processing: true,
-    //     dom: 'Bfrtip',
-    //     // buttons: [
-    //     //   {
-    //     //     extend: 'print',
-    //     //     text: 'Print',
-    //     //     className: 'shadow-none btn btn-primary',
-    //     //   },
-    //     // ],
-    //   });
-    // }, 1000);
-
     getContent();
   }, []);
-  //Structure of Content List view
-  const Contentcolumns = [
+
+  const handleSearch = (e) => {
+    const value = e.target.value.toLowerCase();
+    setSearchText(value);
+  
+    const filteredData = content.filter(item =>
+      (item.title || '').toLowerCase().includes(value) ||
+      (item.content_type || '').toLowerCase().includes(value) ||
+      (item.section_title || '').toLowerCase().includes(value) ||
+      (item.category_title || '').toLowerCase().includes(value)
+    );
+  
+    setFilteredContent(filteredData);
+  };
+  
+
+  const columns = [
     {
       name: '#',
-      grow: 0,
-      wrap: true,
-      width: '4%',
+      selector: (row, index) => index + 1,
+      width: '5%',
     },
     {
       name: 'Edit',
-      selector: 'edit',
-      cell: () => (
-        <Link to="/">
-          {' '}
-          <Icon.Edit3 />
+      cell: (row) => (
+        <Link to={`/ContentEdit/${row.content_id}`}>
+          <Icon.Edit2 />
         </Link>
       ),
-      grow: 0,
-      width: 'auto',
-      button: true,
-      sortable: false,
+      width: '7%',
     },
-
     {
       name: 'Title',
-      selector: 'title',
+      selector: (row) => row.title,
       sortable: true,
-      grow: 0,
-      wrap: true,
     },
     {
       name: 'Order',
-      selector: 'sort_order',
+      cell: (row) => (
+        <SortOrder
+          idValue={row.content_id}
+          idColumn="content_id"
+          tablename="content"
+          value={row.sort_order}
+        />
+      ),
       sortable: true,
-      grow: 0,
     },
     {
       name: 'Section',
-      selector: 'section_title',
+      selector: (row) => row.section_title,
       sortable: true,
-      width: 'auto',
-      grow: 3,
     },
     {
       name: 'Category',
-      selector: 'category_title',
+      selector: (row) => row.category_title,
       sortable: true,
-      grow: 0,
-      wrap: true,
     },
     {
       name: 'Sub Category',
-      selector: 'sub_category_title',
+      selector: (row) => row.sub_category_title,
       sortable: true,
-      grow: 0,
     },
     {
       name: 'Content Date',
-      selector: 'content_date',
+      selector: (row) => moment(row.content_date).format('YYYY-MM-DD'),
       sortable: true,
-      width: 'auto',
-      grow: 3,
     },
     {
       name: 'Content Type',
-      selector: 'content_type',
+      selector: (row) => row.content_type,
       sortable: true,
-      width: 'auto',
-      grow: 3,
     },
     {
       name: 'ID',
-      selector: 'content_id ',
+      selector: (row) => row.content_id,
       sortable: true,
-      width: 'auto',
-      grow: 3,
     },
     {
       name: 'Published',
-      selector: 'published',
+      cell: (row) => (
+        <Publish
+          idColumn="content_id"
+          tablename="content"
+          idValue={row.content_id.toString()}
+          value={row.published}
+        />
+      ),
       sortable: true,
-      width: 'auto',
-      grow: 3,
     },
   ];
 
   return (
-    <div className="MainDiv  pt-xs-25">
+    <div className="MainDiv pt-xs-25">
       <BreadCrumbs />
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h4>Content List</h4>
+        <Link to="/ContentDetails">
+          <Button color="primary" className="shadow-none">
+            Add New
+          </Button>
+        </Link>
+      </div>
+      <Input
+        type="text"
+        placeholder="Search Content..."
+        value={searchText}
+        onChange={handleSearch}
+        className="mb-3"
+        style={{ maxWidth: '250px' }}
 
-      <CommonTable
-        title="Content List"
-        Button={
-          <Link to="/ContentDetails">
-            <Button color="primary" className="shadow-none">
-              Add New
-            </Button>
-          </Link>
-        }
-      >
-        <thead>
-          <tr>
-            {Contentcolumns.map((cell) => {
-              return <td key={cell.name}>{cell.name}</td>;
-            })}
-          </tr>
-        </thead>
-        <tbody>
-          {content &&
-            content.map((element, index) => {
-              return (
-                <tr key={element.content_id}>
-                  <td>{index + 1}</td>
-                  <td>
-                    {' '}
-                    <Link to={`/ContentEdit/${element.content_id}`}>
-                      <Icon.Edit2 />
-                    </Link>
-                  </td>
-                  <td>{element.title}</td>
-                  <td>
-                    <SortOrder
-                      idValue={element.content_id}
-                      idColumn="content_id"
-                      tablename="content"
-                      value={element.sort_order}
-                    ></SortOrder>
-                  </td>
-                  <td>{element.section_title}</td>
-                  <td>{element.category_title}</td>
-                  <td>{element.sub_category_title}</td>
-                  <td>{moment(element.content_date).format('YYYY-MM-DD')}</td>
-                  <td>{element.content_type}</td>
-                  <td>{element.content_id}</td>
-                  <td>
-                    <Publish
-                      idColumn="content_id"
-                      tablename="content"
-                      idValue={element.content_id.toString()}
-                      value={element.published}
-                    ></Publish>
-                  </td>
-                </tr>
-              );
-            })}
-        </tbody>
-      </CommonTable>
+      />
+      <DataTable
+        columns={columns}
+        data={filteredContent}
+        pagination
+        highlightOnHover
+        responsive
+        striped
+      />
     </div>
   );
 };
+
 export default Content;

@@ -1,150 +1,120 @@
 import React, { useEffect, useState } from 'react';
-import * as Icon from 'react-feather';
-import { Button } from 'reactstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'datatables.net-dt/js/dataTables.dataTables';
-import 'datatables.net-dt/css/jquery.dataTables.min.css';
-import $ from 'jquery';
-import 'datatables.net-buttons/js/buttons.colVis';
-import 'datatables.net-buttons/js/buttons.flash';
-import 'datatables.net-buttons/js/buttons.html5';
-import 'datatables.net-buttons/js/buttons.print';
 import { Link } from 'react-router-dom';
+import { Button, Input } from 'reactstrap';
+import * as Icon from 'react-feather';
+import DataTable from 'react-data-table-component';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import api from '../../constants/api';
 import BreadCrumbs from '../../layouts/breadcrumbs/BreadCrumbs';
-import CommonTable from '../../components/CommonTable';
 
 const Test = () => {
-  //All state variable
-  const [supplier, setSupplier] = useState(null);
+  // State variables
+  const [supplier, setSupplier] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [search, setSearch] = useState('');
+  const [filteredData, setFilteredData] = useState([]);
 
-  //getting data from supplier
+  // Fetch supplier data
   const getSupplier = () => {
     setLoading(true);
     api
       .get('/supplier/getProductOwner')
       .then((res) => {
         setSupplier(res.data.data);
-        $('#example').DataTable({
-          pagingType: 'full_numbers',
-          pageLength: 20,
-          processing: true,
-          dom: 'Bfrtip',
-          buttons: [
-            {
-              extend: 'print',
-              text: 'Print',
-              className: 'shadow-none btn btn-primary',
-            },
-          ],
-        });
+        setFilteredData(res.data.data); // Initialize filtered data
         setLoading(false);
       })
-      .catch(() => {
-        setLoading(false);
-      });
+      .catch(() => setLoading(false));
   };
 
   useEffect(() => {
     getSupplier();
   }, []);
-  //structure of supplier list view
+
+  // Search Filter
+  useEffect(() => {
+    const result = supplier.filter((item) =>
+      Object.values(item).some((value) =>
+        value && value.toString().toLowerCase().includes(search.toLowerCase())
+      )
+    );
+    setFilteredData(result);
+  }, [search, supplier]);
+  
+
+  // Table columns
   const columns = [
     {
       name: '#',
-      selector: 'supplier_id',
-      grow: 0,
-      wrap: true,
-      width: '4%',
+      selector: (_, index) => index + 1,
+      sortable: true,
+      width: '5%',
     },
     {
       name: 'Edit',
-      selector: 'edit',
-      cell: () => <Icon.Edit2 />,
-      grow: 0,
-      width: 'auto',
+      cell: (row) => (
+        <Link to={`/ProductOwnerEdit/${row.product_owner_id}?tab=1`}>
+          <Icon.Edit2 />
+        </Link>
+      ),
+      width: '10%',
       button: true,
-      sortable: false,
     },
     {
       name: 'Name',
-      selector: 'company_name',
+      selector: (row) => row.company_name,
       sortable: true,
-      grow: 0,
-      wrap: true,
     },
     {
       name: 'Website',
-      selector: 'email',
+      selector: (row) => row.email,
       sortable: true,
-      grow: 2,
-      wrap: true,
     },
     {
-      name: 'Telehone',
-      selector: 'mobile',
+      name: 'Telephone',
+      selector: (row) => row.mobile,
       sortable: true,
-      grow: 0,
     },
     {
       name: 'Status',
-      selector: 'status',
+      selector: (row) => row.status,
       sortable: true,
-      grow: 0,
     },
     {
       name: 'Contact Person',
-      selector: 'contact_person',
+      selector: (row) => row.contact_person,
       sortable: true,
-      grow: 0,
     },
   ];
 
   return (
     <div className="MainDiv">
-      <div className=" pt-xs-25">
+      <div className="pt-xs-25">
         <BreadCrumbs />
+        <div className="d-flex justify-content-between mb-3">
+          <Input
+            type="text"
+            placeholder="Search by Name..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            style={{ maxWidth: '250px' }}
+          />
+          <Link to="/ProductOwnerDetails">
+            <Button color="primary" className="shadow-none">
+              Add New
+            </Button>
+          </Link>
+        </div>
 
-        <CommonTable
-          loading={loading}
+        <DataTable
           title="Product Owner List"
-          Button={
-            <Link to="/ProductOwnerDetails">
-              <Button color="primary" className="shadow-none">
-                Add New
-              </Button>
-            </Link>
-          }
-        >
-          <thead>
-            <tr>
-              {columns.map((cell) => {
-                return <td key={cell.name}>{cell.name}</td>;
-              })}
-            </tr>
-          </thead>
-          <tbody>
-            {supplier &&
-              supplier.map((element, index) => {
-                return (
-                  <tr key={element.product_owner_id}>
-                    <td>{index + 1}</td>
-                    <td>
-                      <Link to={`/ProductOwnerEdit/${element.product_owner_id}?tab=1`}>
-                        <Icon.Edit2 />
-                      </Link>
-                    </td>
-                    <td>{element.company_name}</td>
-                    <td>{element.email}</td>
-                    <td>{element.mobile}</td>
-                    <td>{element.status}</td>
-                    <td>{element.contact_person}</td>
-                  </tr>
-                );
-              })}
-          </tbody>
-        </CommonTable>
+          columns={columns}
+          data={filteredData}
+          progressPending={loading}
+          pagination
+          highlightOnHover
+          defaultSortFieldId={1}
+        />
       </div>
     </div>
   );

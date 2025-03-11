@@ -1,42 +1,23 @@
 import React, { useEffect, useState } from 'react';
-
+import DataTable from 'react-data-table-component';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'datatables.net-dt/js/dataTables.dataTables';
-import 'datatables.net-dt/css/jquery.dataTables.min.css';
-// import $ from 'jquery';
-import 'datatables.net-buttons/js/buttons.colVis';
-import 'datatables.net-buttons/js/buttons.flash';
-import 'datatables.net-buttons/js/buttons.html5';
-import 'datatables.net-buttons/js/buttons.print';
 import api from '../../constants/api';
 import BreadCrumbs from '../../layouts/breadcrumbs/BreadCrumbs';
-import CommonTable from '../../components/CommonTable';
-
 
 const Staff = () => {
-  // All state variables
-  const [staff, setStaff] = useState(null);
-  const [loading, setLoading] = useState(false);
+  // State variables
+  const [staff, setStaff] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
+  const [filteredStaff, setFilteredStaff] = useState([]);
 
-  //Api call for getting Staff Data
+  // API call to fetch staff data
   const getStaff = () => {
     api
       .get('/tracking/getTrack')
       .then((res) => {
         setStaff(res.data.data);
-        // $('#example').DataTable({
-        //   pagingType: 'full_numbers',
-        //   pageLength: 20,
-        //   processing: true,
-        //   dom: 'Bfrtip',
-        //   // buttons: [
-        //   //   {
-        //   //     extend: 'print',
-        //   //     text: 'Print',
-        //   //     className: 'shadow-none btn btn-primary',
-        //   //   },
-        //   // ],
-        // });
+        setFilteredStaff(res.data.data);
         setLoading(false);
       })
       .catch(() => {
@@ -48,97 +29,89 @@ const Staff = () => {
     getStaff();
   }, []);
 
+  // Search filter
+  useEffect(() => {
+  
+    const result = staff.filter((item) =>
+      Object.values(item).some((value) =>
+        value && value.toString().toLowerCase().includes(search.toLowerCase())
+      )
+    );
+    setFilteredStaff(result);
+  }, [search, staff]);
+
+  // Table columns
   const columns = [
     {
       name: '#',
-      selector: '',
-      grow: 0,
-      wrap: true,
+      selector: (_, index) => index + 1,
       width: '4%',
+      sortable: true,
     },
- 
     {
       name: 'Name',
+      selector: (row) => row.carrier_name,
       sortable: true,
-      grow: 0,
-      wrap: true,
     },
     {
       name: 'Tracking Number',
+      selector: (row) => row.tracking_number,
       sortable: true,
-      grow: 2,
-      wrap: true,
     },
     {
       name: 'Shipment Date',
+      selector: (row) => row.shipment_date,
       sortable: true,
-      grow: 0,
     },
     {
       name: 'Actual Delivery Date',
+      selector: (row) => row.actual_delivery_date,
       sortable: true,
-      width: 'auto',
-      grow: 3,
     },
     {
       name: 'Expected Delivery Date',
+      selector: (row) => row.expected_delivery_date,
       sortable: true,
-      grow: 2,
-      width: 'auto',
     },
     {
       name: 'Shipment',
+      selector: (row) => row.shipment,
       sortable: true,
-      grow: 2,
-      wrap: true,
     },
     {
       name: 'Tracking Link',
+      selector: (row) => row.tracking_link,
       sortable: true,
-      grow: 2,
-      wrap: true,
     },
-  
- 
   ];
 
   return (
     <div className="MainDiv">
-      <div className=" pt-xs-25">
-      <BreadCrumbs />
-      <CommonTable
-          loading={loading}
+      <div className="pt-xs-25">
+        <BreadCrumbs />
+        <input
+          type="text"
+          placeholder="Search..."
+          className="form-control mb-3"
+          style={{ maxWidth: '250px' }}
+
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <DataTable
           title="Carrier Tracking List"
-         
-        >
-          <thead>
-            <tr>
-              {columns.map((cell) => {
-                return <td key={cell.name}>{cell.name}</td>;
-              })}
-            </tr>
-          </thead>
-          <tbody>
-            {staff &&
-              staff.map((element, index) => {
-                return (
-                  <tr key={element.carrier_tracking_id}>
-                    <td>{index + 1}</td>
-                    <td>{element.carrier_name}</td>
-                    <td>{element.tracking_number}</td>
-                    <td>{element.shipment_date}</td>
-                    <td>{element.actual_delivery_date}</td>
-                    <td>{element.expected_delivery_date}</td>
-                    <td>{element.shipment}</td>
-                    <td>{element.tracking_link}</td>
-               
-                  </tr>
-                );
-              })}
-          </tbody>
-        </CommonTable>
+          columns={columns}
+          data={filteredStaff}
+          progressPending={loading}
+          pagination
+          defaultSortFieldId={2}
+          defaultSortAsc={false}
+          highlightOnHover
+          responsive
+        />
       </div>
     </div>
   );
 };
+
 export default Staff;
