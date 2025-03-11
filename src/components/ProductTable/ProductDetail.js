@@ -16,7 +16,7 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
     <>
       <Form>
         <FormGroup>
-        <ComponentCard title="Product Details" creationModificationDate={productDetails}>
+        <ComponentCard title={<h4 className="mb-0">Product Details</h4>} creationModificationDate={productDetails}>
             <ToastContainer></ToastContainer>
             <Row>
               <Col md="3">

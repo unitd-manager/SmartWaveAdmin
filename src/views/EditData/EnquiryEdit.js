@@ -437,7 +437,7 @@ const EnquiryEdit = () => {
       {/* Enquiry Details */}
       <Form>
         <FormGroup>
-          <ComponentCard title="Enquiry Details" creationModificationDate={enquiryDetails}>
+          <ComponentCard title={<h4 className="mb-0">Enquiry Details</h4>} creationModificationDate={enquiryDetails}>
             {' '}
             <ToastContainer></ToastContainer>
             <Row>

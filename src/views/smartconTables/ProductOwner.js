@@ -87,6 +87,18 @@ const Test = () => {
       sortable: true,
       grow: 0,
     },
+    {
+      name: 'Status',
+      selector: 'status',
+      sortable: true,
+      grow: 0,
+    },
+    {
+      name: 'Contact Person',
+      selector: 'contact_person',
+      sortable: true,
+      grow: 0,
+    },
   ];
 
   return (
@@ -126,6 +138,8 @@ const Test = () => {
                     <td>{element.company_name}</td>
                     <td>{element.email}</td>
                     <td>{element.mobile}</td>
+                    <td>{element.status}</td>
+                    <td>{element.contact_person}</td>
                   </tr>
                 );
               })}

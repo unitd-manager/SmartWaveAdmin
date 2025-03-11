@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {  Form, Table } from 'reactstrap';
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import ComponentCard from '../ComponentCard';
 
 export default function ProductLinkedTable({purchaseOrder}) {
@@ -45,7 +46,9 @@ export default function ProductLinkedTable({purchaseOrder}) {
         <tbody>
           {purchaseOrder && purchaseOrder.map(element=>{
               return (<tr key={element.supplier_id}>
-              <td>{element.product_code}</td>
+              <td><Link to={`/ProductEdit/${element.product_id}`} className="text-primary">
+                      {element.product_code}
+                  </Link></td>
               <td>{element.title}</td>
               <td >{element.category_title}</td>
               <td>{element.qty_in_stock }</td>
