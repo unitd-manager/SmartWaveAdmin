@@ -10,3 +10,8 @@ input[type="text"], select {
 .sidebarArea .nav-link {
     font-size: 11px !important;
 }
+.activeLink {
+    color: red !important;
+    font-weight: bold;
+  }
+  

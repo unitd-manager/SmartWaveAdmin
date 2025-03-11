@@ -148,11 +148,23 @@ const ContentUpdate = () => {
     getTrackItem();
   }, [id]);
 
+  const [allCountries, setAllCountries] = useState();
 
 
-  
+  const suppliereditdetails = () => {
+    api
+      .get('/geocountry/getCountry')
+      .then((res) => {
+        setAllCountries(res.data.data);
+      })
+      .catch(() => {
+        message('Supplier Data Not Found', 'info');
+      });
+  };
 
-
+  useEffect(() => {
+    suppliereditdetails();
+  }, []);
   const columns2 = [
     {
       name: '#',
@@ -321,30 +333,94 @@ const ContentUpdate = () => {
               </Col>
               <Col md="3">
                 <FormGroup>
-                <Label>Address</Label>
+                  {/* Category title from Category table */}
+                  <Label>Date Of Creation</Label>
                   <Input
-                    type="text"
+                    type="date"
                     onChange={handleInputs}
-                    value={contentDetails && contentDetails.address1}
-                    name="address1"
+                    value={contentDetails && contentDetails.date_of_creation}
+                    name="date_of_creation"
                   />
                 </FormGroup>
               </Col>
-              <Col md="3">
-                <FormGroup>
-                <Label>Product Owner Address</Label>
-                  <Input
-                    type="text"
-                    onChange={handleInputs}
-                    value={contentDetails && contentDetails.productowner_address}
-                    name="productowner_address"
-                  />
-                </FormGroup>
-              </Col>
-             
-             
             </Row>
           </ComponentCard>
+          </FormGroup>
+          <FormGroup>
+            <ComponentCard title="Address">
+              <Row>
+                <Col md="4">
+                  <FormGroup>
+                    <Label>
+                      Address 1 
+                    </Label>
+                    <Input
+                      type="text"
+                      onChange={handleInputs}
+                      value={contentDetails && contentDetails.address1}
+                      name="address1"  />
+                  </FormGroup>
+                </Col>
+                <Col md="4">
+                  <FormGroup>
+                    <Label>Address 2</Label>
+                    <Input
+                      type="text"
+                      onChange={handleInputs}
+                      value={contentDetails && contentDetails.address2}
+                      name="address2"  />
+                  </FormGroup>
+                </Col>
+                <Col md="4">
+                  <FormGroup>
+                    <Label>State/Zip</Label>
+                    <Input
+                      type="text"
+                      onChange={handleInputs}
+                      value={contentDetails && contentDetails.address_state}
+                      name="address_state" />
+                  </FormGroup>
+                </Col>
+                </Row>
+                <Row>
+                <Col md="4">
+                  <FormGroup>
+                  <Label>Country</Label>
+                    <Input
+                      type="select"
+                      name="address_country_code"
+                      onChange={handleInputs}
+                      value={contentDetails && contentDetails.address_country_code}>
+                      <option defaultValue="selected">
+                        Please Select
+                      </option>
+                      {allCountries && allCountries.map(country=>(<option value={country.country_code}>{country.name}</option>))}
+            </Input>
+                  </FormGroup>
+                </Col>
+                <Col md="4">
+                  <FormGroup>
+                    <Label>City</Label>
+                    <Input
+                      type="text"
+                      onChange={handleInputs}
+                      value={contentDetails && contentDetails.address_city}
+                      name="address_city"  />
+                  </FormGroup>
+                </Col>
+                <Col md="4">
+                  <FormGroup>
+                    <Label>Pin Code</Label>
+                    <Input
+                      type="text"
+                      onChange={handleInputs}
+                      value={contentDetails && contentDetails.address_po_code}
+                      name="address_po_code"  />
+                  </FormGroup>
+                </Col>
+              </Row>
+            
+            </ComponentCard>
           </FormGroup>
       </Form>
       <ComponentCard title="More Details">

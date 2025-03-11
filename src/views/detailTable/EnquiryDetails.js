@@ -66,6 +66,7 @@ const OpportunityDetails = () => {
   const insertTender = (code) => {
     if (tenderForms.contact_id !== '' && tenderForms.title !== '') {
       tenderForms.enquiry_code = code;
+      tenderForms.enquiry_date = creationdatetime
       tenderForms.creation_date = creationdatetime
       tenderForms.created_by = loggedInuser.first_name;
       api

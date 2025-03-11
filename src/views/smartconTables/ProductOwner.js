@@ -119,7 +119,7 @@ const Test = () => {
                   <tr key={element.product_owner_id}>
                     <td>{index + 1}</td>
                     <td>
-                      <Link to={`/ProductOwnerEdit/${element.product_owner_id}`}>
+                      <Link to={`/ProductOwnerEdit/${element.product_owner_id}?tab=1`}>
                         <Icon.Edit2 />
                       </Link>
                     </td>

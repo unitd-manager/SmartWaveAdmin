@@ -94,13 +94,13 @@ const Customer = () => {
       sortable: true,
       grow: 0,
     },
-    {
-      name: 'Password',
-      selector: 'pass_word',
-      sortable: true,
-      width: 'auto',
-      grow: 3,
-    },
+    // {
+    //   name: 'Password',
+    //   selector: 'pass_word',
+    //   sortable: true,
+    //   width: 'auto',
+    //   grow: 3,
+    // },
     {
       name: 'Mobile',
       selector: 'mobile',
@@ -110,8 +110,8 @@ const Customer = () => {
     },
     
     {
-      name: 'Creation Date',
-      selector: 'creation_date',
+      name: 'Date Of Creation',
+      selector: 'date_of_creation',
       sortable: true,
       width: 'auto',
       grow: 3,
@@ -147,17 +147,21 @@ const Customer = () => {
                   <td>{index + 1}</td>
                   <td>
                     {' '}
-                    <Link to={`/CustomerEdit/${element.contact_id}`}>
+                    <Link to={`/CustomerEdit/${element.contact_id}?tab=1`}>
                       <Icon.Edit2 />
                     </Link>
                   </td>
+                  
                   {/* <td>{element.contact_id}</td> */}
                   <td>{element.first_name}</td>
                   <td>{element.email}</td>
-                  <td>{element.pass_word}</td>
+                  {/* <td>{element.pass_word}</td> */}
                   <td>{element.mobile}</td>
-                  <td>{moment(element.creation_date).format('YYYY-MM-DD')}</td>
-                
+                 <td>
+                  {element.date_of_creation
+                    ? moment(element.date_of_creation).format('DD-MM-YYYY')
+                    : ''}
+                </td>
                 </tr>
               );
             })}

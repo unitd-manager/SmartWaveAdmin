@@ -456,6 +456,18 @@ const EnquiryEdit = () => {
               </Col>
               <Col md="4">
                 <FormGroup>
+                  <Label>Enquiry Date</Label>
+                  <Input
+                    type="date"
+                    onChange={handleInputs}
+                    value={enquiryDetails && enquiryDetails.enquiry_date}
+                    name="enquiry_date"
+
+                  ></Input>
+                </FormGroup>
+              </Col>
+              <Col md="4">
+                <FormGroup>
                   <Label>Title</Label>
                   <Input
                     type="text"
@@ -560,7 +572,7 @@ const EnquiryEdit = () => {
                     value={enquiryDetails && enquiryDetails.shipping_address}
                     name="shipping_address"
                     disabled
-
+                    rows="4"
                   ></Input>
                 </FormGroup>
               </Col>

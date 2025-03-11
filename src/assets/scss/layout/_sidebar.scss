@@ -12,6 +12,11 @@
   .fixedSidebar {
     position: fixed;
   }
+  .activeLink {
+    color: #2962ff !important;
+    font-weight: bold;
+  }
+  
   .navCaption {
     font-size: 0.775rem;
     padding: 5px 15px;
@@ -41,7 +46,11 @@
   }
   .activeLink .nav-link {
     opacity: 1;
+    color: #2962ff !important;
+    font-weight: bold;
   }
+
+  
   .subMenu {
     padding: 0;
     list-style: none;
@@ -98,6 +107,8 @@
   }
   .activeLink .nav-link {
     opacity: 1;
+    color: #2962ff !important;
+    font-weight: bold;
   }
 }
 @include media-breakpoint-up(lg) {

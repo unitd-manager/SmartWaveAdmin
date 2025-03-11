@@ -2,26 +2,26 @@ import React, { useEffect } from 'react';
 import { Collapse, NavItem, NavLink } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
-// import { HasAccess } from '@permify/react-role';
 
 const NavSubMenu = ({ icon, title, items, isUrl, suffixColor, suffix }) => {
   const location = useLocation();
+  const [collapsed, setCollapsed] = React.useState(true);
 
-  const [collapsed, setCollapsed] = React.useState(false);
-  const getActive = document.getElementsByClassName('activeLink');
   const toggle = () => {
     setCollapsed(!collapsed);
   };
+
   useEffect(() => {
     if (isUrl) {
       setCollapsed(!collapsed);
-     
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [location.pathname]);
+
+  // Sort items by path length (longer paths first) to avoid multiple active links
+  const sortedItems = [...items].sort((a, b) => b.sort_order - a.sort_order);
 
   return (
-    <NavItem className={collapsed && getActive ? 'activeParent' : ''}>
+    <NavItem>
       <NavLink className="cursor-pointer gap-3" onClick={toggle}>
         <span className="sidebarIcon">{icon}</span>
         <span className="hide-mini w-100">
@@ -36,30 +36,33 @@ const NavSubMenu = ({ icon, title, items, isUrl, suffixColor, suffix }) => {
       </NavLink>
 
       <Collapse isOpen={collapsed} navbar tag="ul" className="subMenu">
-        {items.map((item) => (
-        //    <HasAccess
-        //    roles={null}
-        //    permissions={`${item.section_title}-list`}
-        //    renderAuthFailed={<p></p>}
-        //  >
-           <NavItem
-            key={item.section_title}
-            className={`hide-mini  ${location.pathname === item.internal_link ? 'activeLink' : ''}`}
-          >
-            <NavLink tag={Link} to={item.internal_link} className="gap-3">
-              <span className="sidebarIcon">{item.icon}</span>
-              <span className="hide-mini">
-                <span>{item.section_title}</span>
-              </span>
-            </NavLink>
-          </NavItem>
-        //  </HasAccess>
-         
-        ))}
+        {sortedItems.map((item) => {
+          // Determine active link while preventing multiple highlights
+          const isActive =
+            location.pathname.startsWith(item.internal_link) &&
+            !sortedItems.some(
+              (other) =>
+                other.internal_link !== item.internal_link &&
+                location.pathname.startsWith(other.internal_link) &&
+                other.internal_link.length > item.internal_link.length
+            );
+
+          return (
+            <NavItem key={item.section_title} className={`hide-mini ${isActive ? 'activeLink' : ''}`}>
+              <NavLink tag={Link} to={item.internal_link} className="gap-3">
+                <span className="sidebarIcon">{item.icon}</span>
+                <span className="hide-mini">
+                  <span>{item.section_title}</span>
+                </span>
+              </NavLink>
+            </NavItem>
+          );
+        })}
       </Collapse>
     </NavItem>
   );
 };
+
 NavSubMenu.propTypes = {
   title: PropTypes.string,
   items: PropTypes.array,
@@ -68,4 +71,5 @@ NavSubMenu.propTypes = {
   suffix: PropTypes.any,
   suffixColor: PropTypes.string,
 };
+
 export default NavSubMenu;

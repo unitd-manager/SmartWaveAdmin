@@ -5,6 +5,8 @@ import { Button, Input,Label } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'datatables.net-dt/js/dataTables.dataTables';
 import 'datatables.net-dt/css/jquery.dataTables.min.css';
+import moment from 'moment';
+
 import $ from 'jquery';
 import { Link } from 'react-router-dom';
 import BreadCrumbs from '../../layouts/breadcrumbs/BreadCrumbs';
@@ -108,6 +110,7 @@ const Enquiry = () => {
             <tr>
               <th>ID</th>
               <th>Edit</th>
+              <th>Enquiry Date</th>
               <th>Enquiry Code</th>
               <th>Title</th>
               <th>Enquiry Type</th>
@@ -120,9 +123,14 @@ const Enquiry = () => {
               <tr key={element.enquiry_id}>
                 <td>{element.enquiry_id}</td>
                 <td>
-                  <Link to={`/EnquiryEdit/${element.enquiry_id}`}>
+                  <Link to={`/EnquiryEdit/${element.enquiry_id}?tab=1`}>
                     <Icon.Edit2 />
                   </Link>
+                </td>
+                <td>
+                  {element.enquiry_date
+                    ? moment(element.enquiry_date).format('DD-MM-YYYY')
+                    : ''}
                 </td>
                 <td>{element.enquiry_code}</td>
                 <td>{element.title}</td>
