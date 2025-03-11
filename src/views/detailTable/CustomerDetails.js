@@ -15,7 +15,7 @@ const CustomerDetails = () => {
   const [content, setContent] = useState();
   const navigate = useNavigate();
   const [contentDetails, setContentDetails] = useState({
-    title: '',
+    first_name: '',
     creation_date: moment(),
     content_date: moment(),
     content_type: '',
@@ -35,9 +35,10 @@ const CustomerDetails = () => {
   }; 
   //Insert Custmer Data
   const insertCustomerData = () => {
-    contentDetails.creation_date = creationdatetime;
-    contentDetails.created_by = loggedInuser.first_name;
+   
     if (contentDetails.first_name !== '') {
+      contentDetails.creation_date = creationdatetime;
+      contentDetails.created_by = loggedInuser.first_name;
       api
         .post('/contact/insertContact', contentDetails)
         .then((res) => {
@@ -87,9 +88,6 @@ const CustomerDetails = () => {
                       color="primary"
                       onClick={() => {
                         insertCustomerData();
-                        setTimeout(() => {
-                          navigate('/CustomerEdit');
-                        }, 800);
                       }}
                     >
                       Save

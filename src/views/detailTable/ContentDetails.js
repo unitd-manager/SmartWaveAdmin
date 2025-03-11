@@ -87,9 +87,7 @@ const ContentDetails = () => {
                       color="primary"
                       onClick={() => {
                         insertContentData();
-                        setTimeout(() => {
-                          navigate('/ContentEdit');
-                        }, 800);
+                      
                       }}
                     >
                       Save
