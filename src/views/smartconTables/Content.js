@@ -49,7 +49,7 @@ const Content = () => {
 
   const columns = [
     {
-      name: '#',
+      name: 'S.No',
       selector: (row, index) => index + 1,
       width: '5%',
     },
@@ -104,11 +104,11 @@ const Content = () => {
       selector: (row) => row.content_type,
       sortable: true,
     },
-    {
-      name: 'ID',
-      selector: (row) => row.content_id,
-      sortable: true,
-    },
+    // {
+    //   name: 'ID',
+    //   selector: (row) => row.content_id,
+    //   sortable: true,
+    // },
     {
       name: 'Published',
       cell: (row) => (

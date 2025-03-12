@@ -21,12 +21,13 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
             <Row>
               <Col md="3">
                 <FormGroup>
-                  <Label> Item code </Label>
+                  <Label>Product code </Label>
                   <Input
                     type="text"
                     onChange={handleInputs}
                     value={productDetails && productDetails.product_code}
                     name="product_code"
+                    disabled
                   />
                 </FormGroup>
               </Col>

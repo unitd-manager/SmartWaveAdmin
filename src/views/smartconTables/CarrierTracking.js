@@ -81,6 +81,7 @@ const Staff = () => {
     {
       name: 'Tracking Link',
       selector: (row) => row.tracking_link,
+      width: '25%', 
       sortable: true,
     },
   ];

@@ -43,7 +43,11 @@ const Customer = () => {
   }, [searchText, customer]);
 
   const columns = [
-    { name: '#', selector: row => row.contact_id, sortable: true },
+    { 
+      name: 'S.No', 
+      selector: (row, index) => index + 1, 
+      sortable: false 
+    },
     { name: 'Edit', cell: row => <Link to={`/CustomerEdit/${row.contact_id}`}><Icon.Edit2 /></Link> },
     { name: 'Name', selector: row => row.first_name, sortable: true },
     { name: 'Email', selector: row => row.email, sortable: true },

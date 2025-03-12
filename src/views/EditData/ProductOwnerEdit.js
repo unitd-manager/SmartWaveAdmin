@@ -138,7 +138,7 @@ const SupplierEdit = () => {
         message('Status Data Not Found', 'info');
       });
   };
-  
+   
   const getEnquiries = () => {
     api
       .post('/supplier/getEnquiriesLinked',{product_owner_id:id})

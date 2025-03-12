@@ -57,7 +57,12 @@ const Enquiry = () => {
 
   // Table Columns
   const columns = [
-    { name: 'ID', selector: (row) => row.enquiry_id, sortable: true },
+    { 
+      name: 'S.No', 
+      selector: (row, index) => index + 1, 
+      width: '5%', 
+      sortable: false 
+    },
     {
       name: 'Edit',
       cell: (row) => (
@@ -65,22 +70,25 @@ const Enquiry = () => {
           <Icon.Edit2 />
         </Link>
       ),
+      width: '5%', 
     },
     {
       name: 'Date',
       selector: (row) => (row.enquiry_date ? moment(row.enquiry_date).format('DD-MM-YYYY') : ''),
+      width: '10%', 
       sortable: true,
     },
-    { name: 'Code', selector: (row) => row.enquiry_code, sortable: true },
+    { name: 'Code', selector: (row) => row.enquiry_code,width: '10%',  sortable: true },
     { name: 'Title', selector: (row) => row.title, sortable: true },
     {
       name: 'Name',
       selector: (row) =>
         `${row.first_name || ''} ${row.last_name || ''}`.trim() || '',
+      width: '15%', 
       sortable: true,
     },
-    { name: 'Email', selector: (row) => row.email, sortable: true },
-    { name: 'Type', selector: (row) => row.enquiry_type, sortable: true },
+    { name: 'Email', selector: (row) => row.email,width: '18%',  sortable: true },
+    { name: 'Type', selector: (row) => row.enquiry_type,width: '23%', sortable: true },
   ];
 
   return (
