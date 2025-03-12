@@ -3,7 +3,8 @@ import { Row, Col, Form, FormGroup, Label, Input, Button ,TabPane, TabContent,Ta
 import { ToastContainer } from 'react-toastify';
 import * as Icon from 'react-feather';
 import Swal from 'sweetalert2';
-import { useNavigate, useParams } from 'react-router-dom';
+import moment from 'moment';
+import { useNavigate, useParams ,Link} from 'react-router-dom';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import '../form-editor/editor.scss';
 import BreadCrumbs from '../../layouts/breadcrumbs/BreadCrumbs';
@@ -146,6 +147,9 @@ const EnquiryEdit = () => {
   const columns1 = [
     {
       name: '#',
+    },
+    {
+      name: 'Product Code',
     },
     {
       name: 'Name',
@@ -455,17 +459,17 @@ const EnquiryEdit = () => {
                 </FormGroup>
               </Col>
               <Col md="4">
-                <FormGroup>
-                  <Label>Enquiry Date</Label>
-                  <Input
-                    type="date"
-                    onChange={handleInputs}
-                    value={enquiryDetails && enquiryDetails.enquiry_date}
-                    name="enquiry_date"
+  <FormGroup>
+    <Label>Enquiry Date</Label>
+    <Input
+      type="date"
+      onChange={handleInputs}
+      value={enquiryDetails && enquiryDetails.enquiry_date ? moment(enquiryDetails && enquiryDetails.enquiry_date).format("YYYY-MM-DD") : ""}
+      name="enquiry_date"
+    />
+  </FormGroup>
+</Col>
 
-                  ></Input>
-                </FormGroup>
-              </Col>
               <Col md="4">
                 <FormGroup>
                   <Label>Title</Label>
@@ -523,6 +527,7 @@ const EnquiryEdit = () => {
                         <Label>Status</Label>
                         <Input type="select" value={enquiryDetails && enquiryDetails.status} name="status" onChange={handleInputs}>
                           <option value="">Select Status</option>
+                          <option value="New">New</option>
                           <option value="In Progress">In Progress</option>
                           <option value="Hold">Hold</option>
                           <option value="Cancelled">Cancelled</option>
@@ -596,6 +601,9 @@ const EnquiryEdit = () => {
                         return (
                           <tr key={e.enquiry_id}>
                             <td>{index + 1}</td>
+                             <td><Link to={`/ProductEdit/${e.product_id}`} className="text-primary">
+                                                  {e.product_code}
+                                              </Link></td>
                             <td data-label="Title">{e.product_title}</td>
                             <td data-label="Description">{e.category_title}</td>
                             <td data-label="Quantity">{e.quantity}</td>

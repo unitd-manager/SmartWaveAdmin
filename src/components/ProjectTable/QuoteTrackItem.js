@@ -1,4 +1,4 @@
-import React, { useState, useContext,useEffect } from 'react';
+import React, { useState, useContext} from 'react';
 import {
   Card,
   Row,
@@ -35,7 +35,7 @@ const QuoteLineItem = ({ addTrackItemModal, setAddTrackItemModal, quoteTrack }) 
     actual_delivery_date: '',
     expected_delivery_date: '',
     enquiry_id: '',
-    shipment_id: '',
+    shipper_name: '',
     shipper_address: '',
     recipient_name: '',
     recipient_address: '',
@@ -80,38 +80,38 @@ const QuoteLineItem = ({ addTrackItemModal, setAddTrackItemModal, quoteTrack }) 
     }
   };
 
-  const [company, setCompany] = useState();
-      const getCompany = () => {
-        api.get('/company/getContact').then((res) => {
-          setCompany(res.data.data);
-        });
-      };
+  // const [company, setCompany] = useState();
+  //     const getCompany = () => {
+  //       api.get('/company/getContact').then((res) => {
+  //         setCompany(res.data.data);
+  //       });
+  //     };
 
 
-        useEffect(() => {
+  //       useEffect(() => {
         
-          getCompany();
+  //         getCompany();
         
-        }, []);
+  //       }, []);
 
   
-  const handleCompanyChange = (e) => {
-    const selectedCompanyId = e.target.value;
+  // const handleCompanyChange = (e) => {
+  //   const selectedCompanyId = e.target.value;
   
-    // Update lineItemData with the selected company ID
-    handleInputChange(e); // Update company_id in settingdetails
+  //   // Update lineItemData with the selected company ID
+  //   handleInputChange(e); // Update company_id in settingdetails
 
-    // Find selected company details
-    const selectedCompany = company.find((comp) => String(comp.contact_id) === selectedCompanyId);
+  //   // Find selected company details
+  //   const selectedCompany = company.find((comp) => String(comp.contact_id) === selectedCompanyId);
   
-    if (selectedCompany) {
-      // Update shipper address
-      setFormData((prevDetails) => ({
-        ...prevDetails,
-        shipper_address: selectedCompany.address1 || '',
-      }));
-    }
-  };
+  //   if (selectedCompany) {
+  //     // Update shipper address
+  //     setFormData((prevDetails) => ({
+  //       ...prevDetails,
+  //       shipper_address: selectedCompany.address1 || '',
+  //     }));
+  //   }
+  // };
 
   return (
     <Modal size="lg" isOpen={addTrackItemModal}>
@@ -149,28 +149,19 @@ const QuoteLineItem = ({ addTrackItemModal, setAddTrackItemModal, quoteTrack }) 
                   />
                 </FormGroup>
               </Col>
-               <Col md="4">
-                  <FormGroup>
-                    <Label>Shipment</Label>
-                
-              
-                    <Input
-                type="select"
-                name="shipment_id"
-                onChange={handleCompanyChange}
-                value={formData?.shipment_id ? String(formData.shipment_id) : ''} // Ensure it's updating correctly
+              <Col md="4">
 
-              >
-                <option value="">Please Select</option>
-                {company?.map((ele) => (
-                    <option key={ele.contact_id} value={String(ele.contact_id)}>
-                      {ele.first_name} {/* Make sure this is the correct property */}
-                    </option>
-                  ))}
-              </Input>
-              
-                  </FormGroup>
-                </Col>
+  <FormGroup>
+      <Label>Shipper Name</Label>
+      <Input
+        type="text"
+        name="shipper_name"
+        value={formData.shipper_name}
+        onChange={handleInputChange}
+      />
+    </FormGroup>
+  </Col>
+ 
             </Row>
             <Row>
 <Col md="4">
@@ -178,10 +169,11 @@ const QuoteLineItem = ({ addTrackItemModal, setAddTrackItemModal, quoteTrack }) 
 <FormGroup>
     <Label>Shipper Address</Label>
     <Input
-      type="text"
+      type="textarea"
       name="shipper_address"
       value={formData.shipper_address}
       onChange={handleInputChange}
+      rows="4"
     />
   </FormGroup>
 </Col>
@@ -202,10 +194,11 @@ const QuoteLineItem = ({ addTrackItemModal, setAddTrackItemModal, quoteTrack }) 
   <FormGroup>
       <Label>Recipient Address</Label>
       <Input
-        type="text"
+        type="textarea"
         name="recipient_address"
         value={formData.recipient_address}
         onChange={handleInputChange}
+        rows="4"
       />
     </FormGroup>
   </Col>

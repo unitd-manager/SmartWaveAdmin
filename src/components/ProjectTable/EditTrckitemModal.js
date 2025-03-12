@@ -83,38 +83,38 @@ const EditLineItemModal = ({ editTrackModal, setEditTrackModal,FetchTrackItemDat
   //       message('Unable to edit item. Please try again.', 'error');
   //     });
   // };
-      const [company, setCompany] = useState();
-      const getCompany = () => {
-        api.get('/company/getContact').then((res) => {
-          setCompany(res.data.data);
-        });
-      };
+      // const [company, setCompany] = useState();
+      // const getCompany = () => {
+      //   api.get('/company/getContact').then((res) => {
+      //     setCompany(res.data.data);
+      //   });
+      // };
 
 
-        useEffect(() => {
+      //   useEffect(() => {
         
-          getCompany();
+      //     getCompany();
         
-        }, []);
+      //   }, []);
 
 
-        const handleCompanyChange = (e) => {
-          const selectedCompanyId = e.target.value;
+      //   const handleCompanyChange = (e) => {
+      //     const selectedCompanyId = e.target.value;
         
-          // Update lineItemData with the selected company ID
-          handleData(e); // Update company_id in settingdetails
+      //     // Update lineItemData with the selected company ID
+      //     handleData(e); // Update company_id in settingdetails
 
-          // Find selected company details
-          const selectedCompany = company.find((comp) => String(comp.contact_id) === selectedCompanyId);
+      //     // Find selected company details
+      //     const selectedCompany = company.find((comp) => String(comp.contact_id) === selectedCompanyId);
         
-          if (selectedCompany) {
-            // Update shipper address
-            setLineItemData((prevDetails) => ({
-              ...prevDetails,
-              shipper_address: selectedCompany.address1 || '',
-            }));
-          }
-        };
+      //     if (selectedCompany) {
+      //       // Update shipper address
+      //       setLineItemData((prevDetails) => ({
+      //         ...prevDetails,
+      //         shipper_address: selectedCompany.address1 || '',
+      //       }));
+      //     }
+      //   };
         
   return (
     <Modal size="lg" isOpen={editTrackModal} >
@@ -145,23 +145,13 @@ const EditLineItemModal = ({ editTrackModal, setEditTrackModal,FetchTrackItemDat
   </Col>
   <Col md="4">
     <FormGroup>
-      <Label>Shipment</Label>
-  
-
+      <Label>Shipper Name</Label>
       <Input
-  type="select"
-  name="shipment_id"
-  onChange={handleCompanyChange}
-  value={lineItemData?.shipment_id ? String(lineItemData.shipment_id) : ''} // Ensure it's updating correctly
->
-  <option value="">Please Select</option>
-  {company?.map((ele) => (
-      <option key={ele.contact_id} value={String(ele.contact_id)}>
-        {ele.first_name} {/* Make sure this is the correct property */}
-      </option>
-    ))}
-</Input>
-
+        type="text"
+        name="shipper_name"
+        value={lineItemData?.shipper_name || ''}
+        onChange={handleData}
+      />
     </FormGroup>
   </Col>
  
@@ -173,10 +163,11 @@ const EditLineItemModal = ({ editTrackModal, setEditTrackModal,FetchTrackItemDat
 <FormGroup>
     <Label>Shipper Address</Label>
     <Input
-      type="text"
+      type="textarea"
       name="shipper_address"
       value={lineItemData?.shipper_address || ''}
       onChange={handleData}
+     rows="4"
     />
   </FormGroup>
 </Col>
@@ -231,10 +222,11 @@ const EditLineItemModal = ({ editTrackModal, setEditTrackModal,FetchTrackItemDat
   <FormGroup>
       <Label>Recipient Address</Label>
       <Input
-        type="text"
+        type="textarea"
         name="recipient_address"
         value={lineItemData?.recipient_address || ''}
         onChange={handleData}
+       rows="4"
       />
     </FormGroup>
   </Col>

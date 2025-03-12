@@ -75,7 +75,7 @@ const Staff = () => {
     },
     {
       name: 'Shipment',
-      selector: (row) => row.shipment,
+      selector: (row) => row.shipper_name,
       sortable: true,
     },
     {

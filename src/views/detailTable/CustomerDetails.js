@@ -37,6 +37,7 @@ const CustomerDetails = () => {
   const insertCustomerData = () => {
    
     if (contentDetails.first_name !== '') {
+      contentDetails.date_of_creation = creationdatetime
       contentDetails.creation_date = creationdatetime;
       contentDetails.created_by = loggedInuser.first_name;
       api
