@@ -65,11 +65,7 @@ const SectionDetails = () => {
       name: 'Product Code',
       selector: row => row.product_code,
       sortable: true,
-      cell: row => (
-        <Link to={`/InventoryEdit/${row.inventory_id}`}>
-          {row.product_code}
-        </Link>
-      ),
+     
     },
     {
       name: 'Title',

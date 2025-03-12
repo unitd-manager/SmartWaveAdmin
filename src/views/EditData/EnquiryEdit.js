@@ -243,13 +243,13 @@ const EnquiryEdit = () => {
   };
 
 
-  const [quote, setQuote] = useState({});
+  const [quote, setQuote] = useState([]);
 
     // Get Quote By Id
     const getQuote = () => {
       api.post('/enquiry/getQuoteById', { enquiry_id: id }).then((res) => {
         if (res.data.data && res.data.data.length > 0) {
-          setQuote(res.data.data[0]);
+          setQuote(res.data.data);
         }
       });
     };
