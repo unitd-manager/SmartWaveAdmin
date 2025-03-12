@@ -122,7 +122,7 @@ const EditLineItemModal = ({ editTrackModal, setEditTrackModal,FetchTrackItemDat
   </Col>
   <Col md="4">
     <FormGroup>
-      <Label>Address 3</Label>
+      <Label>Town</Label>
       <Input
         type="text"
         name="address_town"
