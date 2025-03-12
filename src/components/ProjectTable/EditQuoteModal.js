@@ -132,7 +132,7 @@ const EditQuoteModal = ({
                     </Input>
                   </FormGroup>
                 </Col>
-                {/* <Col md="4">
+                <Col md="4">
                   <FormGroup>
                     <Label>Amount</Label>
                     <Input
@@ -142,7 +142,7 @@ const EditQuoteModal = ({
                       onChange={handleData}
                     />
                   </FormGroup>
-                </Col> */}
+                </Col>
               </Row>
              
             

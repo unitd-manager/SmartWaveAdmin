@@ -120,11 +120,11 @@ export default function TenderQuotation({
               </FormGroup>
             </Col>
          
-            {/* <Col>
+            <Col>
               <FormGroup>
                 <Label>Amount</Label>{' '}
               </FormGroup>
-            </Col> */}
+            </Col>
            
             <Col>
               <FormGroup>
@@ -154,11 +154,11 @@ export default function TenderQuotation({
               </FormGroup>
             </Col>
           
-            {/* <Col>
+            <Col>
               <FormGroup>
                 <Label>{quote && quote.price}</Label>
               </FormGroup>
-            </Col> */}
+            </Col>
 
 
             <Col>
