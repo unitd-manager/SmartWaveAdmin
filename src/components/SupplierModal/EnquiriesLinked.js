@@ -50,7 +50,11 @@ export default function ProductLinkedTable({purchaseOrder}) {
         <tbody>
           {purchaseOrder && purchaseOrder.map(element=>{
               return (<tr key={element.enquiry_id}>
-                 <td>{moment(element.creation_date).format('DD-MM-YYYY')}</td>
+             <td>
+                {moment(element.enquiry_date, true).isValid() 
+                    ? moment(element.enquiry_date).format('DD-MM-YYYY') 
+                    : ""}
+            </td>
 
                  <td>
                   <Link to={`/EnquiryEdit/${element.enquiry_id}`} className="text-primary">
