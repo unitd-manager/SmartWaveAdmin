@@ -373,6 +373,16 @@ const ContentUpdate = () => {
                 </Col>
                 <Col md="4">
                   <FormGroup>
+                    <Label>City</Label>
+                    <Input
+                      type="text"
+                      onChange={handleInputs}
+                      value={contentDetails && contentDetails.address_city}
+                      name="address_city"  />
+                  </FormGroup>
+                </Col>
+                <Col md="4">
+                  <FormGroup>
                     <Label>State/Zip</Label>
                     <Input
                       type="text"
@@ -398,16 +408,7 @@ const ContentUpdate = () => {
             </Input>
                   </FormGroup>
                 </Col>
-                <Col md="4">
-                  <FormGroup>
-                    <Label>City</Label>
-                    <Input
-                      type="text"
-                      onChange={handleInputs}
-                      value={contentDetails && contentDetails.address_city}
-                      name="address_city"  />
-                  </FormGroup>
-                </Col>
+               
                 <Col md="4">
                   <FormGroup>
                     <Label>Pin Code</Label>
