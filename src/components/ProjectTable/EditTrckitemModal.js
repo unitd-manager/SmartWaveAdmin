@@ -12,6 +12,7 @@ import {
   ModalFooter,
 } from 'reactstrap';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import api from '../../constants/api';
 import message from '../Message';
 // import AppContext from '../../context/AppContext';
@@ -20,9 +21,7 @@ const EditLineItemModal = ({ editTrackModal, setEditTrackModal,FetchTrackItemDat
   EditLineItemModal.propTypes = {
     editTrackModal: PropTypes.bool.isRequired,
     setEditTrackModal: PropTypes.func.isRequired,
-    FetchTrackItemData: PropTypes.object,
-       
-    
+    FetchTrackItemData: PropTypes.object,         
   };
 
   // const { loggedInuser } = useContext(AppContext);
@@ -134,16 +133,16 @@ const EditLineItemModal = ({ editTrackModal, setEditTrackModal,FetchTrackItemDat
   </Col>
   <Col md="4">
     <FormGroup>
-      <Label>Tracking Number</Label>
+      <Label>Container Number</Label>
       <Input
         type="text"
-        name="tracking_number"
-        value={lineItemData?.tracking_number || ''}
+        name="container_no"
+        value={lineItemData?.container_no || ''}
         onChange={handleData}
       />
     </FormGroup>
   </Col>
-  <Col md="4">
+  {/* <Col md="4">
     <FormGroup>
       <Label>Shipper Name</Label>
       <Input
@@ -304,7 +303,54 @@ const EditLineItemModal = ({ editTrackModal, setEditTrackModal,FetchTrackItemDat
     />
   </FormGroup>
 </Col>
-</Row>
+</Row> */}
+<Col md="4">
+<FormGroup>
+    <Label> Bill of Loading</Label>
+    <Input
+      type="text"
+      name="bill_of_loading"
+      value={lineItemData?.bill_of_loading || ''}
+      onChange={handleData}
+    />
+  </FormGroup>
+</Col>
+<Col md="4">
+<FormGroup>
+    <Label>Order No</Label>
+    <Input
+      type="text"
+      name="order_no"
+      value={lineItemData?.order_no || ''}
+      onChange={handleData}
+    />
+  </FormGroup>
+</Col>
+<Col md="4">
+<FormGroup>
+    <Label>Estimated Time of Arrival</Label>
+    <Input
+      type="date"
+      name="actual_delivery_date"
+      value={lineItemData?.actual_delivery_date || ''}
+      onChange={handleData}
+      min={moment().format('YYYY-MM-DD')}
+    />
+  </FormGroup>
+</Col>
+<Col md="4">
+<FormGroup>
+    <Label>Estimated Time of Departure</Label>
+    <Input
+      type="date"
+      name="expected_delivery_date"
+      value={lineItemData?.expected_delivery_date || ''}
+      min={moment().format('YYYY-MM-DD')}
+      onChange={handleData}
+    />
+  </FormGroup>
+</Col>
+</Row> 
 
       </ModalBody>
       <ModalFooter>

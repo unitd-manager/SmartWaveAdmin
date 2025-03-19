@@ -182,22 +182,19 @@ const EnquiryEdit = () => {
       name: 'Carrier Name',
     },
     {
-      name: 'Tracking No',
+      name: 'Container Number',
     },
     {
-      name: 'Tracking Link',
+      name: 'Bill of Loading',
     },
     {
-      name: 'Shipment Date',
+      name: 'Order Number',
     },
     {
-      name: 'Actual Delivery Date',
+      name: 'Estimated Time of Arrival',
     },
     {
-      name: 'Expected Delivery Date',
-    },
-    {
-      name: 'Status',
+      name: 'Estimated Time of Departure',
     },
     {
       name: 'Updated By ',
@@ -712,13 +709,13 @@ const EnquiryEdit = () => {
                         return (
                           <tr key={e.carrier_tracking_id}>
                             <td>{index + 1}</td>
-                            <td data-label="Title">{e.carrier_name}</td>
-                            <td data-label="Description">{e.tracking_number}</td>
-                            <td data-label="Title">{e.tracking_link}</td>
-                            <td data-label="Quantity">{new Date(e.shipment_date).toLocaleDateString()}</td>
-<td data-label="Unit Price">{new Date(e.actual_delivery_date).toLocaleDateString()}</td>
-<td data-label="Amount">{new Date(e.expected_delivery_date).toLocaleDateString()}</td>
-<td data-label="Title">{e.shipment_status}</td>
+                            <td data-label="Carrier Name">{e.carrier_name}</td>
+                            <td data-label="Container No">{e.container_no}</td>
+                            <td data-label="Bill of Loading">{e.bill_of_loading}</td>
+                            <td data-label="Order No">{e.order_no}</td>
+                            <td data-label="ETA">{new Date(e.actual_delivery_date).toLocaleDateString()}</td>
+
+<td data-label="ETD">{new Date(e.expected_delivery_date).toLocaleDateString()}</td>
 <td data-label="Updated By">
   {e.modification_date
     ? `${e.modified_by} (Modified on ${e.modification_date.split('T')[0]})`

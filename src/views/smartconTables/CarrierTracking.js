@@ -54,37 +54,31 @@ const Staff = () => {
       sortable: true,
     },
     {
-      name: 'Tracking Number',
-      selector: (row) => row.tracking_number,
+      name: 'Container No',
+      selector: (row) => row.container_no,
       sortable: true,
     },
     {
-      name: 'Shipment Date',
-      selector: (row) => row.shipment_date,
+      name: 'Bill of Loading',
+      selector: (row) => row.bill_of_loading,
       sortable: true,
     },
     {
-      name: 'Actual Delivery Date',
+      name: 'Order Number',
+      selector: (row) => row.order_no,
+      sortable: true,
+    },
+    {
+      name: 'Estimated Time of Arrival',
       selector: (row) => row.actual_delivery_date,
       sortable: true,
     },
     {
-      name: 'Expected Delivery Date',
+      name: 'Estimated Time of Departure',
       selector: (row) => row.expected_delivery_date,
       sortable: true,
     },
-    {
-      name: 'Shipment',
-      selector: (row) => row.shipper_name,
-      sortable: true,
-    },
-    {
-      name: 'Tracking Link',
-      selector: (row) => row.tracking_link,
-      width: '25%', 
-      sortable: true,
-    },
-  ];
+      ];
 
   return (
     <div className="MainDiv">

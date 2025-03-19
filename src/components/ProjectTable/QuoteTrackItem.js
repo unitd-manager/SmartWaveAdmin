@@ -14,6 +14,7 @@ import {
   ModalFooter,
 } from 'reactstrap';
 import PropTypes from 'prop-types';
+import moment from 'moment'
 import api from '../../constants/api';
 import message from '../Message';
 import creationdatetime from '../../constants/creationdatetime';
@@ -45,6 +46,9 @@ const QuoteLineItem = ({ addTrackItemModal, setAddTrackItemModal, quoteTrack }) 
     package_width: '',
     shipment_status: '',
     tracking_link: '',
+    bill_of_loading:'',
+    container_no:'',
+    order_no:''
   });
 
   const handleInputChange = (e) => {
@@ -63,7 +67,7 @@ const QuoteLineItem = ({ addTrackItemModal, setAddTrackItemModal, quoteTrack }) 
       enquiry_id: quoteTrack,
     };
 
-    if (obj.carrier_name && obj.tracking_number && obj.shipment_date) {
+    if (obj.carrier_name) {
       api
         .post('/tracking/insertQuoteItems', obj)
         .then(() => {
@@ -133,23 +137,23 @@ const QuoteLineItem = ({ addTrackItemModal, setAddTrackItemModal, quoteTrack }) 
                     name="carrier_name"
                     value={formData.carrier_name}
                     onChange={handleInputChange}
-                    placeholder="Enter Carrier Name"
+                    // placeholder="Enter Carrier Name"
                   />
                 </FormGroup>
               </Col>
               <Col md="4">
                 <FormGroup>
-                  <Label>Tracking Number</Label>
+                  <Label>Container Number</Label>
                   <Input
                     type="text"
-                    name="tracking_number"
-                    value={formData.tracking_number}
+                    name="container_no"
+                    value={formData.container_no}
                     onChange={handleInputChange}
-                    placeholder="Enter Tracking Number"
+                    // placeholder="Enter Tracking Number"
                   />
                 </FormGroup>
               </Col>
-              <Col md="4">
+              {/* <Col md="4">
 
   <FormGroup>
       <Label>Shipper Name</Label>
@@ -201,49 +205,71 @@ const QuoteLineItem = ({ addTrackItemModal, setAddTrackItemModal, quoteTrack }) 
         rows="4"
       />
     </FormGroup>
-  </Col>
+  </Col> */}
 
-            </Row>
+            
 
-            <Row>
+            
               <Col md="4">
                 <FormGroup>
-                  <Label>Shipment Date</Label>
+                  <Label>Bill of Loading</Label>
                   <Input
-                    type="date"
-                    name="shipment_date"
-                    value={formData.shipment_date}
+                    type="text"
+                    name="bill_of_loading"
+                    value={formData.bill_of_loading}
+                    onChange={handleInputChange}
+                  />
+                </FormGroup>
+              </Col>
+              </Row>
+              <Row>
+              <Col md="4">
+                <FormGroup>
+                  <Label>Order Number</Label>
+                  <Input
+                    type="text"
+                    name="order_no"
+                    value={formData.order_no}
                     onChange={handleInputChange}
                   />
                 </FormGroup>
               </Col>
               <Col md="4">
                 <FormGroup>
-                  <Label>Actual Delivery Date</Label>
+                  <Label>Estimated Time of Arrival</Label>
                   <Input
                     type="date"
                     name="actual_delivery_date"
-                    value={formData.actual_delivery_date}
+                    value={
+                      formData &&
+                      moment(formData.actual_delivery_date).format('YYYY-MM-DD')
+                    }
+                    min={moment().format('YYYY-MM-DD')}
+                  
                     onChange={handleInputChange}
                   />
                 </FormGroup>
               </Col>
               <Col md="4">
                 <FormGroup>
-                  <Label>Expected Delivery Date</Label>
+                  <Label>Estimated Time of Departure</Label>
                   <Input
                     type="date"
                     name="expected_delivery_date"
-                    value={formData.expected_delivery_date}
+                    value={
+                      formData &&
+                      moment(formData.expected_delivery_date).format('YYYY-MM-DD')
+                    }
+                    min={moment().format('YYYY-MM-DD')}
                     onChange={handleInputChange}
                   />
                 </FormGroup>
               </Col>
             </Row>
-            <Row>
-            <Col md="4">
+            {/* <Row>
+            <Col md="4"> */}
             
-              <FormGroup>
+              {/* <FormGroup>
                   <Label>Package Weight</Label>
                   <Input
                     type="text"
@@ -289,7 +315,9 @@ const QuoteLineItem = ({ addTrackItemModal, setAddTrackItemModal, quoteTrack }) 
                   />
                 </FormGroup>
               </Col>
-              <Col md="4">
+              <Col md="4"> */}
+              
+              {/* <Col md="4">
             
             <FormGroup>
                 <Label>Status</Label>
@@ -314,7 +342,7 @@ const QuoteLineItem = ({ addTrackItemModal, setAddTrackItemModal, quoteTrack }) 
                 />
               </FormGroup>
             </Col>
-            </Row>
+            </Row> */}
           </Card>
         </Form>
       </ModalBody>

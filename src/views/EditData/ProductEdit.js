@@ -34,6 +34,7 @@ const ProductUpdate = () => {
     modelType: '',
   });
   const [activeTab, setActiveTab] = useState('1');
+  const [subcategoryLinked, setSubCategoryLinked] = useState();
   // Navigation and Parameter Constants
   const { id } = useParams();
   const navigate = useNavigate();
@@ -107,6 +108,13 @@ const ProductUpdate = () => {
       });
   };
 
+  // getting data from SubCategory
+    const getSubCategory = () => {
+      api.get('/content/getSubCategory', subcategoryLinked).then((res) => {
+        setSubCategoryLinked(res.data.data);
+      });
+    };
+
   const getProductOwner = () => {
     api
       .get('/supplier/getProductOwner')
@@ -131,6 +139,7 @@ const ProductUpdate = () => {
     getCategory();
     getProductById();
     getProductOwner();
+    getSubCategory();
   }, [id]);
 
   return (
@@ -146,6 +155,7 @@ const ProductUpdate = () => {
             handleInputs={handleInputs}
             categoryLinked={categoryLinked}
             productOwnerLinked={productOwnerLinked}
+            subcategoryLinked={subcategoryLinked}
           ></ProductDetail>
           {/* Product Details Form */}
           <Row>
