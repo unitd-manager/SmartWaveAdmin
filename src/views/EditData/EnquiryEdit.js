@@ -185,7 +185,7 @@ const EnquiryEdit = () => {
       name: 'Container Number',
     },
     {
-      name: 'Bill of Loading',
+      name: 'Bill of Lading',
     },
     {
       name: 'Order Number',
@@ -711,7 +711,7 @@ const EnquiryEdit = () => {
                             <td>{index + 1}</td>
                             <td data-label="Carrier Name">{e.carrier_name}</td>
                             <td data-label="Container No">{e.container_no}</td>
-                            <td data-label="Bill of Loading">{e.bill_of_loading}</td>
+                            <td data-label="Bill of Lading">{e.bill_of_loading}</td>
                             <td data-label="Order No">{e.order_no}</td>
                             <td data-label="ETA">{new Date(e.actual_delivery_date).toLocaleDateString()}</td>
 

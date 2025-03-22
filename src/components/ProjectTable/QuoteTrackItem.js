@@ -212,7 +212,7 @@ const QuoteLineItem = ({ addTrackItemModal, setAddTrackItemModal, quoteTrack }) 
             
               <Col md="4">
                 <FormGroup>
-                  <Label>Bill of Loading</Label>
+                  <Label>Bill of Lading</Label>
                   <Input
                     type="text"
                     name="bill_of_loading"
