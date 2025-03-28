@@ -59,7 +59,7 @@ const Staff = () => {
       sortable: true,
     },
     {
-      name: 'Bill of Loading',
+      name: 'Bill of Lading',
       selector: (row) => row.bill_of_loading,
       sortable: true,
     },
