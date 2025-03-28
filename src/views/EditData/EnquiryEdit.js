@@ -191,10 +191,10 @@ const EnquiryEdit = () => {
       name: 'Order Number',
     },
     {
-      name: 'Estimated Time of Arrival',
+      name: 'ETD',
     },
     {
-      name: 'Estimated Time of Departure',
+      name: 'ETA',
     },
     {
       name: 'Updated By ',
@@ -713,9 +713,9 @@ const EnquiryEdit = () => {
                             <td data-label="Container No">{e.container_no}</td>
                             <td data-label="Bill of Loading">{e.bill_of_loading}</td>
                             <td data-label="Order No">{e.order_no}</td>
-                            <td data-label="ETA">{new Date(e.actual_delivery_date).toLocaleDateString()}</td>
+                            <td data-label="ETD">{new Date(e.actual_delivery_date).toLocaleDateString()}</td>
 
-<td data-label="ETD">{new Date(e.expected_delivery_date).toLocaleDateString()}</td>
+<td data-label="ETA">{new Date(e.expected_delivery_date).toLocaleDateString()}</td>
 <td data-label="Updated By">
   {e.modification_date
     ? `${e.modified_by} (Modified on ${e.modification_date.split('T')[0]})`

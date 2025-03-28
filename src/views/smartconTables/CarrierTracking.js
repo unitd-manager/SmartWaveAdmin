@@ -68,16 +68,18 @@ const Staff = () => {
       selector: (row) => row.order_no,
       sortable: true,
     },
+
     {
-      name: 'Estimated Time of Arrival',
+      name: 'ETD',
       selector: (row) => row.actual_delivery_date,
       sortable: true,
     },
     {
-      name: 'Estimated Time of Departure',
+      name: 'ETA',
       selector: (row) => row.expected_delivery_date,
       sortable: true,
     },
+    
       ];
 
   return (

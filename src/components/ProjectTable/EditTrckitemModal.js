@@ -328,7 +328,7 @@ const EditLineItemModal = ({ editTrackModal, setEditTrackModal,FetchTrackItemDat
 </Col>
 <Col md="4">
 <FormGroup>
-    <Label>Estimated Time of Arrival</Label>
+    <Label>ETD</Label>
     <Input
       type="date"
       name="actual_delivery_date"
@@ -340,7 +340,7 @@ const EditLineItemModal = ({ editTrackModal, setEditTrackModal,FetchTrackItemDat
 </Col>
 <Col md="4">
 <FormGroup>
-    <Label>Estimated Time of Departure</Label>
+    <Label>ETA</Label>
     <Input
       type="date"
       name="expected_delivery_date"

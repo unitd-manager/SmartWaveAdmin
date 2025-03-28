@@ -1,26 +1,36 @@
 import React, { useEffect, useState } from 'react';
+import { TabPane, TabContent} from 'reactstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import '../form-editor/editor.scss';
 import { ToastContainer } from 'react-toastify';
 import moment from 'moment';
 import BreadCrumbs from '../../layouts/breadcrumbs/BreadCrumbs';
+import ComponentCard from '../../components/ComponentCard';
 import SubCategoryButton from '../../components/SubCategoryTable/SubCategoryButton';
 import SubCategoryEditDetails from '../../components/SubCategoryTable/SubCategoryEditDetails';
 import SubCategoryPageMetaData from '../../components/SubCategoryTable/SubCategoryPageMetaData';
 import message from '../../components/Message';
 import api from '../../constants/api';
 import creationdatetime from '../../constants/creationdatetime';
+import Tab from '../../components/ProjectTable/Tab';
 
-const SubCategoryEdit = () => {
-  // All state variables
+const SubCategoryEdit = () => {// All state variables
   const [category, setCategory] = useState();
   const [subcategoryeditdetails, setSubCategoryEditDetails] = useState();
   const [subcategorytypedetails, setSubCategoryTypetDetails] = useState();
-
+  const [activeTab, setActiveTab] = useState('1');
   // Navigation and Parameter Constants
   const { id } = useParams();
   const navigate = useNavigate();
+
+
+  const tabs = [
+    { id: '1', name: 'SubCategory Type' },
+  ];
+  const toggle = (tab) => {
+    setActiveTab(tab);
+  };
 
   //All Functions/Methods
 
@@ -111,6 +121,7 @@ const SubCategoryEdit = () => {
         message('Unable to edit record.', 'error');
       });
   };
+  
 
   useEffect(() => {
     editSubCategoryById();
@@ -148,7 +159,19 @@ const SubCategoryEdit = () => {
         handleInputs={handleInputs}
       ></SubCategoryPageMetaData>
 
+            <ComponentCard title="More Details">
+              <ToastContainer></ToastContainer>
+      
+              <Tab toggle={toggle} tabs={tabs} />
+              <TabContent className="p-4" activeTab={activeTab}>
+                <TabPane tabId="1">
+                  
+                </TabPane>
+            </TabContent>
+            </ComponentCard>
+
       </>
+      
   );
 };
 
