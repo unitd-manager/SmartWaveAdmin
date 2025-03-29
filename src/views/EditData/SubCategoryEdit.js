@@ -193,12 +193,13 @@ const SubCategoryEdit = () => {// All state variables
           .post('/subcategory/insertSubCategoryType', companyInsertData)
           .then((res) => {
             message('Company inserted successfully.', 'success');
-            getSubCategoryTypeDropdown();
+            
             console.log('rescomp', res.data.data);
             const newlyAddedCompanyId = res.data.data.insertId;
             setTenderForms({ ...tenderForms, sub_category_type_id : newlyAddedCompanyId });
             setTenderForms({ ...tenderForms, sub_category_type_id : res.data.data.insertId }); // Set selected company ID after insertion
             toggle();
+            togglemodal();
 
             //window.location.reload();
           })
@@ -239,7 +240,7 @@ const SubCategoryEdit = () => {// All state variables
         confirmButtonText: 'Yes, delete it!',
       }).then((result) => {
         if (result.isConfirmed) {
-          api.post('/subcategory/deleteSubCategoryType', { enq_prod_id: deleteID }).then(() => {
+          api.post('/subcategory/deleteSubCategoryType', { sub_category_type_id: deleteID }).then(() => {
             Swal.fire('Deleted!', 'Your Subcategory type has been deleted.', 'success');
             window.location.reload();
           });
@@ -312,7 +313,7 @@ const SubCategoryEdit = () => {// All state variables
                       handleInputsTenderForms(e);
                     }}
                     //className={inputClass}
-                    value={tenderForms?.type_title || ''}
+                    value={tenderForms && tenderForms.type_title}
                     name="type_title"
                   >
                     <option value="selected">Please Select</option>

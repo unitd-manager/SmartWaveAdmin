@@ -5,13 +5,15 @@ import { ToastContainer } from 'react-toastify';
 import ComponentCard from '../ComponentCard';
 
 
-export default function ProductDetail({ productDetails, handleInputs,categoryLinked,productOwnerLinked, subcategoryLinked }) {
+export default function ProductDetail({ productDetails, handleInputs,categoryLinked,productOwnerLinked, subcategoryLinked, subcategorytypeLinked }) {
     ProductDetail.propTypes = {
     productDetails: PropTypes.object,
     handleInputs: PropTypes.func,
     categoryLinked: PropTypes.array,
     productOwnerLinked: PropTypes.array,
     subcategoryLinked: PropTypes.array,
+    subcategorytypeLinked: PropTypes.array,
+    
   };
   return (
     <>
@@ -75,31 +77,46 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                                   value={productDetails && productDetails.sub_category_id}
                                   onChange={handleInputs}
                                 >
-                                  <option value="" selected="selected">
-                                    Please Select
-                                  </option>
-                                  {subcategoryLinked &&
-                                    subcategoryLinked.map((ele) => {
-                                      return (
-                                        <option value={ele.sub_category_id}>{ele.sub_category_title}</option>
-                                      );
-                                    })}
+                                  <option value="">Please Select</option>
+  {subcategoryLinked.length > 0 ? (
+    subcategoryLinked.map((ele) => (
+      <option key={ele.sub_category_id} value={ele.sub_category_id}>
+        {ele.sub_category_title}
+      </option>
+                                    ))
+                                  ) : (
+                                    <option disabled>Loading...</option>
+                                  )}
+                                
                                 </Input>
                               </FormGroup>
                             </Col>
                             </Row>
                             <Row>
                             <Col md="3">
-                <FormGroup>
-                  <Label>Sub Category type</Label>
-                  <Input
-                    type="text"
-                    onChange={handleInputs}
-                    value={productDetails && productDetails.sub_category_type}
-                    name="sub_category_type"
-                  />
-                </FormGroup>
-              </Col>
+                              <FormGroup>
+                                {/* subcategory title from sub Category table */}
+                                <Label>SubCategory Type</Label>
+<Input
+  type="select"
+  name="sub_category_type_id"
+  value={productDetails?.sub_category_type_id || ""}
+  onChange={handleInputs}
+  disabled={!productDetails.sub_category_id || subcategorytypeLinked.length === 0}
+>
+  <option value="">Please Select</option>
+  {subcategorytypeLinked.length > 0 ? (
+    subcategorytypeLinked.map((ele) => (
+      <option key={ele.sub_category_type_id} value={ele.sub_category_type_id}>
+        {ele.type_title}
+      </option>
+    ))
+  ) : (
+    <option >No Types Available</option>
+  )}
+</Input>
+                              </FormGroup>
+                            </Col>
               <Col md="3">
                 <FormGroup>
                   <Label>Grades</Label>
@@ -150,6 +167,8 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                   </Input>
                 </FormGroup>
               </Col> */}
+              
+              
               <Col md="3">
                 <FormGroup>
                   <Label>Quantity</Label>
@@ -207,6 +226,8 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                   />
                 </FormGroup>
               </Col>
+              
+              
               <Col md="3">
                 <FormGroup>
                   <Label>Description </Label>
@@ -280,6 +301,7 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                   />
                 </FormGroup>
               </Col>
+              
 
               <Col md="3">
                 <Label>Published</Label>
