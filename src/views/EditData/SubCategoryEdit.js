@@ -23,8 +23,9 @@ const SubCategoryEdit = () => {// All state variables
   const [category, setCategory] = useState();
   const [subcategoryeditdetails, setSubCategoryEditDetails] = useState();
   const [subcategorytypedetails, setSubCategoryTypetDetails] = useState();
+  const [subcategorytypevalidation, setSubCategoryTypetValidation] = useState([]);
   const [activeTab, setActiveTab] = useState('1');
-  const [subcategorytype, setSubCategoryType] = useState();
+  const [subcategorytype, setSubCategoryType] = useState([]);
   const [modal, setModal] = useState(false);
   const [addtype, setaddType] = useState(false);
   const [lineItem, setLineItem] = useState();
@@ -126,6 +127,17 @@ const SubCategoryEdit = () => {// All state variables
       });
   };
 
+  const getSubCategoryTypeValidation= () => {
+    api
+      .get('/subcategory/getSubCategoryTypeValidation')
+      .then((res) => {
+        setSubCategoryTypetValidation(res.data.data);
+      })
+      .catch(() => {
+        message('SubCategory Type Data Not Found', 'info');
+      });
+  };
+
   //Api call for Editing SubCategory Details
   const editSubCategoryData = () => {
     subcategoryeditdetails.modification_date = moment().format('DD-MM-YYYY');
@@ -179,8 +191,10 @@ const SubCategoryEdit = () => {// All state variables
       companyInsertData.creation_date = creationdatetime;
       companyInsertData.created_by = loggedInuser.first_name;
   
+console.log('subcategorytype',subcategorytype);
+
       // Check if the entered type_title already exists in the subcategory list
-      const isTypeExists = subcategorytype.some(
+      const isTypeExists = subcategorytypevalidation?.some(
         (subcat) => subcat.type_title.toLowerCase() === companyInsertData.type_title.toLowerCase()
       );
   
@@ -292,6 +306,7 @@ const SubCategoryEdit = () => {// All state variables
     getSubCategoryType();
     getSubCategoryTypeDropdown();
     getLineItem();
+    getSubCategoryTypeValidation();
   }, [id]);
 
   return (
