@@ -214,6 +214,7 @@ console.log('subcategorytype',subcategorytype);
   
           toggle();
           toggletype();
+          window.location.reload();
         })
         .catch(() => {
           message('Network connection error.', 'error');
@@ -238,6 +239,17 @@ console.log('subcategorytype',subcategorytype);
       };
   
       console.log("Data being sent to API:", insertData); // Debugging log
+      console.log('subcategorytype',subcategorytype);
+
+      // Check if the entered type_title already exists in the subcategory list
+      const isTypeExists = lineItem?.some(
+        (subcat) => subcat.type_title.toLowerCase() === tenderForms.type_title.toLowerCase()
+      );
+  
+      if (isTypeExists) {
+        message('SubCategory Type already exists.', 'error');
+        return; // Stop further execution
+      }
   
       api.post('/subcategory/insertSubCategoryType', insertData)
         .then((res) => {
@@ -253,6 +265,7 @@ console.log('subcategorytype',subcategorytype);
   
             message('Subcategory inserted successfully.', 'success');
             togglemodal(); // Close modal
+            window.location.reload();
           } else {
             message('Error: No ID returned from server.', 'error');
           }
@@ -430,8 +443,8 @@ console.log('subcategorytype',subcategorytype);
                     name="type_title"
                   >
                     <option value="selected">Please Select</option>
-                    {subcategorytype &&
-                      subcategorytype.map((e) => {
+                    {subcategorytypevalidation &&
+                      subcategorytypevalidation.map((e) => {
                         return (
                           <option key={e.type_title} value={e.type_title}>
                             
