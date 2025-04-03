@@ -165,7 +165,7 @@ const SubCategoryEdit = () => {// All state variables
   };
 
   const getSubCategoryTypeDropdown = () => {
-    api.get('/subcategory/getSubCategoryTypeDropdown').then((res) => {
+    api.post('/subcategory/getSubCategoryTypeDropdown', { sub_category_id: id }).then((res) => {
       setSubCategoryType(res.data.data);
       // if (res.data.data && res.data.data.length > 0) {
       //   // Assuming the newly added company is at the end of the list
