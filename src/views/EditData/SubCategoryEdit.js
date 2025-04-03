@@ -16,7 +16,7 @@ import message from '../../components/Message';
 import api from '../../constants/api';
 import creationdatetime from '../../constants/creationdatetime';
 import Tab from '../../components/ProjectTable/Tab';
-import SubCategoryTypeDetails from '../../components/SubCategoryTable/SubCategoryTypeDetails';
+// import SubCategoryTypeDetails from '../../components/SubCategoryTable/SubCategoryTypeDetails';
 import AppContext from '../../context/AppContext';
 
 const SubCategoryEdit = () => {// All state variables
@@ -175,43 +175,81 @@ const SubCategoryEdit = () => {// All state variables
     });
   };
   const insertSubCategoryType = () => {
-    if (companyInsertData.type_title.trim() !== '')
-    {
-      companyInsertData.creation_date = creationdatetime
-    companyInsertData.created_by = loggedInuser.first_name;
- 
-      // // Check if the entered company name already exists in the company list
-      // const isCompanyExists =
-      //   company && company.some((comp) => comp.company_name === companyInsertData.company_name ||
-      //                                    comp.company_name_arb === companyInsertData.company_name_arb);
-
-
-      // if (isCompanyExists) {
-      //   message('Company already exists.', 'error');
-      // } else {
-        api
-          .post('/subcategory/insertSubCategoryType', companyInsertData)
-          .then((res) => {
-            message('Company inserted successfully.', 'success');
-            
-            console.log('rescomp', res.data.data);
-            const newlyAddedCompanyId = res.data.data.insertId;
-            setTenderForms({ ...tenderForms, sub_category_type_id : newlyAddedCompanyId });
-            setTenderForms({ ...tenderForms, sub_category_type_id : res.data.data.insertId }); // Set selected company ID after insertion
-            toggle();
-            togglemodal();
-
-            //window.location.reload();
-          })
-          .catch(() => {
-            message('Network connection error.', 'error');
-          });
+    if (companyInsertData.type_title.trim() !== '') {
+      companyInsertData.creation_date = creationdatetime;
+      companyInsertData.created_by = loggedInuser.first_name;
+  
+      // Check if the entered type_title already exists in the subcategory list
+      const isTypeExists = subcategorytype.some(
+        (subcat) => subcat.type_title.toLowerCase() === companyInsertData.type_title.toLowerCase()
+      );
+  
+      if (isTypeExists) {
+        message('SubCategory Type already exists.', 'error');
+        return; // Stop further execution
       }
+  
+      api
+        .post('/subcategory/insertSubCategoryType', companyInsertData)
+        .then((res) => {
+          message('SubCategory Type inserted successfully.', 'success');
+  
+          console.log('rescomp', res.data.data);
+          const newlyAddedCompanyId = res.data.data.insertId;
+          setTenderForms({ ...tenderForms, sub_category_type_id: newlyAddedCompanyId });
+  
+          toggle();
+          toggletype();
+        })
+        .catch(() => {
+          message('Network connection error.', 'error');
+        });
+  
       setAddFormSubmitted(true);
-    // } else {
-    //   setAddFormSubmitted(true);
-    //   message('Please fill all required fields.', 'warning');
-    // }
+    } else {
+      setAddFormSubmitted(true);
+      message('Please fill all required fields.', 'warning');
+    }
+  };
+  
+
+  const insertSubCategoryTypeDropdown = () => {
+    if (tenderForms.type_title && tenderForms.type_title.trim() !== '') {
+      // Prepare data for insertion
+      const insertData = {
+        type_title: tenderForms.type_title,
+        creation_date: creationdatetime,
+        created_by: loggedInuser.first_name,
+        sub_category_id: id
+      };
+  
+      console.log("Data being sent to API:", insertData); // Debugging log
+  
+      api.post('/subcategory/insertSubCategoryType', insertData)
+        .then((res) => {
+          console.log("API Response:", res.data);
+          if (res.data && res.data.data.insertId) {
+            const newlyAddedId = res.data.data.insertId;
+            
+            // Update state with new sub_category_type_id
+            setTenderForms(prevState => ({
+              ...prevState,
+              sub_category_type_id: newlyAddedId
+            }));
+  
+            message('Subcategory inserted successfully.', 'success');
+            togglemodal(); // Close modal
+          } else {
+            message('Error: No ID returned from server.', 'error');
+          }
+        })
+        .catch((err) => {
+          console.error("API Error:", err.response ? err.response.data : err.message);
+          // message('Error inserting data: ' + (err.response?.data?.message || err.message), 'error');
+        });
+    } else {
+      message('Please select a SubCategory Type.', 'warning');
+    }
   };
 
   const columns = [
@@ -293,16 +331,76 @@ const SubCategoryEdit = () => {// All state variables
               <Tab toggle={toggle} tabs={tabs} />
               <TabContent className="p-4" activeTab={activeTab}>
                 <TabPane tabId="1">
+                  <Row>
                 <Col md="3" className="addNew">
-                    <Button color="primary" className="shadow-none" onClick={togglemodal.bind(null)}>
-                        Add New
+                    <Button color="primary" className="shadow-none" onClick={toggletype.bind(null)}>
+                        Add Type
                     </Button>
                   </Col>
-                  <Modal size="lg" isOpen={addtype} toggle={togglemodal.bind(null)}>
+                  
+                  <Col md="3" className="addNew">
+                    <Button color="primary" className="shadow-none" onClick={togglemodal.bind(null)}>
+                        Choose Type
+                    </Button>
+                  </Col>
+                  </Row>
+                  <Modal size="md" isOpen={modal} toggle={toggletype.bind(null)}>
+                          <ModalHeader toggle={toggletype.bind(null)}>New SubCategory Type</ModalHeader>
+                          <ModalBody>
+                            <Row>
+                              <Col md="12">
+                                          <FormGroup>
+                                            <Label>
+                                              SubCategory Type
+                                            </Label>
+                                            <span className="required">*</span>
+                                            <Input
+                                              type="text"
+                                              onChange={handleInputsCompanyInsertData}
+                                              value={companyInsertData.type_title}
+                                              name='type_title'
+                                              className={`form-control ${
+                                                addFormSubmitted &&
+                                                ( companyInsertData.type_title.trim() === '')
+                                                  ? 'highlight'
+                                                  : ''
+                                              }`}
+                                            />
+                  
+                                            {addFormSubmitted &&
+                                              (
+                                                companyInsertData.type_title.trim() === '') && (
+                                                <div className="error-message">Please Enter</div>
+                                              )}
+                                          </FormGroup>
+                                        </Col>
+                                        
+                  
+                                        
+                            </Row>
+                          <ModalFooter>
+                            <Button
+                              color="primary"
+                              className="btn mr-2 shadow-none"
+                              onClick={() => {
+                                insertSubCategoryType();
+                              }}
+                            >
+                              Save 
+                            </Button>
+                            <Button color="secondary" className="shadow-none" onClick={toggletype.bind(null)}>
+                              Cancel
+                            </Button>
+                          </ModalFooter>
+                          
+                          
+                          </ModalBody>
+                          </Modal>
+                  <Modal size="md" isOpen={addtype} toggle={togglemodal.bind(null)}>
                   <ModalHeader toggle={togglemodal.bind(null)}>SubCategory type</ModalHeader>
                   <ModalBody>
                 <Row>
-                <Col md="9">
+                <Col md="12">
                 <FormGroup>
                   <Label>SubCategory Type</Label>
                   <span className="required">  *</span>
@@ -331,27 +429,27 @@ const SubCategoryEdit = () => {// All state variables
               </Col>
               
                   
-                  <Col md="3" className="addNew">
+                  {/* <Col md="3" className="addNew">
                     <Button color="primary" className="shadow-none" onClick={toggletype.bind(null)}>
                         Add New
                     </Button>
-                  </Col>
+                  </Col> */}
 
                   <ModalFooter>
           <Button
             color="primary"
             className="btn mr-2 shadow-none"
             onClick={() => {
-              insertSubCategoryType();
+              insertSubCategoryTypeDropdown();
             }}
           >
-            Save & Continue
+            Save
           </Button>
           <Button color="secondary" className="shadow-none" onClick={togglemodal.bind(null)}>
             Cancel
           </Button>
         </ModalFooter>
-                  <SubCategoryTypeDetails
+                  {/* <SubCategoryTypeDetails
                 insertCompany={insertSubCategoryType}
                 handleInputs={handleInputsCompanyInsertData}
                 toggle={toggletype}
@@ -359,7 +457,7 @@ const SubCategoryEdit = () => {// All state variables
                 setModal={setModal}
                 companyInsertData={companyInsertData}
                 tenderForms={tenderForms}
-              ></SubCategoryTypeDetails>
+              ></SubCategoryTypeDetails> */}
               
                 </Row>
                 </ModalBody>
