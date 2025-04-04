@@ -312,6 +312,14 @@ console.log('subcategorytype',subcategorytype);
         }
       });
     };
+    
+    
+ const uniqueSubCategoryTypes = subcategorytypevalidation
+  ? subcategorytypevalidation.filter(
+      (obj, index, self) =>
+        index === self.findIndex((t) => t.type_title.toLowerCase() === obj.type_title.toLowerCase())
+    )
+  : [];
 
   useEffect(() => {
     editSubCategoryById();
@@ -443,8 +451,7 @@ console.log('subcategorytype',subcategorytype);
                     name="type_title"
                   >
                     <option value="selected">Please Select</option>
-                    {subcategorytypevalidation &&
-                      subcategorytypevalidation.map((e) => {
+                    {uniqueSubCategoryTypes.map((e) => {
                         return (
                           <option key={e.type_title} value={e.type_title}>
                             
