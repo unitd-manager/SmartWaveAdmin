@@ -23,7 +23,7 @@ import ProductDetail from '../../components/ProductTable/ProductDetail';
 
 const ProductUpdate = () => {
   // All state variables
-  const [productDetails, setProductDetails] = useState({});
+  const [productDetails, setProductDetails] = useState();
   const [categoryLinked, setCategoryLinked] = useState([]);
   const [productOwnerLinked, setproductOwnerLinked] = useState([]);
   const [productDescription, setProductDescription] = useState('');
@@ -34,18 +34,17 @@ const ProductUpdate = () => {
     modelType: '',
   });
   const [activeTab, setActiveTab] = useState('1');
-  const [subcategoryLinked, setSubCategoryLinked] = useState([]);
-  const [subcategorytypeLinked, setSubCategoryTypeLinked] = useState([]);
+  const [subcategoryLinked, setSubCategoryLinked] = useState();
   // Navigation and Parameter Constants
   const { id } = useParams();
   const navigate = useNavigate();
   const { loggedInuser } = useContext(AppContext);
 
 
-  // //Setting data in productDetails
-  // const handleInputs = (e) => {
-  //   setProductDetails({ ...productDetails, [e.target.name]: e.target.value });
-  // };
+  //Setting data in productDetails
+  const handleInputs = (e) => {
+    setProductDetails({ ...productDetails, [e.target.name]: e.target.value });
+  };
   //setting data in Description Modal productDetails
   const handleDataEditor = (e, type) => {
     setProductDetails({
@@ -75,7 +74,7 @@ const ProductUpdate = () => {
         convertHtmlToDraft(res.data.data[0].product_description);
       })
       .catch(() => {
-        message('Product Data Not Found', 'info');
+        // message('Product Data Not Found', 'info');
       });
   };
   //Edit Product
@@ -86,11 +85,11 @@ const ProductUpdate = () => {
       api
         .post('/product/edit-Product', productDetails)
         .then(() => {
-          message('Record edited successfully', 'success');
+          message('Product edited successfully', 'success');
         })
 
         .catch(() => {
-          message('Unable to edit record.', 'error');
+          message('Unable to edit Product.', 'error');
         });
     } else {
       message('Please fill all required fields', 'warning');
@@ -105,7 +104,7 @@ const ProductUpdate = () => {
         setCategoryLinked(res.data.data);
       })
       .catch(() => {
-        message('Unable to get categories', 'error');
+        // message('Unable to get categories', 'error');
       });
   };
 
@@ -123,19 +122,10 @@ const ProductUpdate = () => {
         setproductOwnerLinked(res.data.data);
       })
       .catch(() => {
-        message('Unable to get categories', 'error');
+        // message('Unable to get categories', 'error');
       });
   };
-  // const getSubCategoryType = () => {
-  //   api
-  //     .post('/subcategory/getSubCategoryTypeById', { sub_category_id: productDetails.sub_category_id })
-  //     .then((res) => {
-  //       setSubCategoryTypeLinked(res.data.data[0]);
-  //     })
-  //     .catch(() => {
-  //       message('Product Data Not Found', 'info');
-  //     });
-  // };
+
   //Attachments
   const dataForAttachment = () => {
     setDataForAttachment({
@@ -144,48 +134,14 @@ const ProductUpdate = () => {
     console.log('inside DataForAttachment');
   };
 
-  const getSubCategoryType = (subCategoryId) => {
-    if (!subCategoryId) return; // Prevent unnecessary API calls
   
-    api
-      .post('/subcategory/getSubCategoryTypeById', { sub_category_id: subCategoryId })
-      .then((res) => {
-        setSubCategoryTypeLinked(res.data.data || []); // Ensure no undefined values
-      })
-      .catch(() => {
-        message('Product Data Not Found', 'info');
-      });
-  };
+  useEffect(() => {
+    getCategory();
+    getProductById();
+    getProductOwner();
+    getSubCategory();
+  }, [id]);
 
-  const handleInputs = (e) => {
-    const { name, value } = e.target;
-  
-    setProductDetails((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  
-    if (name === "sub_category_id") {
-      setSubCategoryTypeLinked([]); // Reset previous types
-      getSubCategoryType(value);  // Fetch new subcategory types
-    }
-  };
-  
- 
-  
-useEffect(() => {
-  getCategory();
-  getProductById(); // First, fetch product details
-  getProductOwner();
-  getSubCategory();
-}, [id]);
-
-useEffect(() => {
-  if (productDetails?.sub_category_id) {
-    getSubCategoryType(productDetails.sub_category_id);
-  }
-}, [productDetails]); // Run when `productDetails` changes
- 
   return (
     <>
       <BreadCrumbs heading={productDetails && productDetails.title} />
@@ -200,7 +156,6 @@ useEffect(() => {
             categoryLinked={categoryLinked}
             productOwnerLinked={productOwnerLinked}
             subcategoryLinked={subcategoryLinked}
-            subcategorytypeLinked={subcategorytypeLinked}
           ></ProductDetail>
           {/* Product Details Form */}
           <Row>

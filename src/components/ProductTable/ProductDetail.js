@@ -78,8 +78,8 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                                   onChange={handleInputs}
                                 >
                                   <option value="">Please Select</option>
-  {subcategoryLinked.length > 0 ? (
-    subcategoryLinked.map((ele) => (
+  {subcategoryLinked?.length > 0 ? (
+    subcategoryLinked?.map((ele) => (
       <option key={ele.sub_category_id} value={ele.sub_category_id}>
         {ele.sub_category_title}
       </option>
@@ -102,11 +102,11 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
   name="sub_category_type_id"
   value={productDetails?.sub_category_type_id || ""}
   onChange={handleInputs}
-  disabled={!productDetails.sub_category_id || subcategorytypeLinked.length === 0}
+  disabled={!productDetails?.sub_category_id || subcategorytypeLinked?.length === 0}
 >
   <option value="">Please Select</option>
-  {subcategorytypeLinked.length > 0 ? (
-    subcategorytypeLinked.map((ele) => (
+  {subcategorytypeLinked?.length > 0 ? (
+    subcategorytypeLinked?.map((ele) => (
       <option key={ele.sub_category_type_id} value={ele.sub_category_type_id}>
         {ele.type_title}
       </option>

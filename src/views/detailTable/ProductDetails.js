@@ -43,7 +43,7 @@ const ProductDetails = () => {
           .post('/commonApi/getCodeValues', { type: 'inventory' })
           .then((resp) => {
               const InventoryCode = resp.data.data;
-              message('Fetched Inventory code successfully.', 'success');
+              // message('Fetched Inventory code successfully.', 'success');
               api.post('/inventory/insertinventory', {
                 product_id: insertedDataId,
                 inventory_code: InventoryCode,
@@ -51,17 +51,17 @@ const ProductDetails = () => {
                 creation_date: creationdatetime, 
               })
               .then(() => {
-                message('Inventory created successfully.', 'success');
+                // message('Inventory created successfully.', 'success');
               })
               .catch((inventoryError) => {
                 console.error('Error creating inventory:', inventoryError);
-                message('Unable to create inventory.', 'error');
+                // message('Unable to create inventory.', 'error');
               });
   
             })
             .catch((codeError) => {
               console.error('Error fetching Inventory code:', codeError);
-              message('Unable to fetch Inventory code.', 'error');
+              // message('Unable to fetch Inventory code.', 'error');
             });
   
           setTimeout(() => {
