@@ -801,7 +801,7 @@ const EnquiryEdit = () => {
           <TabPane tabId="5">
           <Form>
         <FormGroup>
-          <ComponentCard title="Attachments">
+          <ComponentCard title="Pyment Receipt">
             <Row>
               <Col xs="12" md="3" className="mb-3">
                 <Button
@@ -830,7 +830,7 @@ const EnquiryEdit = () => {
       </Form>
       <Form>
         <FormGroup>
-          <ComponentCard title="Attachments">
+          <ComponentCard title="On Document Payemnt">
             <Row>
               <Col xs="12" md="3" className="mb-3">
                 <Button
@@ -859,7 +859,7 @@ const EnquiryEdit = () => {
       </Form>
       <Form>
         <FormGroup>
-          <ComponentCard title="Attachments">
+          <ComponentCard title="AfterArriavl">
             <Row>
               <Col xs="12" md="3" className="mb-3">
                 <Button
