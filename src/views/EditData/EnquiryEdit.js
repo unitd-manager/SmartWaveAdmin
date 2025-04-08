@@ -87,6 +87,8 @@ const EnquiryEdit = () => {
     { id: '2', name: 'Quotation' },
     { id: '3', name: 'Carrier Tracking' },
     { id: '4', name: 'Attachment' },
+    { id: '5', name: 'Attachment for Receipt' },
+
   ];
   const toggle = (tab) => {
     setActiveTab(tab);
@@ -792,6 +794,95 @@ const EnquiryEdit = () => {
               setAttachmentModal={setAttachmentModal}
             />
             <ViewFileComponentV2 moduleId={id} roomName="Enquiry" />
+          </ComponentCard>
+        </FormGroup>
+      </Form>
+          </TabPane>
+          <TabPane tabId="5">
+          <Form>
+        <FormGroup>
+          <ComponentCard title="Attachments">
+            <Row>
+              <Col xs="12" md="3" className="mb-3">
+                <Button
+                  color="primary"
+                  onClick={() => {
+                    dataForAttachment();
+                    setAttachmentModal(true);
+                  }}
+                >
+                  Add
+                </Button>
+              </Col>
+            </Row>
+            <AttachmentModalV2
+              moduleId={id}
+              roomName="PaymentReceipt"
+              altTagData="PaymentReceipt Data"
+              desc="PaymentReceipt Data"
+              modelType={attachmentData.modelType}
+              attachmentModal={attachmentModal}
+              setAttachmentModal={setAttachmentModal}
+            />
+            <ViewFileComponentV2 moduleId={id} roomName="PaymentReceipt" />
+          </ComponentCard>
+        </FormGroup>
+      </Form>
+      <Form>
+        <FormGroup>
+          <ComponentCard title="Attachments">
+            <Row>
+              <Col xs="12" md="3" className="mb-3">
+                <Button
+                  color="primary"
+                  onClick={() => {
+                    dataForAttachment();
+                    setAttachmentModal(true);
+                  }}
+                >
+                  Add
+                </Button>
+              </Col>
+            </Row>
+            <AttachmentModalV2
+              moduleId={id}
+              roomName="OnDocPayment"
+              altTagData="OnDocPayment Data"
+              desc="OnDocPayment Data"
+              modelType={attachmentData.modelType}
+              attachmentModal={attachmentModal}
+              setAttachmentModal={setAttachmentModal}
+            />
+            <ViewFileComponentV2 moduleId={id} roomName="OnDocPayment" />
+          </ComponentCard>
+        </FormGroup>
+      </Form>
+      <Form>
+        <FormGroup>
+          <ComponentCard title="Attachments">
+            <Row>
+              <Col xs="12" md="3" className="mb-3">
+                <Button
+                  color="primary"
+                  onClick={() => {
+                    dataForAttachment();
+                    setAttachmentModal(true);
+                  }}
+                >
+                  Add
+                </Button>
+              </Col>
+            </Row>
+            <AttachmentModalV2
+              moduleId={id}
+              roomName="AfterArrival"
+              altTagData="AfterArrival Data"
+              desc="AfterArrival Data"
+              modelType={attachmentData.modelType}
+              attachmentModal={attachmentModal}
+              setAttachmentModal={setAttachmentModal}
+            />
+            <ViewFileComponentV2 moduleId={id} roomName="AfterArrival" />
           </ComponentCard>
         </FormGroup>
       </Form>
