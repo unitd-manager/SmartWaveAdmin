@@ -162,9 +162,9 @@ const EnquiryEdit = () => {
     {
       name: 'Qty',
     },
-    // {
-    //   name: 'Unit Price',
-    // },
+    {
+      name: 'Grades',
+    },
     // {
     //   name: 'Amount',
     // },
@@ -606,6 +606,7 @@ const EnquiryEdit = () => {
                             <td data-label="Title">{e.product_title}</td>
                             <td data-label="Description">{e.category_title}</td>
                             <td data-label="Quantity">{e.quantity}</td>
+                            <td data-label="Grade">{e.grades}</td>
                             {/* <td data-label="Unit Price">{e.unit_price}</td>
                             <td data-label="Amount">{e.amount}</td> */}
                             <td data-label="Updated By">
