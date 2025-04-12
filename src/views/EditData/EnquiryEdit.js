@@ -198,9 +198,6 @@ const EnquiryEdit = () => {
     {
       name: 'Qty',
     },
-    {
-      name: 'Grades',
-    },
     // {
     //   name: 'Amount',
     // },
@@ -557,6 +554,8 @@ const EnquiryEdit = () => {
                         </FormGroup>
                       </Col>
 
+                      
+
               <Col md="4">
                         <FormGroup>
                         <Label>Status</Label>
@@ -591,6 +590,19 @@ const EnquiryEdit = () => {
                     onChange={handleInputs}
                     value={enquiryDetails && enquiryDetails.shipping_address}
                     name="shipping_address"
+                    disabled
+                    rows="4"
+                  ></Input>
+                </FormGroup>
+              </Col>
+              <Col md="4">
+                <FormGroup>
+                  <Label>Grades</Label>
+                  <Input
+                    type="text"
+                    onChange={handleInputs}
+                    value={enquiryDetails && enquiryDetails.grades}
+                    name="grades"
                     disabled
                     rows="4"
                   ></Input>
@@ -642,7 +654,6 @@ const EnquiryEdit = () => {
                             <td data-label="Title">{e.product_title}</td>
                             <td data-label="Description">{e.category_title}</td>
                             <td data-label="Quantity">{e.quantity}</td>
-                            <td data-label="Grade">{e.grades}</td>
                             {/* <td data-label="Unit Price">{e.unit_price}</td>
                             <td data-label="Amount">{e.amount}</td> */}
                             <td data-label="Updated By">
