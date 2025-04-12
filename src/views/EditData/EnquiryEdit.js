@@ -47,11 +47,47 @@ const EnquiryEdit = () => {
       const [attachmentData, setDataForAttachment] = useState({
         modelType: '',
       });
+      const [PaymentReceiptattachmentModal, setPaymentReceiptAttachmentModal] = useState(false);
+    
+      const [PaymentReceiptattachmentData, setDataForPaymentReceiptAttachment] = useState({
+        modelType: '',
+      });
+      const [OnDocPaymentattachmentModal, setOnDocPaymentAttachmentModal] = useState(false);
+    
+      const [OnDocPaymentattachmentData, setDataForOnDocPaymentAttachment] = useState({
+        modelType: '',
+      });
+      const [AfterArrivalattachmentModal, setAfterArrivalAttachmentModal] = useState(false);
+    
+      const [AfterArrivalattachmentData, setDataForAfterArrivalAttachment] = useState({
+        modelType: '',
+      });
       const { loggedInuser } = useContext(AppContext);
 
 
       const dataForAttachment = () => {
         setDataForAttachment({
+          modelType: 'attachment',
+        });
+        console.log('inside DataForAttachment');
+      };
+
+      const PaymentReceiptdataForAttachment = () => {
+        setDataForPaymentReceiptAttachment({
+          modelType: 'attachment',
+        });
+        console.log('inside DataForAttachment');
+      };
+
+      const OnDocPaymentdataForAttachment = () => {
+        setDataForOnDocPaymentAttachment({
+          modelType: 'attachment',
+        });
+        console.log('inside DataForAttachment');
+      };
+
+      const AfterArrivaldataForAttachment = () => {
+        setDataForAfterArrivalAttachment({
           modelType: 'attachment',
         });
         console.log('inside DataForAttachment');
@@ -803,7 +839,7 @@ const EnquiryEdit = () => {
           <Form>
         <FormGroup>
           <ComponentCard title="Pyment Receipt">
-            <Row>
+            {/* <Row>
               <Col xs="12" md="3" className="mb-3">
                 <Button
                   color="primary"
@@ -815,15 +851,16 @@ const EnquiryEdit = () => {
                   Add
                 </Button>
               </Col>
-            </Row>
+            </Row> */}
             <AttachmentModalV2
               moduleId={id}
               roomName="PaymentReceipt"
               altTagData="PaymentReceipt Data"
               desc="PaymentReceipt Data"
-              modelType={attachmentData.modelType}
-              attachmentModal={attachmentModal}
-              setAttachmentModal={setAttachmentModal}
+              modelType={PaymentReceiptattachmentData.modelType}
+              attachmentModal={PaymentReceiptattachmentModal}
+              setAttachmentModal={setPaymentReceiptAttachmentModal}
+              dataForAttachment={PaymentReceiptdataForAttachment}
             />
             <ViewFileComponentV2 moduleId={id} roomName="PaymentReceipt" />
           </ComponentCard>
@@ -832,7 +869,7 @@ const EnquiryEdit = () => {
       <Form>
         <FormGroup>
           <ComponentCard title="On Document Payemnt">
-            <Row>
+            {/* <Row>
               <Col xs="12" md="3" className="mb-3">
                 <Button
                   color="primary"
@@ -844,15 +881,16 @@ const EnquiryEdit = () => {
                   Add
                 </Button>
               </Col>
-            </Row>
+            </Row> */}
             <AttachmentModalV2
               moduleId={id}
               roomName="OnDocPayment"
               altTagData="OnDocPayment Data"
               desc="OnDocPayment Data"
-              modelType={attachmentData.modelType}
-              attachmentModal={attachmentModal}
-              setAttachmentModal={setAttachmentModal}
+              modelType={OnDocPaymentattachmentData.modelType}
+              attachmentModal={OnDocPaymentattachmentModal}
+              setAttachmentModal={setOnDocPaymentAttachmentModal}
+              dataForAttachment={OnDocPaymentdataForAttachment}
             />
             <ViewFileComponentV2 moduleId={id} roomName="OnDocPayment" />
           </ComponentCard>
@@ -861,7 +899,7 @@ const EnquiryEdit = () => {
       <Form>
         <FormGroup>
           <ComponentCard title="AfterArriavl">
-            <Row>
+            {/* <Row>
               <Col xs="12" md="3" className="mb-3">
                 <Button
                   color="primary"
@@ -873,15 +911,16 @@ const EnquiryEdit = () => {
                   Add
                 </Button>
               </Col>
-            </Row>
+            </Row> */}
             <AttachmentModalV2
               moduleId={id}
               roomName="AfterArrival"
               altTagData="AfterArrival Data"
               desc="AfterArrival Data"
-              modelType={attachmentData.modelType}
-              attachmentModal={attachmentModal}
-              setAttachmentModal={setAttachmentModal}
+              modelType={AfterArrivalattachmentData.modelType}
+              attachmentModal={AfterArrivalattachmentModal}
+              setAttachmentModal={setAfterArrivalAttachmentModal}
+              dataForAttachment={AfterArrivaldataForAttachment}
             />
             <ViewFileComponentV2 moduleId={id} roomName="AfterArrival" />
           </ComponentCard>
