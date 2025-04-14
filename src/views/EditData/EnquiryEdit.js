@@ -14,6 +14,7 @@ import message from '../../components/Message';
 import Tab from '../../components/ProjectTable/Tab';
 import TenderQuotation from '../../components/ProjectTable/TenderQuotation';
 import ViewFileComponentV2 from '../../components/ProjectModal/ViewFileComponentV2';
+import ViewFileComponentForWeb from '../../components/ProjectModal/ViewFileComponentForWeb';
 import AttachmentModalV2 from '../../components/Tender/AttachmentModalV2';
 import api from '../../constants/api';
 import AppContext from '../../context/AppContext';
@@ -64,6 +65,7 @@ const EnquiryEdit = () => {
       });
       const { loggedInuser } = useContext(AppContext);
 
+      const fileTypes = ["JPG", "PNG", "GIF", "PDF", "CSV"];
 
       const dataForAttachment = () => {
         setDataForAttachment({
@@ -74,21 +76,21 @@ const EnquiryEdit = () => {
 
       const PaymentReceiptdataForAttachment = () => {
         setDataForPaymentReceiptAttachment({
-          modelType: 'attachment',
+          modelType: 'PaymentReceiptattachment',
         });
         console.log('inside DataForAttachment');
       };
 
       const OnDocPaymentdataForAttachment = () => {
         setDataForOnDocPaymentAttachment({
-          modelType: 'attachment',
+          modelType: 'OnPaymentattachment',
         });
         console.log('inside DataForAttachment');
       };
 
       const AfterArrivaldataForAttachment = () => {
         setDataForAfterArrivalAttachment({
-          modelType: 'attachment',
+          modelType: 'AfterArrivalattachment',
         });
         console.log('inside DataForAttachment');
       };
@@ -838,19 +840,19 @@ const EnquiryEdit = () => {
           <Form>
         <FormGroup>
           <ComponentCard title="Pyment Receipt">
-            {/* <Row>
+            <Row>
               <Col xs="12" md="3" className="mb-3">
                 <Button
                   color="primary"
                   onClick={() => {
-                    dataForAttachment();
-                    setAttachmentModal(true);
+                    PaymentReceiptdataForAttachment();
+                    setPaymentReceiptAttachmentModal(true);
                   }}
                 >
                   Add
                 </Button>
               </Col>
-            </Row> */}
+            </Row>
             <AttachmentModalV2
               moduleId={id}
               roomName="PaymentReceipt"
@@ -860,8 +862,10 @@ const EnquiryEdit = () => {
               attachmentModal={PaymentReceiptattachmentModal}
               setAttachmentModal={setPaymentReceiptAttachmentModal}
               dataForAttachment={PaymentReceiptdataForAttachment}
+              fileTypes={fileTypes}
+              PaymentReceiptdataForAttachment={PaymentReceiptdataForAttachment}
             />
-            <ViewFileComponentV2 moduleId={id} roomName="PaymentReceipt" />
+            <ViewFileComponentForWeb moduleId={id} roomName="PaymentReceipt" />
           </ComponentCard>
         </FormGroup>
       </Form>
@@ -873,8 +877,8 @@ const EnquiryEdit = () => {
                 <Button
                   color="primary"
                   onClick={() => {
-                    dataForAttachment();
-                    setAttachmentModal(true);
+                    OnDocPaymentdataForAttachment();
+                    setOnDocPaymentAttachmentModal(true);
                   }}
                 >
                   Add
@@ -890,8 +894,9 @@ const EnquiryEdit = () => {
               attachmentModal={OnDocPaymentattachmentModal}
               setAttachmentModal={setOnDocPaymentAttachmentModal}
               dataForAttachment={OnDocPaymentdataForAttachment}
+              OnDocPaymentdataForAttachment={OnDocPaymentdataForAttachment}
             />
-            <ViewFileComponentV2 moduleId={id} roomName="OnDocPayment" />
+            <ViewFileComponentForWeb moduleId={id} roomName="OnDocPayment" />
           </ComponentCard>
         </FormGroup>
       </Form>
@@ -903,8 +908,8 @@ const EnquiryEdit = () => {
                 <Button
                   color="primary"
                   onClick={() => {
-                    dataForAttachment();
-                    setAttachmentModal(true);
+                    AfterArrivaldataForAttachment();
+                    setAfterArrivalAttachmentModal(true);
                   }}
                 >
                   Add
@@ -919,9 +924,9 @@ const EnquiryEdit = () => {
               modelType={AfterArrivalattachmentData.modelType}
               attachmentModal={AfterArrivalattachmentModal}
               setAttachmentModal={setAfterArrivalAttachmentModal}
-              dataForAttachment={AfterArrivaldataForAttachment}
+              AfterArrivaldataForAttachment={AfterArrivaldataForAttachment}
             />
-            <ViewFileComponentV2 moduleId={id} roomName="AfterArrival" />
+            <ViewFileComponentForWeb moduleId={id} roomName="AfterArrival" />
           </ComponentCard>
         </FormGroup>
       </Form>
