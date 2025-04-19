@@ -35,6 +35,7 @@ const ProductUpdate = () => {
   });
   const [activeTab, setActiveTab] = useState('1');
   const [subcategoryLinked, setSubCategoryLinked] = useState();
+  const [subcategorytypeLinked, setSubCategoryTypeLinked] = useState();
   // Navigation and Parameter Constants
   const { id } = useParams();
   const navigate = useNavigate();
@@ -115,6 +116,13 @@ const ProductUpdate = () => {
       });
     };
 
+    // getting data from SubCategory
+    const getSubCategoryTypeById = (SubcategoryId) => {
+      api.post('/subcategory/getSubCategoryTypeById', { sub_category_id: SubcategoryId }).then((res) => {
+        setSubCategoryTypeLinked(res.data.data);
+      });
+    };
+
   const getProductOwner = () => {
     api
       .get('/supplier/getProductOwner')
@@ -139,6 +147,7 @@ const ProductUpdate = () => {
     getCategory();
     getProductById();
     getProductOwner();
+    getSubCategoryTypeById();
   }, [id]); 
 
   useEffect(() => {
@@ -146,6 +155,12 @@ const ProductUpdate = () => {
       getSubCategory(productDetails.category_id);
     }
   }, [productDetails?.category_id]);
+
+  useEffect(() => {
+    if (productDetails?.sub_category_id) {
+      getSubCategoryTypeById(productDetails.sub_category_id );
+    }
+  }, [productDetails?.sub_category_id ]);
   
 
   return (
@@ -162,6 +177,7 @@ const ProductUpdate = () => {
             categoryLinked={categoryLinked}
             productOwnerLinked={productOwnerLinked}
             subcategoryLinked={subcategoryLinked}
+            subcategorytypeLinked={subcategorytypeLinked}
           ></ProductDetail>
           {/* Product Details Form */}
           <Row>
