@@ -14,17 +14,18 @@ export default function TenderQuotation({
   generateCode,
   getLine,
   getQuote,
+  handleDeleteQuote, // New prop for delete handler
 }) {
   TenderQuotation.propTypes = {
+    quote: PropTypes.array,
     lineItem: PropTypes.object,
- 
-    getLine: PropTypes.object,
     setEditQuoteModal: PropTypes.func,
     editQuoteModal: PropTypes.bool,
-    quote: PropTypes.array,
     handleQuoteForms: PropTypes.func,
     generateCode: PropTypes.func,
+    getLine: PropTypes.object,
     getQuote: PropTypes.func,
+    handleDeleteQuote: PropTypes.func, // PropTypes validation
   };
 
   const [selectedFormat, setSelectedFormat] = useState('format1');
@@ -58,7 +59,7 @@ export default function TenderQuotation({
             </tr>
           </thead>
           <tbody>
-            {Array.isArray(quote) && quote.length > 0 ? (
+          {Array.isArray(quote) && quote.length > 0 ? (
               quote.map((item) => (
                 <tr >
                   <td>{item.quote_code || 'N/A'}</td>
@@ -67,10 +68,18 @@ export default function TenderQuotation({
                   <td>{item.price || 'N/A'}</td>
                   <td>
                     <Icon.Edit
-                      className="pointer"
+                      className="pointer me-2"
                       onClick={() => {
                         setEditQuoteModal(true);
                         setQuoteData(item);
+                      }}
+                    />
+                    <Icon.Trash
+                      className="pointer text-danger"
+                      onClick={() => {
+                        if (window.confirm('Are you sure you want to delete this quote?')) {
+                          handleDeleteQuote(item); // Call the delete handler
+                        }
                       }}
                     />
                   </td>
