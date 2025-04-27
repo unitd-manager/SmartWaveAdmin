@@ -216,6 +216,9 @@
   name: '#',
   },
   {
+  name: 'Carrier Code',
+  },
+  {
   name: 'Carrier Name',
   },
   {
@@ -327,8 +330,7 @@
     insertQuote('');
   });
   };
-
-
+  
   const updateOrder = (code) => {
   enquiryDetails.modification_date = creationdatetime;
   enquiryDetails.order_code = code;
@@ -708,6 +710,7 @@
                   return (
                     <tr key={e.carrier_tracking_id}>
                       <td>{index + 1}</td>
+                      <td data-label="Carrier Code">{e.carrier_code}</td>
                       <td data-label="Carrier Name">{e.carrier_name}</td>
                       <td data-label="Container No">{e.container_no}</td>
                       <td data-label="Bill of Lading">{e.bill_of_loading}</td>
@@ -755,19 +758,21 @@
         setViewTrackModal={setViewTrackModal}
       > {' '}</EditTrackItemModal>
       {addTrackItemModal && (
-        <QuoteTrackItem
-          //projectInfo={tenderId}
-          addTrackItemModal={addTrackItemModal}
-          setAddTrackItemModal={setAddTrackItemModal}
-          quoteTrack={id}
-        ></QuoteTrackItem>
+         <QuoteTrackItem
+         //projectInfo={tenderId}
+         addTrackItemModal={addTrackItemModal}
+         setAddTrackItemModal={setAddTrackItemModal}
+         quoteTrack={id}
+         orderCode={enquiryDetails ? enquiryDetails.order_code : ''} // Pass the orderCode
+       />
+        
       )}
     </TabPane>
 
     <TabPane tabId="4">
     <Form>
   <FormGroup>
-    <ComponentCard title="Attachments">
+    <ComponentCard title="Business Document">
       <Row>
         <Col xs="12" md="3" className="mb-3">
           <Button
