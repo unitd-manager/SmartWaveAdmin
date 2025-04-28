@@ -14,7 +14,6 @@ import {
   ModalFooter,
 } from 'reactstrap';
 import PropTypes from 'prop-types';
-import moment from 'moment'
 import api from '../../constants/api';
 import message from '../Message';
 import creationdatetime from '../../constants/creationdatetime';
@@ -48,7 +47,7 @@ const QuoteLineItem = ({ addTrackItemModal, setAddTrackItemModal, quoteTrack }) 
     tracking_link: '',
     bill_of_loading:'',
     container_no:'',
-    order_no:''
+    order_no:'',
   });
 
   const handleInputChange = (e) => {
@@ -240,11 +239,7 @@ const QuoteLineItem = ({ addTrackItemModal, setAddTrackItemModal, quoteTrack }) 
                   <Input
                     type="date"
                     name="actual_delivery_date"
-                    value={
-                      formData &&
-                      moment(formData.actual_delivery_date).format('YYYY-MM-DD')
-                    }
-                    min={moment().format('YYYY-MM-DD')}
+                    value={formData.actual_delivery_date}
                   
                     onChange={handleInputChange}
                   />
@@ -256,11 +251,8 @@ const QuoteLineItem = ({ addTrackItemModal, setAddTrackItemModal, quoteTrack }) 
                   <Input
                     type="date"
                     name="expected_delivery_date"
-                    value={
-                      formData &&
-                      moment(formData.expected_delivery_date).format('YYYY-MM-DD')
+                    value={formData.expected_delivery_date
                     }
-                    min={moment().format('YYYY-MM-DD')}
                     onChange={handleInputChange}
                   />
                 </FormGroup>
@@ -330,6 +322,8 @@ const QuoteLineItem = ({ addTrackItemModal, setAddTrackItemModal, quoteTrack }) 
               </FormGroup>
             </Col>
             
+            
+            </Row> */}
             <Col md="4">
             
             <FormGroup>
@@ -342,7 +336,6 @@ const QuoteLineItem = ({ addTrackItemModal, setAddTrackItemModal, quoteTrack }) 
                 />
               </FormGroup>
             </Col>
-            </Row> */}
           </Card>
         </Form>
       </ModalBody>

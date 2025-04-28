@@ -151,7 +151,7 @@ const SubCategory = () => {
                   <tr key={element.sub_category_id}>
                     <td>{index + 1}</td>
                     <td>
-                      <Link to={`/SubCategoryEdit/${element.sub_category_id}`}>
+                      <Link to={`/SubCategoryEdit/${element.sub_category_id}?tab=1`}>
                         <Icon.Edit2 />
                       </Link>
                     </td>

@@ -34,7 +34,7 @@ const SubCategoryDetails = () => {
           const insertedDataId = res.data.data.insertId;
           message('SubCategoryDetails inserted successfully.', 'success');
           setTimeout(() => {
-            navigate(`/SubCategoryEdit/${insertedDataId}`);
+            navigate(`/SubCategoryEdit/${insertedDataId}?tab=1`);
           }, 300);
         })
         .catch(() => {
