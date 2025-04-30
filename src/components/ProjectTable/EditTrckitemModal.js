@@ -12,7 +12,7 @@ import {
   ModalFooter,
 } from 'reactstrap';
 import PropTypes from 'prop-types';
-import moment from 'moment';
+// import moment from 'moment';
 import api from '../../constants/api';
 import message from '../Message';
 // import AppContext from '../../context/AppContext';
@@ -291,19 +291,9 @@ const EditLineItemModal = ({ editTrackModal, setEditTrackModal,FetchTrackItemDat
     />
   </FormGroup>
 </Col>
-<Col md="4">
 
-<FormGroup>
-    <Label>Tracking Link</Label>
-    <Input
-      type="text"
-      name="tracking_link"
-      value={lineItemData?.tracking_link || ''}
-      onChange={handleData}
-    />
-  </FormGroup>
-</Col>
 </Row> */}
+
 <Col md="4">
 <FormGroup>
     <Label> Bill of Lading</Label>
@@ -334,7 +324,7 @@ const EditLineItemModal = ({ editTrackModal, setEditTrackModal,FetchTrackItemDat
       name="actual_delivery_date"
       value={lineItemData?.actual_delivery_date || ''}
       onChange={handleData}
-      min={moment().format('YYYY-MM-DD')}
+      // min={moment().format('YYYY-MM-DD')}
     />
   </FormGroup>
 </Col>
@@ -345,7 +335,19 @@ const EditLineItemModal = ({ editTrackModal, setEditTrackModal,FetchTrackItemDat
       type="date"
       name="expected_delivery_date"
       value={lineItemData?.expected_delivery_date || ''}
-      min={moment().format('YYYY-MM-DD')}
+      // min={moment().format('YYYY-MM-DD')}
+      onChange={handleData}
+    />
+  </FormGroup>
+</Col>
+<Col md="4">
+
+<FormGroup>
+    <Label>Tracking Link</Label>
+    <Input
+      type="text"
+      name="tracking_link"
+      value={lineItemData?.tracking_link || ''}
       onChange={handleData}
     />
   </FormGroup>

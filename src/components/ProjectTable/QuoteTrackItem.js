@@ -14,7 +14,6 @@ import {
     ModalFooter,
 } from 'reactstrap';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import api from '../../constants/api';
 import message from '../Message';
 import creationdatetime from '../../constants/creationdatetime';
@@ -172,11 +171,7 @@ const QuoteLineItem = ({ addTrackItemModal, setAddTrackItemModal, quoteTrack, or
                                     <Input
                                         type="date"
                                         name="actual_delivery_date"
-                                        value={
-                                            formData &&
-                                            moment(formData.actual_delivery_date).format('YYYY-MM-DD')
-                                        }
-                                        min={moment().format('YYYY-MM-DD')}
+                                        value={formData.actual_delivery_date}
                                         onChange={handleInputChange}
                                     />
                                 </FormGroup>
@@ -187,11 +182,18 @@ const QuoteLineItem = ({ addTrackItemModal, setAddTrackItemModal, quoteTrack, or
                                     <Input
                                         type="date"
                                         name="expected_delivery_date"
-                                        value={
-                                            formData &&
-                                            moment(formData.expected_delivery_date).format('YYYY-MM-DD')
-                                        }
-                                        min={moment().format('YYYY-MM-DD')}
+                                        value={formData.expected_delivery_date}
+                                        onChange={handleInputChange}
+                                    />
+                                </FormGroup>
+                            </Col>
+                                <Col md="4">
+                                <FormGroup>
+                                    <Label>Website Link</Label>
+                                    <Input
+                                        type="date"
+                                        name="tracking_link"
+                                        value={formData.tracking_link}
                                         onChange={handleInputChange}
                                     />
                                 </FormGroup>

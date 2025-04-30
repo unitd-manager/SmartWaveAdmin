@@ -214,38 +214,41 @@
   },
   ];
 
-  const columns2 = [
-  {
-  name: '#',
-  },
-  {
-  name: 'Carrier Code',
-  },
-  {
-  name: 'Carrier Name',
-  },
-  {
-  name: 'Container Number',
-  },
-  {
-  name: 'Bill of Lading',
-  },
-  {
-  name: 'Order Number',
-  },
-  {
-  name: 'ETD',
-  },
-  {
-  name: 'ETA',
-  },
-  {
-  name: 'Updated By ',
-  },
-  {
-  name: 'Action ',
-  },
-  ];
+  // const columns2 = [
+  //   {
+  //     name: '#',
+  //   },
+  //   {
+  //     name: 'Carrier Code',
+  //   },
+  //   {
+  //     name: 'Carrier Name',
+  //   },
+  //   {
+  //     name: 'Container Number',
+  //   },
+  //   {
+  //     name: 'Bill of Lading',
+  //   },
+  //   {
+  //     name: 'Order Number',
+  //   },
+  //   {
+  //     name: 'ETD',
+  //   },
+  //   {
+  //     name: 'ETA',
+  //   },
+  //   {
+  //     name: 'Tracking Link',
+  //   },
+  //   {
+  //     name: 'Updated By ',
+  //   },
+  //   {
+  //     name: 'Action ',
+  //   },
+  // ];
 
   const deleteRecord = (deleteID) => {
   Swal.fire({
@@ -633,7 +636,7 @@
                             deleteRecord(e.enq_prod_id);
                           }}
                         >
-                          <Icon.Trash2 />
+                                                  <Icon.Trash2 />
                         </span>
                       </td>
                     </tr>
@@ -701,28 +704,22 @@
       <Row>
         <div className="container">
           <Table id="example" className="display border border-secondary rounded">
-            <thead>
-              <tr>
-                {columns2.map((cell) => {
-                  return <td key={cell.name}>{cell.name}</td>;
-                })}
-              </tr>
-            </thead>
-            <tbody>
-              {TrackItem &&
-                TrackItem.map((e, index) => {
-                  return (
-                    <tr key={e.carrier_tracking_id}>
-                      <td>{index + 1}</td>
-                      <td data-label="Carrier Code">{e.carrier_code}</td>
-                      <td data-label="Carrier Name">{e.carrier_name}</td>
-                      <td data-label="Container No">{e.container_no}</td>
-                      <td data-label="Bill of Lading">{e.bill_of_loading}</td>
-                      <td data-label="Order No">{e.order_no}</td>
-                      <td data-label="ETD">{new Date(e.actual_delivery_date).toLocaleDateString()}</td>
 
-  <td data-label="ETA">{new Date(e.expected_delivery_date).toLocaleDateString()}</td>
-  <td data-label="Updated By">
+                  <tbody>
+                    {TrackItem &&
+                      TrackItem.map((e, index) => {
+                        return (
+                          <tr key={e.carrier_tracking_id}>
+                            <td>{index + 1}</td>
+                            <td data-label="Carrier Name">{e.carrier_name}</td>
+                            <td data-label="Container No">{e.container_no}</td>
+                            <td data-label="Bill of Lading">{e.bill_of_loading}</td>
+                            <td data-label="Order No">{e.order_no}</td>
+                           <td data-label="ETD">{e.actual_delivery_date}</td>
+
+<td data-label="ETA">{e.expected_delivery_date}</td>
+<td data-label="Tracking Link">{e.tracking_link}</td>
+<td data-label="Updated By">
   {e.modification_date
   ? `${e.modified_by} (Modified on ${e.modification_date.split('T')[0]})`
   : `${e.created_by} (Created on ${e.creation_date.split('T')[0]})`}
