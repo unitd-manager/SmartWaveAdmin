@@ -198,6 +198,9 @@
   name: 'Category',
   },
   {
+    name: 'Subcategory',
+  },
+  {
   name: 'Qty',
   },
   {
@@ -602,7 +605,8 @@
                                             {e.product_code}
                                         </Link></td>
                       <td data-label="Title">{e.product_title}</td>
-                      <td data-label="Description">{e.category_title}</td>
+                      <td data-label="Category">{e.category_title}</td>
+                      <td data-label="Subcategory">{e.sub_category_title}</td>
                       <td data-label="Quantity">{e.quantity}</td>
                       <td data-label="Grades">{e.grades}</td>
                       {/* <td data-label="Unit Price">{e.unit_price}</td>
