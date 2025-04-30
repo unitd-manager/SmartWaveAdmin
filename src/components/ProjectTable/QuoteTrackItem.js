@@ -162,6 +162,7 @@ const QuoteLineItem = ({ addTrackItemModal, setAddTrackItemModal, quoteTrack, or
                                         name="order_no"
                                         value={formData.order_no}
                                         onChange={handleInputChange}
+                                        disabled
                                     />
                                 </FormGroup>
                             </Col>
