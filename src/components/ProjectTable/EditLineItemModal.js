@@ -134,6 +134,21 @@ const {id}=useParams();
               </Col>
             </Row>
           </FormGroup>
+          <FormGroup>
+            <Row>
+              <Label sm="2">Grade</Label>
+              <Col sm="10">
+                <Input
+                  type="text"
+                  name="grades"
+                  defaultValue={lineItemData && lineItemData.grades}
+                  onChange={handleData}
+                  disabled // ← This disables the input
+                 
+                />
+              </Col>
+            </Row>
+          </FormGroup>
          
           {/* <FormGroup>
             <Row>

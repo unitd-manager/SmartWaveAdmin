@@ -101,7 +101,19 @@ const EditQuoteModal = ({
             <FormGroup>
             {/* {selectedFormat !== 'format2' && (
                    <> */}
-              <Row>                
+              <Row>  
+              <Col md="4">
+                  <FormGroup>
+                    <Label>Quote Code</Label>
+                    <Input
+                      type="text"
+                      name="quote_code"
+                      value={quoteData && quoteData.quote_code}
+                      onChange={handleData}
+                      disabled // Add the disabled attribute here
+                    />
+                  </FormGroup>
+                </Col>              
                 <Col md="4">
                   <FormGroup>
                     <Label>Quote Date</Label>
