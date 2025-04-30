@@ -79,6 +79,11 @@ const Staff = () => {
       selector: (row) => row.expected_delivery_date,
       sortable: true,
     },
+    {
+      name: 'Website Link',
+      selector: (row) => row.tracking_link,
+      sortable: true,
+    },
     
       ];
 
