@@ -24,7 +24,7 @@ import ProductDetail from '../../components/ProductTable/ProductDetail';
 const ProductUpdate = () => {
   // All state variables
   const [productDetails, setProductDetails] = useState();
-  const [categoryLinked, setCategoryLinked] = useState([]);
+  const [categoryLinked, setCategoryLinked] = useState();
   const [productOwnerLinked, setproductOwnerLinked] = useState([]);
   const [productDescription, setProductDescription] = useState('');
   const [RoomName, setRoomName] = useState('');
@@ -97,16 +97,14 @@ const ProductUpdate = () => {
     }
   };
 
+ 
   // getting data from Category
-  const getCategory = () => {
+  const getCategory = (categoryId1) => {
     api
-      .get('/product/getCategory')
+      .post('/product/getCategoryById1', { product_id: categoryId1 })
       .then((res) => {
         setCategoryLinked(res.data.data);
       })
-      .catch(() => {
-        // message('Unable to get categories', 'error');
-      });
   };
 
   // getting data from SubCategory
@@ -144,11 +142,16 @@ const ProductUpdate = () => {
 
   
   useEffect(() => {
-    getCategory();
     getProductById();
     getProductOwner();
     getSubCategoryTypeById();
   }, [id]); 
+
+  useEffect(() => {
+    if (productDetails?.product_id) {
+      getCategory(productDetails.product_id);
+    }
+  }, [productDetails?.product_id]);
 
   useEffect(() => {
     if (productDetails?.category_id) {
