@@ -33,7 +33,7 @@ export default function TenderQuotation({
 
   const deleteSupplierData = (id) => {
     Swal.fire({
-      title: `Are you sure? ${id}`,
+      title: `Are you sure? `,
       text: "You won't be able to revert this!",
       icon: 'warning',
       showCancelButton: true,

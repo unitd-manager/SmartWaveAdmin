@@ -117,33 +117,35 @@ useEffect(() => {
             <Row>
               <Label sm="2">Category</Label>
               <Col sm="10">
-                <Input
-                  type="select"
-                  name="category_id"
-                  defaultValue={lineItemData && lineItemData.category_id}
-                  onChange={handleData}
-                >
-                <option defaultValue="selected">Please Select</option>
-                  {unitdetails &&
-                    unitdetails.map((ele) => {
-                      return (
-                        <option key={ele.category_id} value={ele.category_id}>
-                          {ele.category_title}
-                        </option>
-                      );
-                    })}
-                </Input>
-              </Col>
+    <Input
+        type="select"
+        name="category_id"
+        value={lineItemData && lineItemData.category_id} // Use 'value' instead of 'defaultValue'
+        onChange={handleData}
+    >
+        <option value="">Please Select</option> {/* Ensure the default option has an empty value */}
+        {unitdetails &&
+            unitdetails.map((ele) => (
+                <option key={ele.category_id} value={ele.category_id}>
+                    {ele.category_title}
+                </option>
+            ))}
+    </Input>
+</Col>
+              </Row>
+              </FormGroup>
+              <FormGroup>
+              <Row>
+              <Label sm="2">SubCat</Label>
               <Col sm="10">
-              <Label sm="2">SubCategory</Label>
                 <Input
                   type="select"
                   name="sub_category_id"
-                  defaultValue={lineItemData && lineItemData.sub_category_id}
+                  value={lineItemData && lineItemData.sub_category_id}
                   onChange={handleData}
                 >
-                <option defaultValue="selected">Please Select</option>
-                  {unitdetails1 &&
+        <option value="">Please Select</option> {/* Ensure the default option has an empty value */}
+        {unitdetails1 &&
                     unitdetails1.map((ele) => {
                       return (
                         <option key={ele.sub_category_id} value={ele.sub_category_id}>

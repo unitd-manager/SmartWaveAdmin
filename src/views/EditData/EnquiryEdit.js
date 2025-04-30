@@ -1,510 +1,520 @@
-  import React, { useEffect, useState,useContext } from 'react';
-  import { Row, Col, Form, FormGroup, Label, Input, Button ,TabPane, TabContent,Table} from 'reactstrap';
-  import { ToastContainer } from 'react-toastify';
-  import * as Icon from 'react-feather';
-  import Swal from 'sweetalert2';
-  import moment from 'moment';
-  import { useNavigate, useParams ,Link} from 'react-router-dom';
-  import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-  import '../form-editor/editor.scss';
-  import BreadCrumbs from '../../layouts/breadcrumbs/BreadCrumbs';
-  import ComponentCard from '../../components/ComponentCard';
-  import ComponentCardV2 from '../../components/ComponentCardV2';
-  import message from '../../components/Message';
-  import Tab from '../../components/ProjectTable/Tab';
-  import TenderQuotation from '../../components/ProjectTable/TenderQuotation';
-  import ViewFileComponentV2 from '../../components/ProjectModal/ViewFileComponentV2';
-  import ViewFileComponentForWeb from '../../components/ProjectModal/ViewFileComponentForWeb';
-  import AttachmentModalV2 from '../../components/Tender/AttachmentModalV2';
-  import api from '../../constants/api';
-  import AppContext from '../../context/AppContext';
-  import creationdatetime from '../../constants/creationdatetime';
-  // import DeleteButton from '../../components/DeleteButton';
-  import QuoteLineItem from '../../components/ProjectTable/QuoteLineItem';
-  import EditLineItemModal from '../../components/ProjectTable/EditLineItemModal';
-  import QuoteTrackItem from '../../components/ProjectTable/QuoteTrackItem';
-  import EditTrackItemModal from '../../components/ProjectTable/EditTrckitemModal';
+import React, { useEffect, useState, useContext } from 'react';
+import { Row, Col, Form, FormGroup, Label, Input, Button, TabPane, TabContent, Table } from 'reactstrap';
+import { ToastContainer } from 'react-toastify';
+import * as Icon from 'react-feather';
+import Swal from 'sweetalert2';
+import moment from 'moment';
+import { useNavigate, useParams, Link } from 'react-router-dom';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import '../form-editor/editor.scss';
+import BreadCrumbs from '../../layouts/breadcrumbs/BreadCrumbs';
+import ComponentCard from '../../components/ComponentCard';
+import ComponentCardV2 from '../../components/ComponentCardV2';
+import message from '../../components/Message';
+import Tab from '../../components/ProjectTable/Tab';
+import TenderQuotation from '../../components/ProjectTable/TenderQuotation';
+import ViewFileComponentV2 from '../../components/ProjectModal/ViewFileComponentV2';
+import ViewFileComponentForWeb from '../../components/ProjectModal/ViewFileComponentForWeb';
+import AttachmentModalV2 from '../../components/Tender/AttachmentModalV2';
+import api from '../../constants/api';
+import AppContext from '../../context/AppContext';
+import creationdatetime from '../../constants/creationdatetime';
+// import DeleteButton from '../../components/DeleteButton';
+import QuoteLineItem from '../../components/ProjectTable/QuoteLineItem';
+import EditLineItemModal from '../../components/ProjectTable/EditLineItemModal';
+import QuoteTrackItem from '../../components/ProjectTable/QuoteTrackItem';
+import EditTrackItemModal from '../../components/ProjectTable/EditTrckitemModal';
 
-  const EnquiryEdit = () => {
-  //All state variable
-  const [enquiryDetails, setEnquiryDetails] = useState();
-  const [company, setCompany] = useState();
+const EnquiryEdit = () => {
+    //All state variable
+    const [enquiryDetails, setEnquiryDetails] = useState();
+    const [company, setCompany] = useState();
 
-  const [addLineItemModal, setAddLineItemModal] = useState(false);
-  const [lineItem, setLineItem] = useState();
-  const [viewLineModal, setViewLineModal] = useState(false);
-  const [addTrackItemModal, setAddTrackItemModal] = useState(false);
-  const [TrackItem, setTrackItem] = useState();
-  const [viewTrackModal, setViewTrackModal] = useState(false);
-  const [editQuoteModal, setEditQuoteModal] = useState(false);
+    const [addLineItemModal, setAddLineItemModal] = useState(false);
+    const [lineItem, setLineItem] = useState();
+    const [viewLineModal, setViewLineModal] = useState(false);
+    const [addTrackItemModal, setAddTrackItemModal] = useState(false);
+    const [TrackItem, setTrackItem] = useState();
+    const [viewTrackModal, setViewTrackModal] = useState(false);
+    const [editQuoteModal, setEditQuoteModal] = useState(false);
 
-  const [editLineModelItem, setEditLineModelItem] = useState(null);
-  const [editLineModal, setEditLineModal] = useState(false);
+    const [editLineModelItem, setEditLineModelItem] = useState(null);
+    const [editLineModal, setEditLineModal] = useState(false);
 
-  const [editTrackModelItem, setEditTrackModelItem] = useState(null);
-  const [editTrackModal, setEditTrackModal] = useState(false);
-  const [attachmentModal, setAttachmentModal] = useState(false);
+    const [editTrackModelItem, setEditTrackModelItem] = useState(null);
+    const [editTrackModal, setEditTrackModal] = useState(false);
+    const [attachmentModal, setAttachmentModal] = useState(false);
 
-  const [attachmentData, setDataForAttachment] = useState({
-  modelType: '',
-  });
-  const [PaymentReceiptattachmentModal, setPaymentReceiptAttachmentModal] = useState(false);
-
-  const [PaymentReceiptattachmentData, setDataForPaymentReceiptAttachment] = useState({
-  modelType: '',
-  });
-  const [OnDocPaymentattachmentModal, setOnDocPaymentAttachmentModal] = useState(false);
-
-  const [OnDocPaymentattachmentData, setDataForOnDocPaymentAttachment] = useState({
-  modelType: '',
-  });
-  const [AfterArrivalattachmentModal, setAfterArrivalAttachmentModal] = useState(false);
-
-  const [AfterArrivalattachmentData, setDataForAfterArrivalAttachment] = useState({
-  modelType: '',
-  });
-  const { loggedInuser } = useContext(AppContext);
-
-  const fileTypes = ["JPG", "PNG", "GIF", "PDF", "CSV"];
-
-  const dataForAttachment = () => {
-  setDataForAttachment({
-    modelType: 'attachment',
-  });
-  console.log('inside DataForAttachment');
-  };
-
-  const PaymentReceiptdataForAttachment = () => {
-  setDataForPaymentReceiptAttachment({
-    modelType: 'PaymentReceiptattachment',
-  });
-  console.log('inside DataForAttachment');
-  };
-
-  const OnDocPaymentdataForAttachment = () => {
-  setDataForOnDocPaymentAttachment({
-    modelType: 'OnPaymentattachment',
-  });
-  console.log('inside DataForAttachment');
-  };
-
-  const AfterArrivaldataForAttachment = () => {
-  setDataForAfterArrivalAttachment({
-    modelType: 'AfterArrivalattachment',
-  });
-  console.log('inside DataForAttachment');
-  };
-
-  //navigation and parameters
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const applyChanges = () => {};
-  const backToList = () => {
-  navigate('/Enquiry');
-  };
-  const [activeTab, setActiveTab] = useState('1');
-
-  const addQuoteItemsToggle = () => {
-  setAddLineItemModal(!addLineItemModal);
-  };
-
-  const addTrackItemsToggle = () => {
-  setAddTrackItemModal(!addTrackItemModal);
-  };
-
-  const viewTrackToggle = () => {
-  setViewTrackModal(!viewTrackModal);
-  };
-
-  const viewLineToggle = () => {
-  setViewLineModal(!viewLineModal);
-  };
-  console.log(viewLineToggle,viewTrackToggle);
-  const tabs = [
-  { id: '1', name: 'Product' },
-  { id: '2', name: 'Quotation' },
-  { id: '3', name: 'Carrier Tracking' },
-  { id: '4', name: 'Attachment' },
-  { id: '5', name: 'Attachment for Receipt' },
-
-  ];
-  const toggle = (tab) => {
-  setActiveTab(tab);
-  };
-  //setting data in enquiryDetails
-  const handleInputs = (e) => {
-  setEnquiryDetails({ ...enquiryDetails, [e.target.name]: e.target.value });
-  };
-
-  const getCompany = () => {
-  api.get('/company/getContact').then((res) => {
-  setCompany(res.data.data);
-  });
-  };
-
-  //getting data from setting by Id
-  const getEnquiryById = () => {
-  api
-  .post('/enquiry/getEnquiryById', { enquiry_id: id })
-  .then((res) => {
-  setEnquiryDetails(res.data.data[0]);
-  })
-  .catch(() => {
-  message('setting Data Not Found', 'info');
-  });
-  };
-  //Update Setting
-  const editEnquiryData = () => {
-  enquiryDetails.modification_date = creationdatetime;
-  enquiryDetails.modified_by = loggedInuser.first_name;
-  enquiryDetails.modification_date = creationdatetime;
-  api
-  .post('/enquiry/editEnquiry', enquiryDetails)
-  .then(() => {
-    message('Record editted successfully', 'success');
-  })
-  .catch(() => {
-    message('Unable to edit record.', 'error');
-  });
-
-  };
-
-  const getLineItem = () => {
-  api.post('/enquiry/getQuoteLineItemsById', { enquiry_id: id }).then((res) => {
-  setLineItem(res.data.data);
-  //setAddLineItemModal(true);
-  });
-  };
-
-  const getTrackItem = () => {
-  api.post('/tracking/getQuoteTrackItemsById', { enquiry_id: id }).then((res) => {
-  setTrackItem(res.data.data);
-  //setAddLineItemModal(true);
-  });
-  };
-
-
-  const columns1 = [
-  {
-  name: '#',
-  },
-  {
-  name: 'Product Code',
-  },
-  {
-  name: 'Name',
-  },
-  {
-  name: 'Category',
-  },
-  {
-    name: 'Subcategory',
-  },
-  {
-  name: 'Qty',
-  },
-  {
-    name: 'Grades',
-  },
-  {
-  name: 'Updated By ',
-  },
-  {
-  name: 'Action ',
-  },
-  ];
-
-  const columns2 = [
-    {
-      name: '#',
-    },
-    {
-      name: 'Carrier Code',
-    },
-    {
-      name: 'Carrier Name',
-    },
-    {
-      name: 'Container Number',
-    },
-    {
-      name: 'Bill of Lading',
-    },
-    {
-      name: 'Order Number',
-    },
-    {
-      name: 'ETD',
-    },
-    {
-      name: 'ETA',
-    },
-    {
-      name: 'Website Link',
-    },
-    {
-      name: 'Updated By ',
-    },
-    {
-      name: 'Action ',
-    },
-  ];
-
-  const deleteRecord = (deleteID) => {
-  Swal.fire({
-  title: `Are you sure? ${deleteID}`,
-  text: "You won't be able to revert this!",
-  icon: 'warning',
-  showCancelButton: true,
-  confirmButtonColor: '#3085d6',
-  cancelButtonColor: '#d33',
-  confirmButtonText: 'Yes, delete it!',
-  }).then((result) => {
-  if (result.isConfirmed) {
-  api.post('/enquiry/deleteEditItem', { enq_prod_id: deleteID }).then(() => {
-    Swal.fire('Deleted!', 'Your Line Items has been deleted.', 'success');
-    window.location.reload();
-  });
-  }
-  });
-  };
-
-
-  const deleteTrackRecord = (trackID) => {
-  Swal.fire({
-  title: `Are you sure? ${trackID}`,
-  text: "You won't be able to revert this!",
-  icon: 'warning',
-  showCancelButton: true,
-  confirmButtonColor: '#3085d6',
-  cancelButtonColor: '#d33',
-  confirmButtonText: 'Yes, delete it!',
-  }).then((result) => {
-  if (result.isConfirmed) {
-  api.post('/tracking/deleteTrackEditItem', { carrier_tracking_id: trackID }).then(() => {
-    Swal.fire('Deleted!', 'Your Line Items has been deleted.', 'success');
-    window.location.reload();
-  });
-  }
-  });
-  };
-
-
-  const [quote, setQuote] = useState([]);
-
-  // Get Quote By Id
-  const getQuote = () => {
-  api.post('/enquiry/getQuoteById', { enquiry_id: id }).then((res) => {
-  if (res.data.data && res.data.data.length > 0) {
-    setQuote(res.data.data);
-  }
-  });
-  };
-
-
-  const [quoteForm, setQuoteForm] = useState({
-  quote_date: '',
-  quote_code: '',
-  });
-  const handleQuoteForms = (ele) => {
-  setQuoteForm({ ...quoteForm, [ele.target.name]: ele.target.value });
-  };
-
-  const insertQuote = (code) => {
-  const newQuoteId = quoteForm;
-  newQuoteId.enquiry_id = id;
-  newQuoteId.quote_code = code;
-  newQuoteId.status = 'In Progress';
-  newQuoteId.quote_date = new Date(); // Saves date in YYYY-MM-DD format
-
-
-  api.post('/enquiry/insertquote', newQuoteId).then(() => {
-  message('Quote inserted successfully.', 'success');
-  setTimeout(() => {
-    window.location.reload();
-  }, 300);
-  });
-  };
-  //QUOTE GENERATED CODE
-  const generateCode = () => {
-  api
-  .post('/commonApi/getCodeValues', { type: 'quote' })
-  .then((res) => {
-    insertQuote(res.data.data);
-  })
-  .catch(() => {
-    insertQuote('');
-  });
-  };
-  
-  const updateOrder = (code) => {
-  enquiryDetails.modification_date = creationdatetime;
-  enquiryDetails.order_code = code;
-  api
-    .post('/enquiry/updateOrderCode', enquiryDetails)
-    .then(() => {
-      message('Updated successfully', 'success');
-      setTimeout(() => {
-        window.location.reload();
-      }, 300);
-    })
-    .catch(() => {
-      message('Unable to edit record.', 'error');
+    const [attachmentData, setDataForAttachment] = useState({
+        modelType: '',
     });
+    const [PaymentReceiptattachmentModal, setPaymentReceiptAttachmentModal] = useState(false);
 
-  };
+    const [PaymentReceiptattachmentData, setDataForPaymentReceiptAttachment] = useState({
+        modelType: '',
+    });
+    const [OnDocPaymentattachmentModal, setOnDocPaymentAttachmentModal] = useState(false);
 
-  const generateOrder = async () => {
-  api
-  .post('/commonApi/getCodeValue', { type: 'orders' })
-  .then((res) => {
-    const code = res.data.data;
-    message(`Order code generated: ${code}`, 'success'); // ✅ Confirmation message
-    updateOrder(code);
-  })
-  .catch(() => {
-    message('Failed to generate order code.', 'error'); // Optional
-    updateOrder('');
-  });
-  };
+    const [OnDocPaymentattachmentData, setDataForOnDocPaymentAttachment] = useState({
+        modelType: '',
+    });
+    const [AfterArrivalattachmentModal, setAfterArrivalAttachmentModal] = useState(false);
+
+    const [AfterArrivalattachmentData, setDataForAfterArrivalAttachment] = useState({
+        modelType: '',
+    });
+    const { loggedInuser } = useContext(AppContext);
+
+    const fileTypes = ["JPG", "PNG", "GIF", "PDF", "CSV"];
+
+    const dataForAttachment = () => {
+        setDataForAttachment({
+            modelType: 'attachment',
+        });
+        console.log('inside DataForAttachment');
+    };
+
+    const PaymentReceiptdataForAttachment = () => {
+        setDataForPaymentReceiptAttachment({
+            modelType: 'PaymentReceiptattachment',
+        });
+        console.log('inside DataForAttachment');
+    };
+
+    const OnDocPaymentdataForAttachment = () => {
+        setDataForOnDocPaymentAttachment({
+            modelType: 'OnPaymentattachment',
+        });
+        console.log('inside DataForAttachment');
+    };
+
+    const AfterArrivaldataForAttachment = () => {
+        setDataForAfterArrivalAttachment({
+            modelType: 'AfterArrivalattachment',
+        });
+        console.log('inside DataForAttachment');
+    };
+
+    //navigation and parameters
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const applyChanges = () => { };
+    const backToList = () => {
+        navigate('/Enquiry');
+    };
+    const [activeTab, setActiveTab] = useState('1');
+
+    const addQuoteItemsToggle = () => {
+        setAddLineItemModal(!addLineItemModal);
+    };
+
+    const addTrackItemsToggle = () => {
+        setAddTrackItemModal(!addTrackItemModal);
+    };
+
+    const viewTrackToggle = () => {
+        setViewTrackModal(!viewTrackModal);
+    };
+
+    const viewLineToggle = () => {
+        setViewLineModal(!viewLineModal);
+    };
+    console.log(viewLineToggle, viewTrackToggle);
+    const tabs = [
+        { id: '1', name: 'Product' },
+        { id: '2', name: 'Quotation' },
+        { id: '3', name: 'Carrier Tracking' },
+        { id: '4', name: 'Business And Shipping Document' },
+        { id: '5', name: 'Attachment for receipt' },
+
+    ];
+    const toggle = (tab) => {
+        setActiveTab(tab);
+    };
+    //setting data in enquiryDetails
+    const handleInputs = (e) => {
+        setEnquiryDetails({ ...enquiryDetails, [e.target.name]: e.target.value });
+    };
+
+    const getCompany = () => {
+        api.get('/company/getContact').then((res) => {
+            setCompany(res.data.data);
+        });
+    };
+
+    //getting data from setting by Id
+    const getEnquiryById = () => {
+        api
+            .post('/enquiry/getEnquiryById', { enquiry_id: id })
+            .then((res) => {
+                setEnquiryDetails(res.data.data[0]);
+            })
+            .catch(() => {
+                message('setting Data Not Found', 'info');
+            });
+    };
+    //Update Setting
+    const editEnquiryData = () => {
+        enquiryDetails.modification_date = creationdatetime;
+        enquiryDetails.modified_by = loggedInuser.first_name;
+        enquiryDetails.modification_date = creationdatetime;
+        api
+            .post('/enquiry/editEnquiry', enquiryDetails)
+            .then(() => {
+                message('Record editted successfully', 'success');
+            })
+            .catch(() => {
+                message('Unable to edit record.', 'error');
+            });
+
+    };
+
+    const getLineItem = () => {
+        api.post('/enquiry/getQuoteLineItemsById', { enquiry_id: id }).then((res) => {
+            setLineItem(res.data.data);
+            //setAddLineItemModal(true);
+        });
+    };
+
+    const getTrackItem = () => {
+        api.post('/tracking/getQuoteTrackItemsById', { enquiry_id: id }).then((res) => {
+            setTrackItem(res.data.data);
+            //setAddLineItemModal(true);
+        });
+    };
+
+
+    const columns1 = [
+        {
+            name: '#',
+        },
+        {
+            name: 'Product Code',
+        },
+        {
+            name: 'Name',
+        },
+        {
+            name: 'Category',
+        },
+        {
+            name: 'Subcategory',
+        },
+        {
+            name: 'Qty',
+        },
+        {
+            name: 'Grades',
+        },
+        {
+            name: 'Updated By ',
+        },
+        {
+            name: 'Action ',
+        },
+    ];
+
+    const columns2 = [
+        {
+            name: '#',
+        },
+        {
+            name: 'Carrier Code',
+        },
+        {
+            name: 'Carrier Name',
+        },
+        {
+            name: 'Container Number',
+        },
+        {
+            name: 'Bill of Lading',
+        },
+        {
+            name: 'Order Number',
+        },
+        {
+            name: 'ETD',
+        },
+        {
+            name: 'ETA',
+        },
+        {
+            name: 'Website Link',
+        },
+        {
+            name: 'Updated By ',
+        },
+        {
+            name: 'Action ',
+        },
+    ];
+
+    const deleteRecord = (deleteID) => {
+        Swal.fire({
+            title: `Are you sure? `,
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                api.post('/enquiry/deleteEditItem', { enq_prod_id: deleteID }).then(() => {
+                    Swal.fire('Deleted!', 'Your Line Items has been deleted.', 'success');
+                    window.location.reload();
+                });
+            }
+        });
+    };
+
+
+    const deleteTrackRecord = (trackID) => {
+        Swal.fire({
+            title: `Are you sure? `,
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                api.post('/tracking/deleteTrackEditItem', { carrier_tracking_id: trackID }).then(() => {
+                    Swal.fire('Deleted!', 'Your Line Items has been deleted.', 'success');
+                    window.location.reload();
+                });
+            }
+        });
+    };
+
+
+    const [quote, setQuote] = useState([]);
+
+    // Get Quote By Id
+    const getQuote = () => {
+        api.post('/enquiry/getQuoteById', { enquiry_id: id }).then((res) => {
+            if (res.data.data && res.data.data.length > 0) {
+                setQuote(res.data.data);
+            }
+        });
+    };
+
+
+    const [quoteForm, setQuoteForm] = useState({
+        quote_date: '',
+        quote_code: '',
+    });
+    const handleQuoteForms = (ele) => {
+        setQuoteForm({ ...quoteForm, [ele.target.name]: ele.target.value });
+    };
+
+    const insertQuote = (code) => {
+        const newQuoteId = quoteForm;
+        newQuoteId.enquiry_id = id;
+        newQuoteId.quote_code = code;
+        newQuoteId.status = 'In Progress';
+        newQuoteId.quote_date = new Date(); // Saves date in YYYY-MM-DD format
+
+
+        api.post('/enquiry/insertquote', newQuoteId).then(() => {
+            message('Quote inserted successfully.', 'success');
+            setTimeout(() => {
+                window.location.reload();
+            }, 300);
+        });
+    };
+    //QUOTE GENERATED CODE
+    const generateCode = () => {
+        api
+            .post('/commonApi/getCodeValues', { type: 'quote' })
+            .then((res) => {
+                insertQuote(res.data.data);
+            })
+            .catch(() => {
+                insertQuote('');
+            });
+    };
+
+    const updateOrder = (code) => {
+        enquiryDetails.modification_date = creationdatetime;
+        enquiryDetails.order_code = code;
+        api
+            .post('/enquiry/updateOrderCode', enquiryDetails)
+            .then(() => {
+                message('Updated successfully', 'success');
+                setTimeout(() => {
+                    window.location.reload();
+                }, 300);
+            })
+            .catch(() => {
+                message('Unable to edit record.', 'error');
+            });
+
+    };
+
+    const generateOrder = async () => {
+        Swal.fire({
+            title: 'Generate Order?',
+            text: 'Do you want to generate an order for this enquiry?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, generate order!',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                api
+                    .post('/commonApi/getCodeValue', { type: 'orders' })
+                    .then((res) => {
+                        const code = res.data.data;
+                        message(`Order code generated: ${code}`, 'success'); // ✅ Confirmation message
+                        updateOrder(code);
+                    })
+                    .catch(() => {
+                        message('Failed to generate order code.', 'error'); // Optional
+                        updateOrder('');
+                    });
+            }
+        });
+    };
 
 
 
-  useEffect(() => {
-  getEnquiryById();
-  getLineItem();
-  getTrackItem();
-  getCompany();
-  getQuote();
-  }, [id]);
+    useEffect(() => {
+        getEnquiryById();
+        getLineItem();
+        getTrackItem();
+        getCompany();
+        getQuote();
+    }, [id]);
 
-  return (
-  <>
-  <BreadCrumbs />
+    return (
+        <>
+            <BreadCrumbs />
 
-  <Form>
-  <FormGroup>
-    <ToastContainer></ToastContainer>
-    {/* Enquiry Button */}
-    <ComponentCardV2>
-      <Row>
-        <Col>
-          <Button
-            className="shadow-none"
-            color="primary"
-            onClick={() => {
-              editEnquiryData();
-              setTimeout(() => {
-                navigate('/Enquiry');
-              }, 1100);
-            }}
-          >
-            Save
-          </Button>
-        </Col>
-        <Col>
-          <Button
-            className="shadow-none"
-            color="primary"
-            onClick={() => {
-              editEnquiryData();
-              applyChanges();
-            }}
-          >
-            Apply
-          </Button>
-        </Col>
-        
-        <Col>
-          <Button
-            className="shadow-none"
-            color="dark"
-            onClick={() => {
-              backToList();
-            }}
-          >
-            Back to List
-          </Button>
-        </Col>
-      </Row>
-    </ComponentCardV2>
-  </FormGroup>
-  </Form>
+            <Form>
+                <FormGroup>
+                    <ToastContainer></ToastContainer>
+                    {/* Enquiry Button */}
+                    <ComponentCardV2>
+                        <Row>
+                            <Col>
+                                <Button
+                                    className="shadow-none"
+                                    color="primary"
+                                    onClick={() => {
+                                        editEnquiryData();
+                                        setTimeout(() => {
+                                            navigate('/Enquiry');
+                                        }, 1100);
+                                    }}
+                                >
+                                    Save
+                                </Button>
+                            </Col>
+                            <Col>
+                                <Button
+                                    className="shadow-none"
+                                    color="primary"
+                                    onClick={() => {
+                                        editEnquiryData();
+                                        applyChanges();
+                                    }}
+                                >
+                                    Apply
+                                </Button>
+                            </Col>
+
+                            <Col>
+                                <Button
+                                    className="shadow-none"
+                                    color="dark"
+                                    onClick={() => {
+                                        backToList();
+                                    }}
+                                >
+                                    Back to List
+                                </Button>
+                            </Col>
+                        </Row>
+                    </ComponentCardV2>
+                </FormGroup>
+            </Form>
 
 
 
-  <Form>
-  <FormGroup>
-    <ToastContainer></ToastContainer>
-    {/* Enquiry Button */}
-    <ComponentCardV2>
-      <Row>
-        <Col>
-          <Button
-            className="shadow-none"
-            color="primary"
-            onClick={() => {
-              generateOrder();
-              
-            }}
-            disabled={!!enquiryDetails && enquiryDetails.order_code}
-          >
-            {enquiryDetails && enquiryDetails.order_code ? "Order Generated" : "Generate Order"}
-          
-          </Button>
-        </Col>
+            <Form>
+                <FormGroup>
+                    <ToastContainer></ToastContainer>
+                    {/* Enquiry Button */}
+                    <ComponentCardV2>
+                        <Row>
+                            <Col>
+                                <Button
+                                    className="shadow-none"
+                                    color="primary"
+                                    onClick={() => {
+                                        generateOrder();
+                                    }}
+                                    disabled={!!enquiryDetails && enquiryDetails.order_code}
+                                >
+                                    {enquiryDetails && enquiryDetails.order_code ? "Order Generated" : "Generate Order"}
+                                </Button>
+                            </Col>
 
-      </Row>
-    </ComponentCardV2>
-  </FormGroup>
-  </Form>
-  {/* Enquiry Details */}
-  <Form>
-  <FormGroup>
-    <ComponentCard title={<h4 className="mb-0">Enquiry Details</h4>} creationModificationDate={enquiryDetails}>
-      {' '}
-      <ToastContainer></ToastContainer>
-      <Row>
-        <Col md="4">
-          <FormGroup>
-            <Label>Enquiry Code</Label>
-            <Input
-              type="text"
-              onChange={handleInputs}
-              value={enquiryDetails && enquiryDetails.enquiry_code}
-              name="enquiry_code"
-              disabled
+                        </Row>
+                    </ComponentCardV2>
+                </FormGroup>
+            </Form>
+            {/* Enquiry Details */}
+            <Form>
+                <FormGroup>
+                    <ComponentCard title={<h4 className="mb-0">Enquiry Details</h4>} creationModificationDate={enquiryDetails}>
+                        {' '}
+                        <ToastContainer></ToastContainer>
+                        <Row>
+                            <Col md="4">
+                                <FormGroup>
+                                    <Label>Enquiry Code</Label>
+                                    <Input
+                                        type="text"
+                                        onChange={handleInputs}
+                                        value={enquiryDetails && enquiryDetails.enquiry_code}
+                                        name="enquiry_code"
+                                        disabled
 
-            ></Input>
-          </FormGroup>
-        </Col>
-        <Col md="4">
-  <FormGroup>
-  <Label>Enquiry Date</Label>
-  <Input
-  type="date"
-  onChange={handleInputs}
-  value={enquiryDetails && enquiryDetails.enquiry_date ? moment(enquiryDetails && enquiryDetails.enquiry_date).format("YYYY-MM-DD") : ""}
-  name="enquiry_date"
-  />
-  </FormGroup>
-  </Col>
+                                    ></Input>
+                                </FormGroup>
+                            </Col>
+                            <Col md="4">
+                                <FormGroup>
+                                    <Label>Enquiry Date</Label>
+                                    <Input
+                                        type="date"
+                                        onChange={handleInputs}
+                                        value={enquiryDetails && enquiryDetails.enquiry_date ? moment(enquiryDetails && enquiryDetails.enquiry_date).format("YYYY-MM-DD") : ""}
+                                        name="enquiry_date"
+                                    />
+                                </FormGroup>
+                            </Col>
 
-        <Col md="4">
-          <FormGroup>
-            <Label>Title</Label>
-            <Input
-              type="text"
-              onChange={handleInputs}
-              value={enquiryDetails && enquiryDetails.title}
-              name="title"
-            />
-          </FormGroup>
-        </Col>
-      <Col md="4">
-                          <Label>
-                            Customer <span className="required"> *</span>{' '}
-                          </Label>
+                            <Col md="4">
+                                <FormGroup>
+                                    <Label>Title</Label>
+                                    <Input
+                                        type="text"
+                                        onChange={handleInputs}
+                                        value={enquiryDetails && enquiryDetails.title}
+                                        name="title"
+                                    />
+                                </FormGroup>
+                            </Col>
+                            <Col md="4">
+                                    <Label>
+                                        Customer <span className="required"> *</span>{' '}
+                                    </Label>
                           <Input
                             type="select"
                             name="contact_id"
