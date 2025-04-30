@@ -191,7 +191,7 @@ const QuoteLineItem = ({ addTrackItemModal, setAddTrackItemModal, quoteTrack, or
                                 <FormGroup>
                                     <Label>Website Link</Label>
                                     <Input
-                                        type="date"
+                                        type="text"
                                         name="tracking_link"
                                         value={formData.tracking_link}
                                         onChange={handleInputChange}
