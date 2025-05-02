@@ -542,6 +542,18 @@
                   </FormGroup>
                 </Col>
 
+                <Col md="4">
+          <FormGroup>
+            <Label>Mobile No</Label>
+            <Input
+              type="text"
+              onChange={handleInputs}
+              value={enquiryDetails && enquiryDetails.phone}
+              name="phone_no"
+            />
+          </FormGroup>
+        </Col>
+
                 
 
                 <Col md="4">

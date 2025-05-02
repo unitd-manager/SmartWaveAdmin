@@ -89,6 +89,7 @@ const Enquiry = () => {
     },
     { name: 'Email', selector: (row) => row.email,width: '18%',  sortable: true },
     { name: 'Type', selector: (row) => row.enquiry_type,width: '23%', sortable: true },
+    { name: 'Mobile No', selector: (row) => row.phone,width: '18%',  sortable: true },
   ];
 
   return (
