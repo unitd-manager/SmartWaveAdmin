@@ -551,6 +551,18 @@ const EnquiryEdit = () => {
                   </Input>
                   </FormGroup>
                 </Col>
+                 <Col md="4">
+          <FormGroup>
+            <Label>Order Code</Label>
+            <Input
+              type="text"
+              onChange={handleInputs}
+              value={enquiryDetails && enquiryDetails.order_code}
+              name="order_code"
+              disabled
+            />
+          </FormGroup>
+        </Col>
 
                 <Col md="4">
           <FormGroup>
@@ -559,7 +571,19 @@ const EnquiryEdit = () => {
               type="text"
               onChange={handleInputs}
               value={enquiryDetails && enquiryDetails.phone}
-              name="phone_no"
+              name="phone"
+            />
+          </FormGroup>
+        </Col>
+
+        <Col md="4">
+          <FormGroup>
+            <Label>Comments</Label>
+            <Input
+              type="textarea"
+              onChange={handleInputs}
+              value={enquiryDetails && enquiryDetails.comments}
+              name="comments"
             />
           </FormGroup>
         </Col>
@@ -584,7 +608,50 @@ const EnquiryEdit = () => {
   </Input>
   </FormGroup>
   </Col>
-
+<Col md="4">
+                <FormGroup>
+                  <Label>On Document</Label>
+                  <br></br>
+                  <Label>Yes</Label>
+                  <Input
+                    name="on_document"
+                    value="1"
+                    type="radio"
+                    defaultChecked={enquiryDetails && enquiryDetails.on_document === 1 && true}
+                    onChange={handleInputs}
+                  />
+                  <Label>No</Label>
+                  <Input
+                    name="on_document"
+                    value="0"
+                    type="radio"
+                    defaultChecked={enquiryDetails && enquiryDetails.on_document === 0 && true}
+                    onChange={handleInputs}
+                  />
+                </FormGroup>
+              </Col>
+              <Col md="4">
+                              <FormGroup>
+                                <Label>After Arrival</Label>
+                                <br></br>
+                                <Label>Yes</Label>
+                                <Input
+                                  name="after_arrival"
+                                  value="1"
+                                  type="radio"
+                                  defaultChecked={enquiryDetails && enquiryDetails.after_arrival === 1 && true}
+                                  onChange={handleInputs}
+                                />
+                                <Label>No</Label>
+                                <Input
+                                  name="after_arrival"
+                                  value="0"
+                                  type="radio"
+                                  defaultChecked={enquiryDetails && enquiryDetails.after_arrival === 0 && true}
+                                  onChange={handleInputs}
+                                />
+                              </FormGroup>
+                            </Col>
         
 
       </Row>
