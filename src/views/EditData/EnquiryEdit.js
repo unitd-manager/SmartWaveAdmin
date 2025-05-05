@@ -602,9 +602,8 @@ const EnquiryEdit = () => {
   <option value="">Select Status</option>
   <option value="New">New</option>
   <option value="In Progress">In Progress</option>
-  <option value="Hold">Hold</option>
   <option value="Cancelled">Cancelled</option>
-  <option value="Win">Win</option>
+  <option value="Completed">Completed</option>
   </Input>
   </FormGroup>
   </Col>
