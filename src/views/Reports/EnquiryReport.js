@@ -113,10 +113,6 @@ const OverAllReport = () => {
       name: 'Phone No',
       selector: 'phone',
     },
-    {
-      name: 'Order Code',
-      selector: 'order_code',
-    },
   ];
   return (
     <>
@@ -236,12 +232,11 @@ const OverAllReport = () => {
                     <tr key={element.enquiry_id}>
                       <td>{index + 1}</td>
                       <td>{element.enquiry_code}</td>
-                      <td>{moment(element.enquiry_date).format('YYYY-MM-DD')}</td>
+                      <td>{moment(element.enquiry_date).format('DD-MM-YYYY')}</td>
                       <td>{element.title}</td>
                       <td>{element.first_name}</td>
                       <td>{element.email}</td>
                       <td>{element.phone}</td>
-                      <td>{element.order_code}</td>
                     </tr>
                   );
                 })}
