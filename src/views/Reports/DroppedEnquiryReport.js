@@ -95,7 +95,7 @@ const OverAllReport = () => {
     },
     {
       name: 'Title',
-      selector: 'company_name',
+      selector: 'title',
     },
     {
       name: 'Name',
