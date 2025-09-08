@@ -380,6 +380,51 @@ const EnquiryEdit = () => {
         });
     };
 
+    const sendPaymentReminder = () => {
+        if (!enquiryDetails || !quote || quote.length === 0) {
+            message('No enquiry or quote details found', 'error');
+            return;
+        }
+
+        // Get the latest quote (assuming quotes array is sorted by date)
+        const latestQuote = quote[0];
+        
+        // Format the date to be more readable
+        const formattedDate = moment(latestQuote.quote_date).format('DD/MM/YYYY');
+        
+        // Format the price to include currency symbol and proper formatting
+        const formattedPrice = new Intl.NumberFormat('en-SG', {
+            style: 'currency',
+            currency: 'SGD'
+        }).format(latestQuote.price);
+
+        api
+            .post('/enquiry/sendPaymentReminder', {
+                to: enquiryDetails.email,
+                first_name: enquiryDetails.first_name,
+                quote_code: latestQuote.quote_code,
+                quote_date: formattedDate,
+                price: formattedPrice,
+                template: `
+                <html>
+                    <body>
+                        <p>Dear {{first_name}},</p>
+                        <p>This is a reminder regarding your quotation <b>{{quote_code}}</b> dated <b>{{quote_date}}</b>.</p>
+                        <p>The pending amount is <b>{{price}}</b>.</p>
+                        <p>Please proceed with the payment at your earliest convenience.</p>
+                        <br>
+                        <p>Thank you,<br>SmartWave Admin</p>
+                    </body>
+                </html>`
+            })
+            .then((res) => {
+                message(res.data.msg, 'success');
+            })
+            .catch(() => {
+                message('Failed to send reminder', 'error');
+            });
+    };
+
 
 
     useEffect(() => {
@@ -426,6 +471,13 @@ const EnquiryEdit = () => {
                                     Apply
                                 </Button>
                             </Col>
+                        <Col>
+    <Button
+                                    className="shadow-none"
+                                    color="primary" onClick={sendPaymentReminder}>
+  Send Payment Reminder
+</Button>
+</Col>
 
                             <Col>
                                 <Button
@@ -442,8 +494,6 @@ const EnquiryEdit = () => {
                     </ComponentCardV2>
                 </FormGroup>
             </Form>
-
-
 
             <Form>
                 <FormGroup>
@@ -900,19 +950,7 @@ const EnquiryEdit = () => {
     <Form>
   <FormGroup>
     <ComponentCard title="Payment Receipt">
-      {/* <Row>
-        <Col xs="12" md="3" className="mb-3">
-          <Button
-            color="primary"
-            onClick={() => {
-              PaymentReceiptdataForAttachment();
-              setPaymentReceiptAttachmentModal(true);
-            }}
-          >
-            Add
-          </Button>
-        </Col>
-      </Row> */}
+    
       <AttachmentModalV2
         moduleId={id}
         roomName="PaymentReceipt"
@@ -932,19 +970,7 @@ const EnquiryEdit = () => {
   <Form>
   <FormGroup>
     <ComponentCard title="On Document Payment">
-      {/* <Row>
-        <Col xs="12" md="3" className="mb-3">
-          <Button
-            color="primary"
-            onClick={() => {
-              OnDocPaymentdataForAttachment();
-              setOnDocPaymentAttachmentModal(true);
-            }}
-          >
-            Add
-          </Button>
-        </Col>
-      </Row> */}
+    
       <AttachmentModalV2
         moduleId={id}
         roomName="OnDocPayment"
