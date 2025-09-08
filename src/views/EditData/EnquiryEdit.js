@@ -64,6 +64,8 @@ const EnquiryEdit = () => {
         modelType: '',
     });
     const { loggedInuser } = useContext(AppContext);
+    const [showOrderButton, setShowOrderButton] = useState(false);
+
 
     const fileTypes = ["JPG", "PNG", "GIF", "PDF", "CSV"];
 
@@ -380,7 +382,20 @@ const EnquiryEdit = () => {
         });
     };
 
-
+ const checkMediaCondition = () => {
+        api.post('/enquiry/checkMediaByEnquiryId', { enquiry_id: id })
+            .then((res) => {
+                // If there is at least one record in result.data, show the button
+                if (res.data.data && res.data.data.length > 0) {
+                    setShowOrderButton(true);
+                } else {
+                    setShowOrderButton(false);
+                }
+            })
+            .catch(() => {
+                setShowOrderButton(false);
+            });
+    };
 
     useEffect(() => {
         getEnquiryById();
@@ -388,6 +403,7 @@ const EnquiryEdit = () => {
         getTrackItem();
         getCompany();
         getQuote();
+           checkMediaCondition();
     }, [id]);
 
     return (
@@ -452,16 +468,26 @@ const EnquiryEdit = () => {
                     <ComponentCardV2>
                         <Row>
                             <Col>
-                                <Button
-                                    className="shadow-none"
-                                    color="primary"
-                                    onClick={() => {
-                                        generateOrder();
-                                    }}
-                                    disabled={!!enquiryDetails && enquiryDetails.order_code}
-                                >
-                                    {enquiryDetails && enquiryDetails.order_code ? "Order Generated" : "Generate Order"}
-                                </Button>
+                                    {/* Show Generate Order button only if media exists and order_code is not present */}
+                                {showOrderButton && !enquiryDetails?.order_code && (
+                                    <Button
+                                        className="shadow-none"
+                                        color="primary"
+                                        onClick={generateOrder}
+                                    >
+                                        Generate Order
+                                    </Button>
+                                )}
+                                {/* Show Order Generated button only if order_code is present */}
+                                {enquiryDetails?.order_code && (
+                                    <Button
+                                        className="shadow-none"
+                                        color="secondary"
+                                        disabled
+                                    >
+                                        Order Generated
+                                    </Button>
+                                )}
                             </Col>
 
                         </Row>
