@@ -18,6 +18,8 @@ import creationdatetime from '../../constants/creationdatetime';
 import Tab from '../../components/ProjectTable/Tab';
 // import SubCategoryTypeDetails from '../../components/SubCategoryTable/SubCategoryTypeDetails';
 import AppContext from '../../context/AppContext';
+import ViewFileComponentV2 from '../../components/ProjectModal/ViewFileComponentV2';
+import AttachmentModalV2 from '../../components/Tender/AttachmentModalV2';
 
 const SubCategoryEdit = () => {// All state variables
   const [category, setCategory] = useState();
@@ -44,7 +46,18 @@ const SubCategoryEdit = () => {// All state variables
     sub_category_id: id,
   });
   const [addFormSubmitted, setAddFormSubmitted] = useState(false);
+ const [attachmentModal, setAttachmentModal] = useState(false);
+  const [attachmentData, setDataForAttachment] = useState({
+    modelType: '',
+  });
 
+ 
+  const dataForAttachment = () => {
+    setDataForAttachment({
+      modelType: 'attachment',
+    });
+    console.log('inside DataForAttachment');
+  };
   const handleInputsCompanyInsertData = (e) => {
     setCompanyInsertData({ ...companyInsertData, [e.target.name]: e.target.value });
   };
@@ -63,6 +76,7 @@ const SubCategoryEdit = () => {// All state variables
   };
   const tabs = [
     { id: '1', name: 'SubCategory Type' },
+    { id: '2', name: 'Attachments' },
   ];
   const toggle = (tab) => {
     setActiveTab(tab);
@@ -538,6 +552,33 @@ console.log('subcategorytype',subcategorytype);
                 </Table>
                 </div>
                             </Row>
+                </TabPane>
+                <TabPane tabId="2">
+                <ComponentCard title="Attachments">
+            <Row>
+              <Col xs="12" md="3" className="mb-3">
+                <Button
+                  color="primary"
+                  onClick={() => {
+                    dataForAttachment();
+                    setAttachmentModal(true);
+                  }}
+                >
+                  Add
+                </Button>
+              </Col>
+            </Row>
+            <AttachmentModalV2
+              moduleId={id}
+              roomName="SubCategory"
+              altTagData="SubCategory Data"
+              desc="SubCategory Data"
+              modelType={attachmentData.modelType}
+              attachmentModal={attachmentModal}
+              setAttachmentModal={setAttachmentModal}
+            />
+            <ViewFileComponentV2 moduleId={id} roomName="SubCategory" />
+          </ComponentCard>
                 </TabPane>
             </TabContent>
             </ComponentCard>
