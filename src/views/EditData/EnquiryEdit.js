@@ -396,52 +396,64 @@ const EnquiryEdit = () => {
                 setShowOrderButton(false);
             });
     };
-    const sendPaymentReminder = () => {
-        if (!enquiryDetails || !quote || quote.length === 0) {
-            message('No enquiry or quote details found', 'error');
-            return;
-        }
+const sendPaymentReminder = () => {
+    if (!enquiryDetails || !quote || quote.length === 0) {
+        message('No enquiry or quote details found', 'error');
+        return;
+    }
 
-        // Get the latest quote (assuming quotes array is sorted by date)
-        const latestQuote = quote[0];
-        
-        // Format the date to be more readable
-        const formattedDate = moment(latestQuote.quote_date).format('DD/MM/YYYY');
-        
-        // Format the price to include currency symbol and proper formatting
-        const formattedPrice = new Intl.NumberFormat('en-SG', {
-            style: 'currency',
-            currency: 'SGD'
-        }).format(latestQuote.price);
+    // Get the latest quote (assuming quotes array is sorted by date)
+    const latestQuote = quote[0];
+    
+    // Format the date to be more readable
+    const formattedDate = moment(latestQuote.quote_date).format('DD/MM/YYYY');
+    
+    // Format the price to include currency symbol and proper formatting
+    const formattedPrice = new Intl.NumberFormat('en-SG', {
+        style: 'currency',
+        currency: 'SGD'
+    }).format(latestQuote.price);
 
-        api
-            .post('/enquiry/sendPaymentReminder', {
-                to: enquiryDetails.email,
-                first_name: enquiryDetails.first_name,
-                quote_code: latestQuote.quote_code,
-                quote_date: formattedDate,
-                price: formattedPrice,
-                template: `
-                <html>
-                    <body>
-                        <p>Dear {{first_name}},</p>
-                        <p>This is a reminder regarding your quotation <b>{{quote_code}}</b> dated <b>{{quote_date}}</b>.</p>
-                        <p>The pending amount is <b>{{price}}</b>.</p>
-                        <p>Please proceed with the payment at your earliest convenience.</p>
-                        <br>
-                        <p>Thank you,<br>SmartWave Admin</p>
-                    </body>
-                </html>`
+    // First API call to send email
+    api
+        .post('/enquiry/sendPaymentReminder', {
+            to: enquiryDetails.email,
+            first_name: enquiryDetails.first_name,
+            quote_code: latestQuote.quote_code,
+            quote_date: formattedDate,
+            price: formattedPrice,
+            template: `
+            <html>
+                <body>
+                    <p>Dear {{first_name}},</p>
+                    <p>This is a reminder regarding your quotation <b>{{quote_code}}</b> dated <b>{{quote_date}}</b>.</p>
+                    <p>The pending amount is <b>{{price}}</b>.</p>
+                    <p>Please proceed with the payment at your earliest convenience.</p>
+                    <br>
+                    <p>Thank you,<br>SmartWave Admin</p>
+                </body>
+            </html>`
+        })
+        .then((res) => {
+            message(res.data.msg, 'success');
+            
+            // Second API call to log the reminder
+            api.post('/enquiry/insertNotification', {
+                message: `Payment reminder for quote ${latestQuote.quote_code}`,
+                contact_id: enquiryDetails.contact_id,
+                enquiry_id: id
             })
-            .then((res) => {
-                message(res.data.msg, 'success');
+            .then(() => {
+                message('Reminder logged successfully', 'success');
             })
             .catch(() => {
-                message('Failed to send reminder', 'error');
+                message('Failed to log reminder', 'error');
             });
-    };
-
-
+        })
+        .catch(() => {
+            message('Failed to send reminder', 'error');
+        });
+};
 
     useEffect(() => {
         getEnquiryById();
