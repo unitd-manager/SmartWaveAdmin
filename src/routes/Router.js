@@ -203,6 +203,9 @@ const ProductOwnerEdit = Loadable(lazy(() => import('../views/EditData/ProductOw
 //Reports
 const ProjectReportTable = Loadable(lazy(() => import('../views/Reports/ProjectReport')));
 const OverallSalesReportTable = Loadable(lazy(() => import('../views/Reports/OverAllSalesSummaryReport')));
+const EnquiryReport = Loadable(lazy(() => import('../views/Reports/EnquiryReport')));
+const SalesReport = Loadable(lazy(() => import('../views/Reports/SalesReport')));
+const DroppedEnquiryReport = Loadable(lazy(() => import('../views/Reports/DroppedEnquiryReport')));
 const InvoiceByYearTable = Loadable(lazy(() => import('../views/Reports/InvoiceByYear')));
 // const TaskEdit= Loadable(lazy(() => import ('..')))
 const PurchaseOrderTable = Loadable(lazy(() => import('../views/smartconTables/PurchaseOrder')));
@@ -365,6 +368,9 @@ const Routernew = () => {
           ></Route>
           <Route path="/projects/projectreport" name="projectreport" element={<Reports />}></Route>
           <Route path="/OverAllSalesSummaryReport" name="overallsummarydata" element={<OverallSalesReportTable />}></Route>
+           <Route path="/EnquiryReport" name="overallsummarydata" element={<EnquiryReport />}></Route>
+           <Route path="/SalesReport" name="EnquiryReportsData" element={<SalesReport />}></Route>
+           <Route path="/DroppedEnquiryReport" name="DroppedEnquiryReportsData" element={<DroppedEnquiryReport />}></Route>
           <Route path="/InvoiceByYear" name="invoicebyeardata" element={<InvoiceByYearTable />}></Route>
           {/* Tender */}
           <Route path="/BlogDetails" name="blogDetaildata" element={<BlogDetailsTable />}></Route>

@@ -77,18 +77,14 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                                   value={productDetails && productDetails.sub_category_id}
                                   onChange={handleInputs}
                                 >
-                                  <option value="">Please Select</option>
-  {subcategoryLinked?.length > 0 ? (
-    subcategoryLinked?.map((ele) => (
-      <option key={ele.sub_category_id} value={ele.sub_category_id}>
-        {ele.sub_category_title}
-      </option>
-                                    ))
-                                  ) : (
-                                    <option disabled>Loading...</option>
-                                  )}
-                                
-                                </Input>
+                                 <option value="">Select Subcategory</option>
+    {subcategoryLinked &&
+      subcategoryLinked.map((subcat) => (
+        <option key={subcat.sub_category_id} value={subcat.sub_category_id}>
+          {subcat.sub_category_title}
+        </option>
+      ))}
+  </Input>
                               </FormGroup>
                             </Col>
                             </Row>
@@ -97,7 +93,7 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                               <FormGroup>
                                 {/* subcategory title from sub Category table */}
                                 <Label>SubCategory Type</Label>
-<Input
+{/* <Input
   type="select"
   name="sub_category_type_id"
   value={productDetails?.sub_category_type_id || ""}
@@ -114,7 +110,24 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
   ) : (
     <option >No Types Available</option>
   )}
-</Input>
+</Input> */}
+<Input
+                                  type="select"
+                                  name="sub_category_type_id"
+                                  value={productDetails && productDetails.sub_category_type_id}
+                                  onChange={handleInputs}
+                                >
+                                 <option value="">Select SubCategory Type</option>
+  {subcategorytypeLinked && subcategorytypeLinked.length > 0 ? (
+    subcategorytypeLinked.map((ele) => (
+      <option key={ele.sub_category_type_id} value={ele.sub_category_type_id}>
+        {ele.type_title}
+      </option>
+    ))
+  ) : (
+    <option disabled>No Types Available</option>
+  )}
+  </Input>
                               </FormGroup>
                             </Col>
               <Col md="3">
@@ -149,25 +162,6 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                   </Input>
                 </FormGroup>
               </Col>
-         
-            
-            
-            {/* <Col md="3">
-                <FormGroup>
-                  <Label>Type</Label>
-                  <Input
-                    type="select"
-                    onChange={handleInputs}
-                    value={productDetails && productDetails.product_type}
-                    name="product_type"
-                  >
-                    <option defaultValue="selected"> Please Select </option>
-                    <option value="materials">Materials</option>
-                    <option value="tools">Tools</option>
-                  </Input>
-                </FormGroup>
-              </Col> */}
-              
               
               <Col md="3">
                 <FormGroup>
@@ -181,17 +175,7 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                 </FormGroup>
               </Col>
               </Row>
-              {/* <Col md="3">
-                <FormGroup>
-                  <Label> List Price </Label>
-                  <Input
-                    type="text"
-                    onChange={handleInputs}
-                    value={productDetails && productDetails.price}
-                    name="price"
-                  />
-                </FormGroup>
-              </Col> */}
+            
               <Row>
               <Col md="3">
                 <FormGroup>
@@ -240,17 +224,7 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                 </FormGroup>
               </Col>
               </Row>
-              {/* <Col md="3">
-                <FormGroup>
-                  <Label> Discount Percentage </Label>
-                  <Input
-                    type="text"
-                    onChange={handleInputs}
-                    value={productDetails && productDetails.discount_percentage}
-                    name="discount_percentage"
-                  />
-                </FormGroup>
-              </Col> */}
+              
               <Row>
               <Col md="3">
                 <Label>Most Popular</Label>

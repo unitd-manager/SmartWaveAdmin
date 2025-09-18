@@ -178,15 +178,14 @@ const ContentUpdate = () => {
     {
       name: 'Address 2',
     },
+    
+    {
+      name: 'Town/City',
+    },
     {
       name: 'State',
     },
-    {
-      name: 'City',
-    },
-    {
-      name: 'Town',
-    },
+  
     {
       name: 'Country',
     },
@@ -373,7 +372,7 @@ const ContentUpdate = () => {
                 </Col>
                 <Col md="4">
                   <FormGroup>
-                    <Label>City</Label>
+                    <Label>Town/City</Label>
                     <Input
                       type="text"
                       onChange={handleInputs}
@@ -381,9 +380,12 @@ const ContentUpdate = () => {
                       name="address_city"  />
                   </FormGroup>
                 </Col>
+              
+                </Row>
+                <Row>
                 <Col md="4">
                   <FormGroup>
-                    <Label>State/Zip</Label>
+                    <Label>State</Label>
                     <Input
                       type="text"
                       onChange={handleInputs}
@@ -391,8 +393,16 @@ const ContentUpdate = () => {
                       name="address_state" />
                   </FormGroup>
                 </Col>
-                </Row>
-                <Row>
+                <Col md="4">
+                  <FormGroup>
+                    <Label>Pin Code</Label>
+                    <Input
+                      type="text"
+                      onChange={handleInputs}
+                      value={contentDetails && contentDetails.address_po_code}
+                      name="address_po_code"  />
+                  </FormGroup>
+                </Col>
                 <Col md="4">
                   <FormGroup>
                   <Label>Country</Label>
@@ -409,16 +419,7 @@ const ContentUpdate = () => {
                   </FormGroup>
                 </Col>
                
-                <Col md="4">
-                  <FormGroup>
-                    <Label>Pin Code</Label>
-                    <Input
-                      type="text"
-                      onChange={handleInputs}
-                      value={contentDetails && contentDetails.address_po_code}
-                      name="address_po_code"  />
-                  </FormGroup>
-                </Col>
+               
               </Row>
             
             </ComponentCard>
@@ -460,9 +461,9 @@ const ContentUpdate = () => {
                             <td>{e.shipper_name}</td>
                             <td>{e.address_flat}</td>
                             <td>{e.address_street}</td>
-                            <td>{e.address_state}</td>
-                            <td>{e.address_city}</td>
                             <td>{e.address_town}</td>
+                            <td>{e.address_state}</td>
+                           
 <td >{e.address_country}</td>
 <td>{e.address_po_code}</td>
 

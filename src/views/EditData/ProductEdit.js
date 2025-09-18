@@ -24,7 +24,7 @@ import ProductDetail from '../../components/ProductTable/ProductDetail';
 const ProductUpdate = () => {
   // All state variables
   const [productDetails, setProductDetails] = useState();
-  const [categoryLinked, setCategoryLinked] = useState([]);
+  const [categoryLinked, setCategoryLinked] = useState();
   const [productOwnerLinked, setproductOwnerLinked] = useState([]);
   const [productDescription, setProductDescription] = useState('');
   const [RoomName, setRoomName] = useState('');
@@ -35,6 +35,7 @@ const ProductUpdate = () => {
   });
   const [activeTab, setActiveTab] = useState('1');
   const [subcategoryLinked, setSubCategoryLinked] = useState();
+  const [subcategorytypeLinked, setSubCategoryTypeLinked] = useState();
   // Navigation and Parameter Constants
   const { id } = useParams();
   const navigate = useNavigate();
@@ -96,22 +97,27 @@ const ProductUpdate = () => {
     }
   };
 
+ 
   // getting data from Category
-  const getCategory = () => {
+  const getCategory = (categoryId1) => {
     api
-      .get('/product/getCategory')
+      .post('/product/getCategoryById1', { product_id: categoryId1 })
       .then((res) => {
         setCategoryLinked(res.data.data);
       })
-      .catch(() => {
-        // message('Unable to get categories', 'error');
-      });
   };
 
   // getting data from SubCategory
-    const getSubCategory = () => {
-      api.get('/content/getSubCategory', subcategoryLinked).then((res) => {
+    const getSubCategory = (categoryId) => {
+      api.post('/product/getCategoryById', { category_id: categoryId }).then((res) => {
         setSubCategoryLinked(res.data.data);
+      });
+    };
+
+    // getting data from SubCategory
+    const getSubCategoryTypeById = (SubcategoryId) => {
+      api.post('/subcategory/getSubCategoryTypeById', { sub_category_id: SubcategoryId }).then((res) => {
+        setSubCategoryTypeLinked(res.data.data);
       });
     };
 
@@ -136,11 +142,29 @@ const ProductUpdate = () => {
 
   
   useEffect(() => {
-    getCategory();
     getProductById();
     getProductOwner();
-    getSubCategory();
-  }, [id]);
+    getSubCategoryTypeById();
+  }, [id]); 
+
+  useEffect(() => {
+    if (productDetails?.product_id) {
+      getCategory(productDetails.product_id);
+    }
+  }, [productDetails?.product_id]);
+
+  useEffect(() => {
+    if (productDetails?.category_id) {
+      getSubCategory(productDetails.category_id);
+    }
+  }, [productDetails?.category_id]);
+
+  useEffect(() => {
+    if (productDetails?.sub_category_id) {
+      getSubCategoryTypeById(productDetails.sub_category_id );
+    }
+  }, [productDetails?.sub_category_id ]);
+  
 
   return (
     <>
@@ -156,6 +180,7 @@ const ProductUpdate = () => {
             categoryLinked={categoryLinked}
             productOwnerLinked={productOwnerLinked}
             subcategoryLinked={subcategoryLinked}
+            subcategorytypeLinked={subcategorytypeLinked}
           ></ProductDetail>
           {/* Product Details Form */}
           <Row>
@@ -170,26 +195,7 @@ const ProductUpdate = () => {
                 Additional information
               </NavLink>
             </NavItem>
-            {/* <NavItem>
-              <NavLink
-                className={activeTab === '2' ? 'active' : ''}
-                onClick={() => {
-                  toggle('2');
-                }}
-              >
-               Product Color
-              </NavLink>
-            </NavItem> */}
-            {/* <NavItem>
-              <NavLink
-                className={activeTab === '3' ? 'active' : ''}
-                onClick={() => {
-                  toggle('3');
-                }}
-              >
-                Product Size
-              </NavLink>
-            </NavItem> */}
+       
             <NavItem>
               <NavLink
                 className={activeTab === '4' ? 'active' : ''}
@@ -217,21 +223,6 @@ const ProductUpdate = () => {
               </ComponentCard>
         </TabPane>
 
-        {/* Customer Details Form */}
-        {/* <TabPane tabId="2">
-          <ComponentCard title="Product Color">
-          <ProductColor
-           projectId={id}
-          ></ProductColor>
-          </ComponentCard>
-        </TabPane>
-        <TabPane tabId="3">
-          <ComponentCard title="Product Size">
-          <ProductSize
-            projectId={id}
-          ></ProductSize>
-          </ComponentCard>
-        </TabPane> */}
         <TabPane tabId="4">
         <ComponentCard title="Attachments">
             <Row>

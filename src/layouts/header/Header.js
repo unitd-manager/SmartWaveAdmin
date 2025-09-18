@@ -15,7 +15,7 @@ import {
 } from 'reactstrap';
 //import { MessageSquare } from 'react-feather';
 // import * as Icon from 'react-feather';
-import { ReactComponent as LogoWhite } from '../../assets/images/logos/logo.svg';
+import LogoWhite from '../../assets/images/logos/smartwave.jpg';
 //import MessageDD from './MessageDD';
 // import MegaDD from './MegaDD';
 // import NotificationDD from './NotificationDD';
@@ -55,7 +55,7 @@ const Header = () => {
           <i className="bi bi-list" />
         </Button>
         <NavbarBrand href="/" className="d-sm-block d-lg-none">
-          <LogoWhite />
+         <img src={LogoWhite} alt="Logo White"  className="img-fluid"/>
         </NavbarBrand>
         <Button
           color={topbarColor}

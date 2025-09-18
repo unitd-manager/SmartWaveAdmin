@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import {
   Row,
   Col,
@@ -59,20 +59,36 @@ const {id}=useParams();
       });
   };
   const [unitdetails, setUnitDetails] = useState();
- //Api call for getting Unit From Valuelist
- const getUnit = () => {
-  api
-    .get('/category/getCategory')
-    .then((res) => {
-      setUnitDetails(res.data.data);
-    })
-    .catch(() => {
-      message('Staff Data Not Found', 'info');
-    });
-};
-  React.useEffect(() => {
-    getUnit();
-  }, []);
+  const [unitdetails1, setUnitDetails1] = useState();
+
+   
+  // getting data from Category
+  const getCategory = (categoryId1) => {
+    api
+      .post('/product/getCategoryById1', { product_id: categoryId1 })
+      .then((res) => {
+        setUnitDetails(res.data.data);
+      })
+  };
+
+  // getting data from SubCategory
+    const getSubCategory = (categoryId) => {
+      api.post('/product/getCategoryById', { category_id: categoryId }).then((res) => {
+        setUnitDetails1(res.data.data);
+      });
+    };
+
+useEffect(() => {
+    if (lineItemData?.product_id) {
+      getCategory(lineItemData.product_id);
+    }
+  }, [lineItemData?.product_id]);
+
+  useEffect(() => {
+    if (lineItemData?.category_id) {
+      getSubCategory(lineItemData.category_id);
+    }
+  }, [lineItemData?.category_id]);
 
   React.useEffect(() => {
     setLineItemData(FetchLineItemData);
@@ -101,18 +117,39 @@ const {id}=useParams();
             <Row>
               <Label sm="2">Category</Label>
               <Col sm="10">
+    <Input
+        type="select"
+        name="category_id"
+        value={lineItemData && lineItemData.category_id} // Use 'value' instead of 'defaultValue'
+        onChange={handleData}
+    >
+        <option value="">Please Select</option> {/* Ensure the default option has an empty value */}
+        {unitdetails &&
+            unitdetails.map((ele) => (
+                <option key={ele.category_id} value={ele.category_id}>
+                    {ele.category_title}
+                </option>
+            ))}
+    </Input>
+</Col>
+              </Row>
+              </FormGroup>
+              <FormGroup>
+              <Row>
+              <Label sm="2">SubCat</Label>
+              <Col sm="10">
                 <Input
                   type="select"
-                  name="category_id"
-                  defaultValue={lineItemData && lineItemData.category_id}
+                  name="sub_category_id"
+                  value={lineItemData && lineItemData.sub_category_id}
                   onChange={handleData}
                 >
-                <option defaultValue="selected">Please Select</option>
-                  {unitdetails &&
-                    unitdetails.map((ele) => {
+        <option value="">Please Select</option> {/* Ensure the default option has an empty value */}
+        {unitdetails1 &&
+                    unitdetails1.map((ele) => {
                       return (
-                        <option key={ele.category_id} value={ele.category_id}>
-                          {ele.category_title}
+                        <option key={ele.sub_category_id} value={ele.sub_category_id}>
+                          {ele.sub_category_title}
                         </option>
                       );
                     })}
@@ -129,6 +166,21 @@ const {id}=useParams();
                   name="quantity"
                   defaultValue={lineItemData && lineItemData.quantity}
                   onChange={handleData}
+                 
+                />
+              </Col>
+            </Row>
+          </FormGroup>
+          <FormGroup>
+            <Row>
+              <Label sm="2">Grade</Label>
+              <Col sm="10">
+                <Input
+                  type="text"
+                  name="grades"
+                  defaultValue={lineItemData && lineItemData.grades}
+                  onChange={handleData}
+                  disabled // ← This disables the input
                  
                 />
               </Col>

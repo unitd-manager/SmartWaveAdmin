@@ -78,8 +78,9 @@ const Enquiry = () => {
       width: '10%', 
       sortable: true,
     },
-    { name: 'Code', selector: (row) => row.enquiry_code,width: '10%',  sortable: true },
+    { name: 'Code', selector: (row) => row.enquiry_code,  sortable: true },
     { name: 'Title', selector: (row) => row.title, sortable: true },
+    { name: 'Status', selector: (row) => row.status,  sortable: true },
     {
       name: 'Name',
       selector: (row) =>
@@ -87,8 +88,9 @@ const Enquiry = () => {
       width: '15%', 
       sortable: true,
     },
-    { name: 'Email', selector: (row) => row.email,width: '18%',  sortable: true },
-    { name: 'Type', selector: (row) => row.enquiry_type,width: '23%', sortable: true },
+    { name: 'Email', selector: (row) => row.email,  sortable: true },
+    { name: 'Type', selector: (row) => row.enquiry_type, sortable: true },
+    { name: 'Phone', selector: (row) => row.phone,  sortable: true },
   ];
 
   return (
