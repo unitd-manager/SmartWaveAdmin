@@ -66,8 +66,41 @@ const OverAllReport = () => {
 
   useEffect(() => {
     getProject();
-   // getCompany();
   }, []);
+
+  useEffect(() => {
+    if (salesReport && Array.isArray(salesReport)) {
+      // If no start/end date, show current month only
+      if (!startDate && !endDate) {
+        const currentMonth = moment().month();
+        const currentYear = moment().year();
+        const filtered = salesReport.filter((item) => {
+          const date = moment(item.enquiry_date);
+          return date.month() === currentMonth && date.year() === currentYear;
+        });
+        setUserSearchData(filtered);
+      } else {
+        // If start/end date or status is selected, show filtered results
+        let newData = [...salesReport];
+        // Status filter
+        if (status) {
+          newData = newData.filter((z) => (z.status || '').toLowerCase() === status.toLowerCase());
+        }
+        // Date filter
+        if (startDate && endDate) {
+          newData = newData.filter((x) => {
+            const enquiryDate = moment(x.enquiry_date).format('YYYY-MM-DD');
+            return enquiryDate >= startDate && enquiryDate <= endDate;
+          });
+        } else if (startDate) {
+          newData = newData.filter((x) => moment(x.enquiry_date).format('YYYY-MM-DD') === startDate);
+        } else if (endDate) {
+          newData = newData.filter((x) => moment(x.enquiry_date).format('YYYY-MM-DD') === endDate);
+        }
+        setUserSearchData(newData);
+      }
+    }
+  }, [salesReport, startDate, endDate, status]);
   const [page, setPage] = useState(0);
 
   const employeesPerPage = 20;
@@ -131,6 +164,7 @@ const OverAllReport = () => {
                 <Input
                   type="date"
                   name="startDate"
+                  value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
                 />
               </FormGroup>
@@ -138,7 +172,7 @@ const OverAllReport = () => {
             <Col>
               <FormGroup>
                 <Label>End Date</Label>
-                <Input type="date" name="endDate" onChange={(e) => setEndDate(e.target.value)} />
+                <Input type="date" name="endDate" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
               </FormGroup>
             </Col>
             {/* <Col>
@@ -146,10 +180,10 @@ const OverAllReport = () => {
                 <Label>Select Company Name</Label>
                 <Input
                   type="select"
-                  name="company_id"
-                  onChange={(e) => setCompanyName(e.target.value)}
+                  name="status"
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
                 >
-                  <option value="">Please Select</option>
                   {company &&
                     company.map((ele) => {
                       return (

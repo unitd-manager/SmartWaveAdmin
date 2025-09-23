@@ -66,8 +66,41 @@ const OverAllReport = () => {
 
   useEffect(() => {
     getProject();
-   // getCompany();
   }, []);
+
+  useEffect(() => {
+    if (salesReport && Array.isArray(salesReport)) {
+      // If no start/end date and no status, show current month only
+      if (!startDate && !endDate && !status) {
+        const currentMonth = moment().month();
+        const currentYear = moment().year();
+        const filtered = salesReport.filter((item) => {
+          const date = moment(item.enquiry_date);
+          return date.month() === currentMonth && date.year() === currentYear;
+        });
+        setUserSearchData(filtered);
+      } else {
+        // If any filter is selected, show filtered results
+        let newData = [...salesReport];
+        // Status filter
+        if (status) {
+          newData = newData.filter((z) => (z.status || '').toLowerCase() === status.toLowerCase());
+        }
+        // Date filter
+        if (startDate && endDate) {
+          newData = newData.filter((x) => {
+            const enquiryDate = moment(x.enquiry_date).format('YYYY-MM-DD');
+            return enquiryDate >= startDate && enquiryDate <= endDate;
+          });
+        } else if (startDate) {
+          newData = newData.filter((x) => moment(x.enquiry_date).format('YYYY-MM-DD') === startDate);
+        } else if (endDate) {
+          newData = newData.filter((x) => moment(x.enquiry_date).format('YYYY-MM-DD') === endDate);
+        }
+        setUserSearchData(newData);
+      }
+    }
+  }, [salesReport, startDate, endDate, status]);
   const [page, setPage] = useState(0);
 
   const employeesPerPage = 20;
