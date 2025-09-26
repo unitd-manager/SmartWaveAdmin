@@ -30,10 +30,7 @@ const OpportunityDetails = () => {
   //Logic for adding tender in db
   const [tenderForms, setTenderForms] = useState({
     title: '',
-    contact_id: '',
-    company_name: '',
-    company_address: '',
-    gst_number: '',
+    contact_id: ''
   });
 
   const handleInputsTenderForms = (e) => {
@@ -68,10 +65,7 @@ const OpportunityDetails = () => {
   const insertTender = (code) => {
     if (
       tenderForms.title && tenderForms.title.trim() !== '' &&
-      tenderForms.contact_id && String(tenderForms.contact_id).trim() !== '' &&
-      tenderForms.company_name && tenderForms.company_name.trim() !== '' &&
-      tenderForms.company_address && tenderForms.company_address.trim() !== '' &&
-      tenderForms.gst_number && tenderForms.gst_number.trim() !== ''
+      tenderForms.contact_id && String(tenderForms.contact_id).trim() !== '' 
     ) {
       tenderForms.enquiry_code = code;
       tenderForms.enquiry_date = creationdatetime
@@ -169,64 +163,6 @@ const OpportunityDetails = () => {
                     </Input>
                     {formSubmitted && (!tenderForms || tenderForms.contact_id === undefined || String(tenderForms.contact_id).trim() === '') && (
                       <div className="error-message">Please select the customer</div>
-                    )}
-                  </Col>
-                </Row>
-              </FormGroup>
-              <FormGroup>
-                <Row>
-                  <Col md="9">
-                    <Label>
-                      Company Name <span className="required"> *</span>
-                    </Label>
-                    <Input
-                      type="text"
-                      name="company_name"
-                      className={`form-control ${formSubmitted && tenderForms && String(tenderForms.company_name || '').trim() === '' ? 'highlight' : ''}`}
-                      value={tenderForms && tenderForms.company_name}
-                      onChange={handleInputsTenderForms}
-                    />
-                    {formSubmitted && tenderForms && String(tenderForms.company_name || '').trim() === '' && (
-                      <div className="error-message">Please enter the company name</div>
-                    )}
-                  </Col>
-                </Row>
-              </FormGroup>
-              <FormGroup>
-                <Row>
-                  <Col md="9">
-                    <Label>
-                      Address <span className="required"> *</span>
-                    </Label>
-                    <Input
-                      type="textarea"
-                      name="company_address"
-                      className={`form-control ${formSubmitted && tenderForms && String(tenderForms.company_address || '').trim() === '' ? 'highlight' : ''}`}
-                      value={tenderForms && tenderForms.company_address}
-                      onChange={handleInputsTenderForms}
-                      rows="3"
-                    />
-                    {formSubmitted && tenderForms && String(tenderForms.company_address || '').trim() === '' && (
-                      <div className="error-message">Please enter the address</div>
-                    )}
-                  </Col>
-                </Row>
-              </FormGroup>
-              <FormGroup>
-                <Row>
-                  <Col md="9">
-                    <Label>
-                      GST Number <span className="required"> *</span>
-                    </Label>
-                    <Input
-                      type="text"
-                      name="gst_number"
-                      className={`form-control ${formSubmitted && tenderForms && String(tenderForms.gst_number || '').trim() === '' ? 'highlight' : ''}`}
-                      value={tenderForms && tenderForms.gst_number}
-                      onChange={handleInputsTenderForms}
-                    />
-                    {formSubmitted && tenderForms && String(tenderForms.gst_number || '').trim() === '' && (
-                      <div className="error-message">Please enter the GST number</div>
                     )}
                   </Col>
                 </Row>
