@@ -19,6 +19,7 @@ const OpportunityDetails = () => {
  
   //Api call for getting company dropdown
   const getCompany = () => {
+    
     api.get('/company/getContact').then((res) => {
       setCompany(res.data.data);
     });

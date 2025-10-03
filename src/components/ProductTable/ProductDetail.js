@@ -179,7 +179,7 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
               <Row>
               <Col md="3">
                 <FormGroup>
-                  <Label>Tag </Label>
+                  <Label>Count</Label>
                   <Input
                     type="text"
                     onChange={handleInputs}
