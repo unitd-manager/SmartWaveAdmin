@@ -910,13 +910,13 @@ const ProjectEdit = () => {
 
 
     <Modal isOpen={quotationsModal} toggle={quotationstoggle.bind(null)}>
-      <ModalHeader toggle={quotationstoggle.bind(null)}>Quote History</ModalHeader>
+      <ModalHeader toggle={quotationstoggle.bind(null)}>Proforma Invoice History</ModalHeader>
       <ModalBody>
         <Row>
         <Col md="12">
           <Card>
             <CardTitle tag="h4" className="border-bottom bg-primary p-3 mb-0 text-white">
-              Quote History
+              Proforma Invoice History
             </CardTitle>
             <CardBody>
              
@@ -954,7 +954,7 @@ const ProjectEdit = () => {
                 toggle('2');
               }}
             >
-              Quotations
+              Proforma Invoices
             </NavLink>
           </NavItem>
           <NavItem>
@@ -1052,7 +1052,7 @@ const ProjectEdit = () => {
 
               <Row>
                   <Col md="3" className='mb-4 d-flex justify-content-between'>
-                    <h3>Quotations </h3> 
+                    <h3>Proforma Invoices </h3> 
                     <Button color="primary" onClick={quotationstoggle.bind(null)}>View Quote Log</Button>
                   </Col>
               </Row>

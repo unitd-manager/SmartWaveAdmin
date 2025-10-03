@@ -23,12 +23,11 @@ const OverAllReport = () => {
   // const [companyName, setCompanyName] = useState('');
   // const [company, setCompany] = useState();
   const [userSearchData, setUserSearchData] = useState([]);
-  const [status, setStatus] = useState('');
 
   //Get data from Training table
   const getProject = () => {
     api
-      .get('/enquiry/getEnquiry')
+      .get('/enquiry/getDroppedEnquiryReport')
       .then((res) => {
         setSalesReport(res.data.data);
         setUserSearchData(res.data.data);
@@ -47,9 +46,7 @@ const OverAllReport = () => {
   const handleSearch = () => {
     let newData = [...salesReport];
     // Filter by status
-    if (status) {
-      newData = newData.filter((z) => (z.status || '').toLowerCase() === status.toLowerCase());
-    }
+   
     // Filter by start and end date
     if (startDate && endDate) {
       newData = newData.filter((x) => {
@@ -67,11 +64,12 @@ const OverAllReport = () => {
   useEffect(() => {
     getProject();
   }, []);
+  const [page, setPage] = useState(0);
 
   useEffect(() => {
     if (salesReport && Array.isArray(salesReport)) {
-      // If no start/end date and no status, show current month only
-      if (!startDate && !endDate && !status) {
+      // If no start/end date, show current month only
+      if (!startDate && !endDate) {
         const currentMonth = moment().month();
         const currentYear = moment().year();
         const filtered = salesReport.filter((item) => {
@@ -80,13 +78,8 @@ const OverAllReport = () => {
         });
         setUserSearchData(filtered);
       } else {
-        // If any filter is selected, show filtered results
+        // If from date or end date is selected, show filtered results
         let newData = [...salesReport];
-        // Status filter
-        if (status) {
-          newData = newData.filter((z) => (z.status || '').toLowerCase() === status.toLowerCase());
-        }
-        // Date filter
         if (startDate && endDate) {
           newData = newData.filter((x) => {
             const enquiryDate = moment(x.enquiry_date).format('YYYY-MM-DD');
@@ -100,8 +93,7 @@ const OverAllReport = () => {
         setUserSearchData(newData);
       }
     }
-  }, [salesReport, startDate, endDate, status]);
-  const [page, setPage] = useState(0);
+  }, [salesReport, startDate, endDate]);
 
   const employeesPerPage = 20;
   const numberOfEmployeesVistited = page * employeesPerPage;
@@ -137,14 +129,9 @@ const OverAllReport = () => {
       name: 'Name',
       selector: 'first_name',
     },
-
     {
-      name: 'Email',
-      selector: 'email',
-    },
-    {
-      name: 'Phone No',
-      selector: 'phone',
+      name: 'Reason',
+      selector: 'comments',
     },
   ];
   return (
@@ -190,22 +177,6 @@ const OverAllReport = () => {
                 </Input>
               </FormGroup>
             </Col> */}
-            <Col>
-              <FormGroup>
-                <Label>Status</Label>
-                <Input
-                  type="select"
-                  name="status"
-                  onChange={(e) => setStatus(e.target.value)}
-                  value={status}
-                >
-                  <option value="">All</option>
-                  <option value="Pending">Pending</option>
-                  <option value="Completed">Completed</option>
-                  <option value="Cancelled">Cancelled</option>
-                </Input>
-              </FormGroup>
-            </Col>
             <Col md="1">
               <Button color="primary" className="shadow-none" onClick={() => handleSearch()}>Go</Button>
             </Col>
@@ -231,15 +202,9 @@ const OverAllReport = () => {
                 <b> End Date:</b> {endDate}
               </Label>
             </Col>
-            <Col md="3">
-              <Label>
-                <b>Status:</b> {status || 'All'}
-              </Label>
-            </Col>
           </Row>
         </CardBody>
       </Card>
-
       <Card>
         <CardBody>
           <Row>
@@ -268,8 +233,7 @@ const OverAllReport = () => {
                       <td>{moment(element.enquiry_date).format('DD-MM-YYYY')}</td>
                       <td>{element.title}</td>
                       <td>{element.first_name}</td>
-                      <td>{element.email}</td>
-                      <td>{element.phone}</td>
+                      <td>{element.comments}</td>
                     </tr>
                   );
                 })}

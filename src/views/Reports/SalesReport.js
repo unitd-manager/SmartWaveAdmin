@@ -28,7 +28,7 @@ const OverAllReport = () => {
   //Get data from Training table
   const getProject = () => {
     api
-      .get('/enquiry/getEnquiry')
+      .get('/enquiry/getSalesReport')
       .then((res) => {
         setSalesReport(res.data.data);
         setUserSearchData(res.data.data);
@@ -70,8 +70,8 @@ const OverAllReport = () => {
 
   useEffect(() => {
     if (salesReport && Array.isArray(salesReport)) {
-      // If no start/end date and no status, show current month only
-      if (!startDate && !endDate && !status) {
+      // If no start/end date, show current month only
+      if (!startDate && !endDate) {
         const currentMonth = moment().month();
         const currentYear = moment().year();
         const filtered = salesReport.filter((item) => {
@@ -80,7 +80,7 @@ const OverAllReport = () => {
         });
         setUserSearchData(filtered);
       } else {
-        // If any filter is selected, show filtered results
+        // If start/end date or status is selected, show filtered results
         let newData = [...salesReport];
         // Status filter
         if (status) {
@@ -122,7 +122,11 @@ const OverAllReport = () => {
     },
 
     {
-      name: 'Code',
+      name: 'Enquiry_Code',
+      selector: 'enquiry_code',
+    },
+    {
+      name: 'Order_Code',
       selector: 'enquiry_code',
     },
     {
@@ -160,6 +164,7 @@ const OverAllReport = () => {
                 <Input
                   type="date"
                   name="startDate"
+                  value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
                 />
               </FormGroup>
@@ -167,7 +172,7 @@ const OverAllReport = () => {
             <Col>
               <FormGroup>
                 <Label>End Date</Label>
-                <Input type="date" name="endDate" onChange={(e) => setEndDate(e.target.value)} />
+                <Input type="date" name="endDate" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
               </FormGroup>
             </Col>
             {/* <Col>
@@ -175,10 +180,10 @@ const OverAllReport = () => {
                 <Label>Select Company Name</Label>
                 <Input
                   type="select"
-                  name="company_id"
-                  onChange={(e) => setCompanyName(e.target.value)}
+                  name="status"
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
                 >
-                  <option value="">Please Select</option>
                   {company &&
                     company.map((ele) => {
                       return (
@@ -265,6 +270,7 @@ const OverAllReport = () => {
                     <tr key={element.enquiry_id}>
                       <td>{index + 1}</td>
                       <td>{element.enquiry_code}</td>
+                      <td>{element.order_code}</td>
                       <td>{moment(element.enquiry_date).format('DD-MM-YYYY')}</td>
                       <td>{element.title}</td>
                       <td>{element.first_name}</td>

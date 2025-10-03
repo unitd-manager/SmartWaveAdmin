@@ -48,7 +48,7 @@ const ViewQuoteLogModal = ({ viewQuotationsModal, setViewQuotationsModal ,id}) =
     <>
       <Modal size="xl" isOpen={viewQuotationsModal}>
         <ModalHeader>
-          <div>Quote History</div>
+          <div>Proforma Invoice History</div>
           <Button
             color="secondary"
             onClick={() => {
@@ -64,7 +64,7 @@ const ViewQuoteLogModal = ({ viewQuotationsModal, setViewQuotationsModal ,id}) =
             <Col md="12">
               <Card>
                 <CardTitle tag="h4" className="border-bottom bg-primary p-3 mb-0 text-white">
-                  Quotations
+                  Proforma Invoices
                 </CardTitle>
                 <CardBody>
                   <Form>
