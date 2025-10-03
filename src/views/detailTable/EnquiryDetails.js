@@ -31,8 +31,7 @@ const OpportunityDetails = () => {
   //Logic for adding tender in db
   const [tenderForms, setTenderForms] = useState({
     title: '',
-    company_name: '',
-   
+    contact_id: ''
   });
 
   const handleInputsTenderForms = (e) => {
@@ -65,7 +64,10 @@ const OpportunityDetails = () => {
   // };
 
   const insertTender = (code) => {
-    if (tenderForms.contact_id !== '' && tenderForms.title !== '') {
+    if (
+      tenderForms.title && tenderForms.title.trim() !== '' &&
+      tenderForms.contact_id && String(tenderForms.contact_id).trim() !== '' 
+    ) {
       tenderForms.enquiry_code = code;
       tenderForms.enquiry_date = creationdatetime
       tenderForms.creation_date = creationdatetime
@@ -139,21 +141,16 @@ const OpportunityDetails = () => {
                 <Row>
                   <Col md="9">
                     <Label>
-                      Company Name <span className="required"> *</span>{' '}
+                      Customer <span className="required"> *</span>{' '}
                     </Label>
                     <Input
                       type="select"
                       name="contact_id"
-                      className={`form-control ${formSubmitted && tenderForms && (tenderForms.contact_id === undefined || tenderForms.contact_id.trim() === '')
+                      className={`form-control ${formSubmitted && (!tenderForms || tenderForms.contact_id === undefined || String(tenderForms.contact_id).trim() === '')
                           ? 'highlight'
                           : ''
                         }`}
-                      //value={tenderForms && tenderForms.contact_id}
-                      // onChange={handleInputsTenderForms}
-                      onChange={(e) => {
-                        handleInputsTenderForms(e)
-                      }}
-
+                      onChange={handleInputsTenderForms}
                     >
                       <option value=''>Please Select</option>
                       {company &&
@@ -165,11 +162,10 @@ const OpportunityDetails = () => {
                           );
                         })}
                     </Input>
-                    {formSubmitted && tenderForms && (tenderForms.contact_id === undefined || tenderForms.contact_id.trim() === '') && (
-                      <div className="error-message">Please select the company name</div>
+                    {formSubmitted && (!tenderForms || tenderForms.contact_id === undefined || String(tenderForms.contact_id).trim() === '') && (
+                      <div className="error-message">Please select the customer</div>
                     )}
                   </Col>
-                 
                 </Row>
               </FormGroup>
              

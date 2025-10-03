@@ -125,10 +125,10 @@ const [quotationAttachmentModal, setQuotationAttachmentModal] = useState(false);
     console.log(viewLineToggle, viewTrackToggle);
     const tabs = [
         { id: '1', name: 'Product' },
-        { id: '2', name: 'Quotation' },
+        { id: '2', name: 'Proforma Invoice' },
+        { id: '5', name: 'Attachment for receipt' },
         { id: '3', name: 'Carrier Tracking' },
         { id: '4', name: 'Business And Shipping Document' },
-        { id: '5', name: 'Attachment for receipt' },
 
     ];
     const toggle = (tab) => {
