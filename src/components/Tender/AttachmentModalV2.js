@@ -27,7 +27,8 @@ const AttachmentModalV2 = ({attachmentModal,setAttachmentModal,moduleId,roomName
 
             setFile(fiels);
             setHandleValue(arrayOfObj);
-            console.log(fiels)
+            console.log('files',fiels)
+             console.log('arrayofobj',arrayOfObj)
         };
 
         const uploadFile = () =>{
