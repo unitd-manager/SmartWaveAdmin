@@ -48,9 +48,12 @@ function ViewFileComponentV2({ moduleId, roomName }) {
     });
   };
 
-  useEffect(() => {
+ useEffect(() => {
+  if (moduleId && roomName) {
     getFiles();
-  }, []);
+  }
+}, [moduleId, roomName]);  // ✅ runs again when props change
+
 
   return (
     <>

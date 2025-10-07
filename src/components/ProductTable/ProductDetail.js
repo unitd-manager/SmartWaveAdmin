@@ -179,12 +179,23 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
               <Row>
               <Col md="3">
                 <FormGroup>
-                  <Label>Tag </Label>
+                  <Label>Count</Label>
                   <Input
                     type="text"
                     onChange={handleInputs}
                     value={productDetails && productDetails.tag}
                     name="tag"
+                  />
+                </FormGroup>
+              </Col>
+                  <Col md="3">
+                <FormGroup>
+                  <Label>Origin</Label>
+                  <Input
+                    type="text"
+                    onChange={handleInputs}
+                    value={productDetails && productDetails.origin}
+                    name="origin"
                   />
                 </FormGroup>
               </Col>
