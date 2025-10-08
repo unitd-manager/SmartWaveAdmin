@@ -239,6 +239,7 @@ const ContentUpdate = () => {
                     editContentData();
                     setTimeout(() => {
                       navigate('/Customer');
+                      window.location.reload();
                     }, 1100);
                   }}
                 >
@@ -285,16 +286,27 @@ const ContentUpdate = () => {
               </Col> */}
               <Col md="3">
                 <FormGroup>
-                <Label>Name</Label>
+                  <Label>Contact Name</Label>
                   <Input
                     type="text"
                     onChange={handleInputs}
-                    value={contentDetails && contentDetails.first_name}
-                    name="first_name"
+                    value={contentDetails && contentDetails.name}
+                    name="name"
                   />
                 </FormGroup>
               </Col>
               <Col md="3">
+                <FormGroup>
+                  <Label>Company Name</Label>
+                  <Input
+                    type="text"
+                    onChange={handleInputs}
+                    value={contentDetails && contentDetails.company_name}
+                    name="company_name"
+                  />
+                </FormGroup>
+              </Col>
+               <Col md="3">
                 <FormGroup>
                   {/* Category title from Category table */}
                   <Label>Mobile</Label>
@@ -318,6 +330,51 @@ const ContentUpdate = () => {
                   />
                 </FormGroup>
               </Col>
+              <Col md="3">
+                <FormGroup>
+                  <Label>PAN</Label>
+                  <Input
+                    type="text"
+                    onChange={handleInputs}
+                    value={contentDetails && contentDetails.pan}
+                    name="pan"
+                  />
+                </FormGroup>
+              </Col>
+              <Col md="3">
+                <FormGroup>
+                  <Label>IEC</Label>
+                  <Input
+                    type="text"
+                    onChange={handleInputs}
+                    value={contentDetails && contentDetails.iec}
+                    name="iec"
+                  />
+                </FormGroup>
+              </Col>
+              <Col md="3">
+                <FormGroup>
+                  <Label>Fssai</Label>
+                  <Input
+                    type="text"
+                    onChange={handleInputs}
+                    value={contentDetails && contentDetails.fssai}
+                    name="fssai"
+                  />
+                </FormGroup>
+              </Col>
+              <Col md="3">
+                <FormGroup>
+                  <Label>GST</Label>
+                  <Input
+                    type="text"
+                    onChange={handleInputs}
+                    value={contentDetails && contentDetails.gst}
+                    name="gst"
+                  />
+                </FormGroup>
+              </Col>
+             
               <Col md="3">
                 <FormGroup>
                   {/* Category title from Category table */}
