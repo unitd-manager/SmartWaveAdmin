@@ -602,30 +602,40 @@ const sendPaymentReminder = () => {
                                 </FormGroup>
                             </Col>
                             <Col md="4">
+                                <FormGroup>
                                     <Label>
                                         Customer <span className="required"> *</span>{' '}
                                     </Label>
-                          <Input
-                            type="select"
-                            name="contact_id"
-                          
-                            value={enquiryDetails && enquiryDetails.contact_id}
-                            onChange={handleInputs}
-                            
-      
-                          >
-                            <option value=''>Please Select</option>
-                            {company &&
-                              company.map((ele) => {
-                                return (
-                                  <option key={ele.contact_id} value={ele.contact_id}>
-                                    {ele.first_name}
-                                  </option>
-                                );
-                              })}
-                          </Input>
-                    
-                        </Col>
+                                    <div className="d-flex align-items-center">
+                                        <Input
+                                            type="select"
+                                            name="contact_id"
+                                            value={enquiryDetails && enquiryDetails.contact_id}
+                                            onChange={handleInputs}
+                                        >
+                                            <option value=''>Please Select</option>
+                                            {company &&
+                                                company.map((ele) => {
+                                                    return (
+                                                        <option key={ele.contact_id} value={ele.contact_id}>
+                                                            {ele.first_name}
+                                                        </option>
+                                                    );
+                                                })}
+                                        </Input>
+                                        {enquiryDetails && enquiryDetails.contact_id && (
+                                            <Button
+                                                color="link"
+                                                className="ms-2 p-0"
+                                                tag={Link}
+                                                to={`/CustomerEdit/${enquiryDetails.contact_id}`}
+                                            >
+                                                Go to Customer
+                                            </Button>
+                                        )}
+                                    </div>
+                                </FormGroup>
+                            </Col>
                           
                       
       

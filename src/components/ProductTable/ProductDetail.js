@@ -188,6 +188,17 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                   />
                 </FormGroup>
               </Col>
+                  <Col md="3">
+                <FormGroup>
+                  <Label>Origin</Label>
+                  <Input
+                    type="text"
+                    onChange={handleInputs}
+                    value={productDetails && productDetails.origin}
+                    name="origin"
+                  />
+                </FormGroup>
+              </Col>
               <Col md="3">
                 <FormGroup>
                   <Label> Unit </Label>
