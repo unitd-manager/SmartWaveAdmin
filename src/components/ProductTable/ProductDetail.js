@@ -221,7 +221,8 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                   />
                 </FormGroup>
               </Col>
-              
+              </Row>
+              <Row>
               
               <Col md="3">
                 <FormGroup>
@@ -234,9 +235,6 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                   />
                 </FormGroup>
               </Col>
-              </Row>
-              
-              <Row>
               <Col md="3">
                 <Label>Most Popular</Label>
                 <FormGroup>
@@ -312,6 +310,8 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                   />
                 </FormGroup>
               </Col>
+              </Row>
+              <Row>
 
               <Col md="3">
                 <Label>New Arrivals</Label>
