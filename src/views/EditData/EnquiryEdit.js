@@ -208,6 +208,11 @@ const [quotationAttachmentModal, setQuotationAttachmentModal] = useState(false);
         },
         {
             name: 'Grades',
+        },   {
+            name: 'Count',
+        },
+        {
+            name: 'Origin',
         },
         {
             name: 'Updated By ',
@@ -859,6 +864,8 @@ const sendPaymentReminder = () => {
                       <td data-label="Subcategory">{e.sub_category_title}</td>
                       <td data-label="Quantity">{e.quantity}</td>
                       <td data-label="Grades">{e.grades}</td>
+                       <td data-label="Count">{e.counts}</td>
+                      <td data-label="Origin">{e.origins}</td>
                       {/* <td data-label="Unit Price">{e.unit_price}</td>
                       <td data-label="Amount">{e.amount}</td> */}
                       <td data-label="Updated By">

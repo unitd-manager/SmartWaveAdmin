@@ -6,7 +6,6 @@ import '../form-editor/editor.scss';
 import * as Icon from 'react-feather';
 import Swal from 'sweetalert2';
 import { ToastContainer } from 'react-toastify';
-
 import BreadCrumbs from '../../layouts/breadcrumbs/BreadCrumbs';
 import ComponentCardV2 from '../../components/ComponentCardV2';
 import message from '../../components/Message';
@@ -18,7 +17,6 @@ import ComponentCard from '../../components/ComponentCard';
 import EnquiriesLinkedTable from '../../components/SupplierModal/EnquiriesLinked';
 import QuoteTrackItem from '../../components/ClientTable/QuoteTrackItem';
 import EditTrackItemModal from '../../components/ClientTable/EditTrckitemModal';
-
 import AttachmentPortalsTab from '../../components/EmployeeTable/AttachmentPortalsTab';
 
 const ContentUpdate = () => {
@@ -290,8 +288,8 @@ const ContentUpdate = () => {
                   <Input
                     type="text"
                     onChange={handleInputs}
-                    value={contentDetails && contentDetails.name}
-                    name="name"
+                    value={contentDetails && contentDetails.first_name}
+                    name="first_name"
                   />
                 </FormGroup>
               </Col>

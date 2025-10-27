@@ -99,9 +99,9 @@ const ProductUpdate = () => {
 
  
   // getting data from Category
-  const getCategory = (categoryId1) => {
+  const getCategory = () => {
     api
-      .post('/product/getCategoryById1', { product_id: categoryId1 })
+      .get('/product/getCategory')
       .then((res) => {
         setCategoryLinked(res.data.data);
       })
