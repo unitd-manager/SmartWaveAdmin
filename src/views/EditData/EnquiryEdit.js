@@ -124,8 +124,8 @@ const [quotationAttachmentModal, setQuotationAttachmentModal] = useState(false);
     };
     console.log(viewLineToggle, viewTrackToggle);
     const tabs = [
-        { id: '1', name: 'Product' },
-        { id: '2', name: 'Proforma Invoice' },
+        { id: '1', name: 'Proforma Invoice' },
+        { id: '2', name: 'Product' },
         { id: '5', name: 'Attachment for receipt' },
         { id: '3', name: 'Carrier Tracking' },
         { id: '4', name: 'Business And Shipping Document' },
@@ -629,7 +629,8 @@ const sendPaymentReminder = () => {
                                                 className="ms-2 p-0"
                                                 tag={Link}
                                                 to={`/CustomerEdit/${enquiryDetails.contact_id}`}
-                                            >
+                                             target="_blank"
+                        rel="noopener noreferrer">
                                                 Go to Customer
                                             </Button>
                                         )}
@@ -762,7 +763,65 @@ const sendPaymentReminder = () => {
 
   <Tab toggle={toggle} tabs={tabs} />
   <TabContent className="p-4" activeTab={activeTab}>
-    <TabPane tabId="1">
+     <TabPane tabId="1">
+  <TenderQuotation
+    tenderId={id}
+    quote={quote}
+    generateCode={generateCode}
+    setEditQuoteModal={setEditQuoteModal}
+    editQuoteModal={editQuoteModal}
+    viewLineToggle={viewLineToggle}
+    getLineItem={getLineItem}
+    setAddLineItemModal={setAddLineItemModal}
+    addLineItemModal={addLineItemModal}
+    lineItem={lineItem}
+    setLineItem={setLineItem}
+    viewLineModal={viewLineModal}
+    setViewLineModal={setViewLineModal}
+    id={id}
+    handleQuoteForms={handleQuoteForms}
+    getQuote={getQuote}
+  />
+
+  {/* Quotation File Upload Section */}
+  <Form>
+    <FormGroup>
+      <ComponentCard title="Quotation Documents">
+        <Row>
+          <Col xs="12" md="3" className="mb-3">
+           <Button
+  color="primary"
+  onClick={() => {
+    dataForAttachment();
+    setQuotationAttachmentModal(true);
+  }}
+>
+  Add File
+</Button>
+
+          </Col>
+        </Row>
+
+        {/* Upload Modal specific to Quotation */}
+       <AttachmentModalV2
+  moduleId={id}
+  roomName="EnquiryQuotation"   // 👈 Specific to Quotation tab
+  altTagData="Quotation Data"
+  desc="Quotation Data"
+  attachmentModal={quotationAttachmentModal}
+  setAttachmentModal={setQuotationAttachmentModal}
+/>
+
+<ViewFileComponentV2
+  moduleId={id}
+  roomName="EnquiryQuotation"   // 👈 Fetch only Quotation files
+/>
+
+      </ComponentCard>
+    </FormGroup>
+  </Form>
+</TabPane>
+    <TabPane tabId="2">
       <Row>
         <Col md="6">
           <Button
@@ -851,65 +910,6 @@ const sendPaymentReminder = () => {
         ></QuoteLineItem>
       )}
     </TabPane>
-    <TabPane tabId="2">
-  <TenderQuotation
-    tenderId={id}
-    quote={quote}
-    generateCode={generateCode}
-    setEditQuoteModal={setEditQuoteModal}
-    editQuoteModal={editQuoteModal}
-    viewLineToggle={viewLineToggle}
-    getLineItem={getLineItem}
-    setAddLineItemModal={setAddLineItemModal}
-    addLineItemModal={addLineItemModal}
-    lineItem={lineItem}
-    setLineItem={setLineItem}
-    viewLineModal={viewLineModal}
-    setViewLineModal={setViewLineModal}
-    id={id}
-    handleQuoteForms={handleQuoteForms}
-    getQuote={getQuote}
-  />
-
-  {/* Quotation File Upload Section */}
-  <Form>
-    <FormGroup>
-      <ComponentCard title="Quotation Documents">
-        <Row>
-          <Col xs="12" md="3" className="mb-3">
-           <Button
-  color="primary"
-  onClick={() => {
-    dataForAttachment();
-    setQuotationAttachmentModal(true);
-  }}
->
-  Add File
-</Button>
-
-          </Col>
-        </Row>
-
-        {/* Upload Modal specific to Quotation */}
-       <AttachmentModalV2
-  moduleId={id}
-  roomName="EnquiryQuotation"   // 👈 Specific to Quotation tab
-  altTagData="Quotation Data"
-  desc="Quotation Data"
-  attachmentModal={quotationAttachmentModal}
-  setAttachmentModal={setQuotationAttachmentModal}
-/>
-
-<ViewFileComponentV2
-  moduleId={id}
-  roomName="EnquiryQuotation"   // 👈 Fetch only Quotation files
-/>
-
-      </ComponentCard>
-    </FormGroup>
-  </Form>
-</TabPane>
-
 
     <TabPane tabId="3">
       <Row>

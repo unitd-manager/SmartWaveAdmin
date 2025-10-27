@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {  Form, Table } from 'reactstrap';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+// link navigation uses anchor tags to open in a new tab
 
 import moment from 'moment';
 import ComponentCard from '../ComponentCard';
@@ -57,9 +57,14 @@ export default function ProductLinkedTable({purchaseOrder}) {
             </td>
 
                  <td>
-                  <Link to={`/EnquiryEdit/${element.enquiry_id}`} className="text-primary">
-                      {element.enquiry_code}
-                  </Link>
+                  <a
+                    href={`/EnquiryEdit/${element.enquiry_id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary"
+                  >
+                    {element.enquiry_code}
+                  </a>
               </td>
               <td>{element.order_code}</td>
               <td>{element.title}</td>
