@@ -49,7 +49,7 @@ function AttachmentPortalsTab({
                         color="primary"
                         onClick={() => {
                           setRoomName('Picture');
-                          setFileTypes(['JPG', 'PNG', 'GIF']);
+                          setFileTypes(['JPG', 'JPEG', 'PNG', 'GIF', 'PDF']);
                           dataForPicture();
                           setPictureAttachmentModalProperties({
                             altTagData: "PictureData",
