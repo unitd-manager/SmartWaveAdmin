@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import React, { useEffect, useState, useContext } from 'react';
 import { Row, Col, Form, FormGroup, Label, Input, Button, TabPane, TabContent, Table } from 'reactstrap';
 import { ToastContainer } from 'react-toastify';
@@ -204,7 +205,7 @@ const [quotationAttachmentModal, setQuotationAttachmentModal] = useState(false);
             name: 'Subcategory',
         },
         {
-            name: 'Qty',
+            name: 'Container',
         },
         {
             name: 'Grades',
@@ -213,6 +214,9 @@ const [quotationAttachmentModal, setQuotationAttachmentModal] = useState(false);
         },
         {
             name: 'Origin',
+        },
+         {
+            name: 'Destination Port',
         },
         {
             name: 'Updated By ',
@@ -866,6 +870,7 @@ const sendPaymentReminder = () => {
                       <td data-label="Grades">{e.grades}</td>
                        <td data-label="Count">{e.counts}</td>
                       <td data-label="Origin">{e.origins}</td>
+                      <td data-label="Unit Price">{e.destination_port}</td>
                       {/* <td data-label="Unit Price">{e.unit_price}</td>
                       <td data-label="Amount">{e.amount}</td> */}
                       <td data-label="Updated By">
@@ -1042,7 +1047,7 @@ const sendPaymentReminder = () => {
     <TabPane tabId="5">
     <Form>
   <FormGroup>
-    <ComponentCard title="Payment Receipt">
+    <ComponentCard title="Advance Payment">
     
       <AttachmentModalV2
         moduleId={id}
@@ -1080,7 +1085,7 @@ const sendPaymentReminder = () => {
   </FormGroup>
   </Form>
   <Form>
-  <FormGroup>
+  {/* <FormGroup>
     <ComponentCard title="After Arrival">
       {/* <Row>
         <Col xs="12" md="3" className="mb-3">
@@ -1095,7 +1100,7 @@ const sendPaymentReminder = () => {
           </Button>
         </Col>
       </Row> */}
-      <AttachmentModalV2
+      {/* <AttachmentModalV2
         moduleId={id}
         roomName="AfterArrival"
         altTagData="AfterArrival Data"
@@ -1107,7 +1112,7 @@ const sendPaymentReminder = () => {
       />
       <ViewFileComponentForWeb moduleId={id} roomName="AfterArrival" />
     </ComponentCard>
-  </FormGroup>
+  </FormGroup> */} 
   </Form>
     </TabPane>
   </TabContent>
