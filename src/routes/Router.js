@@ -159,6 +159,8 @@ const SupplierTable = Loadable(lazy(() => import('../views/smartconTables/Suppli
 const ProductOwnerTable = Loadable(lazy(() => import('../views/smartconTables/ProductOwner')));
 const ValuelistTable = Loadable(lazy(() => import('../views/smartconTables/Valuelist')));
 const ValuelistDetailsTable = Loadable(lazy(() => import('../views/detailTable/ValuelistDetails')));
+const DestinationPort = Loadable(lazy(() => import('../views/smartconTables/DestinationPort')));
+const DestinationPortDetails = Loadable(lazy(() => import('../views/detailTable/DestinationPortDetails')));
 const PurchaseOrderDetailTable = Loadable(lazy(() => import('../views/detailTable/PurchaseOrderDetail')));
 const SettingTable = Loadable(lazy(() => import('../views/smartconTables/Setting')));
 const Section = Loadable(lazy(() => import('../views/smartconTables/Section')));
@@ -187,6 +189,7 @@ const CustomerEdit = Loadable(lazy(() => import('../views/EditData/CustomerEdit'
 const SectionEdit = Loadable(lazy(() => import('../views/EditData/SectionEdit')));
 const Login = Loadable(lazy(() => import('../views/detailTable/Login')));
 const ValueListEdit = Loadable(lazy(() => import('../views/EditData/ValueListEdit')));
+const DestinationPortEdit = Loadable(lazy(() => import('../views/EditData/DestinationPortEdit')));
 const SubCategoryEdit = Loadable(lazy(() => import('../views/EditData/SubCategoryEdit')));
 const CategoryEdit = Loadable(lazy(() => import('../views/EditData/CategoryEdit')));
 const SupportEdit = Loadable(lazy(() => import('../views/EditData/SupportEdit')));
@@ -265,6 +268,7 @@ const Routernew = () => {
           
           <Route path="/Login/:id" name="logindata" element={<Login />}></Route>
           <Route path="/ValueListEdit/:id" name="valuelistdata" element={<ValueListEdit />}></Route>
+           <Route path="/DestinationPortEdit/:id" name="valuelistdata" element={<DestinationPortEdit />}></Route>
           <Route
             path="/SubCategoryEdit/:id"
             name="subcategorydata"
@@ -407,6 +411,13 @@ const Routernew = () => {
             path="/ValuelistDetails"
             name="valuelistdetailsdata"
             element={<ValuelistDetailsTable />}
+          ></Route>
+          
+          <Route path="/DestinationPort" name="destinationportdata" element={<DestinationPort />}></Route>
+          <Route
+            path="/DestinationPortDetails"
+            name="destinationportdetailsdata"
+            element={<DestinationPortDetails />}
           ></Route>
              <Route
             path="/PurchaseOrderDetail"
