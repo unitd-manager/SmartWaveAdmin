@@ -186,19 +186,9 @@ const ProductUpdate = () => {
           {/* Product Details Form */}
           <Row>
           <Nav tabs>
-            <NavItem>
+             <NavItem>
               <NavLink
                 className={activeTab === '1' ? 'active' : ''}
-                onClick={() => {
-                  toggle('1');
-                }}
-              >
-                Additional information
-              </NavLink>
-            </NavItem>
-        <NavItem>
-              <NavLink
-                className={activeTab === '2' ? 'active' : ''}
                 onClick={() => {
                   toggle('2');
                 }}
@@ -206,6 +196,17 @@ const ProductUpdate = () => {
                 Product Description
               </NavLink>
             </NavItem>
+            <NavItem>
+              <NavLink
+                className={activeTab === '2' ? 'active' : ''}
+                onClick={() => {
+                  toggle('1');
+                }}
+              >
+                Additional information
+              </NavLink>
+            </NavItem>
+       
             <NavItem>
               <NavLink
                 className={activeTab === '4' ? 'active' : ''}
@@ -220,20 +221,7 @@ const ProductUpdate = () => {
         </Row>
         {/* Delivery address Form */}
         <TabPane tabId="1">
-        <ComponentCard title="Additional Info">
-                <Editor
-                  editorState={productDescription}
-                  wrapperClassName="demo-wrapper mb-0"
-                  editorClassName="demo-editor border mb-4 edi-height"
-                  onEditorStateChange={(e) => {
-                    handleDataEditor(e, 'product_description');
-                    setProductDescription(e);
-                  }}
-                />
-              </ComponentCard>
-        </TabPane>
-           <TabPane tabId="2">
-        <ComponentCard title="Product Description">
+      <ComponentCard title="Product Description">
                 <Editor
                   editorState={description}
                   wrapperClassName="demo-wrapper mb-0"
@@ -241,6 +229,20 @@ const ProductUpdate = () => {
                   onEditorStateChange={(e) => {
                     handleDataEditor(e, 'description');
                     setDescription(e);
+                  }}
+                />
+              </ComponentCard>
+        </TabPane>
+           <TabPane tabId="2">
+        
+                <ComponentCard title="Additional Info">
+                <Editor
+                  editorState={productDescription}
+                  wrapperClassName="demo-wrapper mb-0"
+                  editorClassName="demo-editor border mb-4 edi-height"
+                  onEditorStateChange={(e) => {
+                    handleDataEditor(e, 'product_description');
+                    setProductDescription(e);
                   }}
                 />
               </ComponentCard>
