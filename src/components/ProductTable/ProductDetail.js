@@ -235,7 +235,7 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
               </Col>
                </Row>
               <Row>
-              <Col md="3">
+              {/* <Col md="3">
                 <FormGroup>
                   <Label> Short Description </Label>
                   <Input
@@ -245,7 +245,7 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                     name="description_short"
                   />
                 </FormGroup>
-              </Col>
+              </Col> */}
             
               
               {/* <Col md="3">
@@ -334,8 +334,7 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                   />
                 </FormGroup>
               </Col>
-             </Row>
-              <Row>
+            
 
               <Col md="3">
                 <Label>New Arrivals</Label>

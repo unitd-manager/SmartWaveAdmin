@@ -67,6 +67,15 @@ const ProductUpdate = () => {
     }
   };
 
+   const convertHtmlsToDraft = (existingQuoteformal) => {
+    const contentBlock = htmlToDraft(existingQuoteformal && existingQuoteformal);
+    if (contentBlock) {
+      const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+      const editorState = EditorState.createWithContent(contentState);
+      setDescription(editorState);
+    }
+  };
+
   // Get Product data By product id
   const getProductById = () => {
     api
@@ -74,6 +83,7 @@ const ProductUpdate = () => {
       .then((res) => {
         setProductDetails(res.data.data[0]);
         convertHtmlToDraft(res.data.data[0].product_description);
+         convertHtmlsToDraft(res.data.data[0].description);
       })
       .catch(() => {
         // message('Product Data Not Found', 'info');
@@ -190,7 +200,7 @@ const ProductUpdate = () => {
               <NavLink
                 className={activeTab === '1' ? 'active' : ''}
                 onClick={() => {
-                  toggle('2');
+                  toggle('1');
                 }}
               >
                 Product Description
@@ -200,7 +210,7 @@ const ProductUpdate = () => {
               <NavLink
                 className={activeTab === '2' ? 'active' : ''}
                 onClick={() => {
-                  toggle('1');
+                  toggle('2');
                 }}
               >
                 Additional information
@@ -209,9 +219,9 @@ const ProductUpdate = () => {
        
             <NavItem>
               <NavLink
-                className={activeTab === '4' ? 'active' : ''}
+                className={activeTab === '3' ? 'active' : ''}
                 onClick={() => {
-                  toggle('4');
+                  toggle('3');
                 }}
               >
                 Attachments
@@ -248,7 +258,7 @@ const ProductUpdate = () => {
               </ComponentCard>
         </TabPane>
 
-        <TabPane tabId="4">
+        <TabPane tabId="3">
         <ComponentCard title="Attachments">
             <Row>
               <Col xs="12" md="3" className="mb-3">
