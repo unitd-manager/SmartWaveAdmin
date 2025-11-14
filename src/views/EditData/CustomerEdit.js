@@ -6,7 +6,6 @@ import '../form-editor/editor.scss';
 import * as Icon from 'react-feather';
 import Swal from 'sweetalert2';
 import { ToastContainer } from 'react-toastify';
-
 import BreadCrumbs from '../../layouts/breadcrumbs/BreadCrumbs';
 import ComponentCardV2 from '../../components/ComponentCardV2';
 import message from '../../components/Message';
@@ -18,7 +17,6 @@ import ComponentCard from '../../components/ComponentCard';
 import EnquiriesLinkedTable from '../../components/SupplierModal/EnquiriesLinked';
 import QuoteTrackItem from '../../components/ClientTable/QuoteTrackItem';
 import EditTrackItemModal from '../../components/ClientTable/EditTrckitemModal';
-
 import AttachmentPortalsTab from '../../components/EmployeeTable/AttachmentPortalsTab';
 
 const ContentUpdate = () => {
@@ -239,6 +237,7 @@ const ContentUpdate = () => {
                     editContentData();
                     setTimeout(() => {
                       navigate('/Customer');
+                      window.location.reload();
                     }, 1100);
                   }}
                 >
@@ -285,7 +284,7 @@ const ContentUpdate = () => {
               </Col> */}
               <Col md="3">
                 <FormGroup>
-                <Label>Name</Label>
+                  <Label>Contact Name</Label>
                   <Input
                     type="text"
                     onChange={handleInputs}
@@ -295,6 +294,17 @@ const ContentUpdate = () => {
                 </FormGroup>
               </Col>
               <Col md="3">
+                <FormGroup>
+                  <Label>Company Name</Label>
+                  <Input
+                    type="text"
+                    onChange={handleInputs}
+                    value={contentDetails && contentDetails.company_name}
+                    name="company_name"
+                  />
+                </FormGroup>
+              </Col>
+               <Col md="3">
                 <FormGroup>
                   {/* Category title from Category table */}
                   <Label>Mobile</Label>
@@ -318,6 +328,51 @@ const ContentUpdate = () => {
                   />
                 </FormGroup>
               </Col>
+              <Col md="3">
+                <FormGroup>
+                  <Label>PAN</Label>
+                  <Input
+                    type="text"
+                    onChange={handleInputs}
+                    value={contentDetails && contentDetails.pan}
+                    name="pan"
+                  />
+                </FormGroup>
+              </Col>
+              <Col md="3">
+                <FormGroup>
+                  <Label>IEC</Label>
+                  <Input
+                    type="text"
+                    onChange={handleInputs}
+                    value={contentDetails && contentDetails.iec}
+                    name="iec"
+                  />
+                </FormGroup>
+              </Col>
+              <Col md="3">
+                <FormGroup>
+                  <Label>Fssai</Label>
+                  <Input
+                    type="text"
+                    onChange={handleInputs}
+                    value={contentDetails && contentDetails.fssai}
+                    name="fssai"
+                  />
+                </FormGroup>
+              </Col>
+              <Col md="3">
+                <FormGroup>
+                  <Label>GST</Label>
+                  <Input
+                    type="text"
+                    onChange={handleInputs}
+                    value={contentDetails && contentDetails.gst}
+                    name="gst"
+                  />
+                </FormGroup>
+              </Col>
+             
               <Col md="3">
                 <FormGroup>
                   {/* Category title from Category table */}

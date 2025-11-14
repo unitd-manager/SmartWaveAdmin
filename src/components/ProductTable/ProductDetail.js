@@ -179,7 +179,7 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
               <Row>
               <Col md="3">
                 <FormGroup>
-                  <Label>Tag </Label>
+                  <Label>Count</Label>
                   <Input
                     type="text"
                     onChange={handleInputs}
@@ -188,6 +188,41 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                   />
                 </FormGroup>
               </Col>
+                  <Col md="3">
+                <FormGroup>
+                  <Label>Origin</Label>
+                  <Input
+                    type="text"
+                    onChange={handleInputs}
+                    value={productDetails && productDetails.origin}
+                    name="origin"
+                  />
+                </FormGroup>
+              </Col>
+                  <Col md="3">
+                <FormGroup>
+                  <Label>Destination Port</Label>
+                  <Input
+                    type="text"
+                    onChange={handleInputs}
+                    value={productDetails && productDetails.destination_ports}
+                    name="destination_ports"
+                  />
+                </FormGroup>
+              </Col>
+                  <Col md="3">
+                <FormGroup>
+                  <Label>HSN</Label>
+                  <Input
+                    type="text"
+                    onChange={handleInputs}
+                    value={productDetails && productDetails.hsn}
+                    name="hsn"
+                  />
+                </FormGroup>
+              </Col>
+                </Row>
+              <Row>
               <Col md="3">
                 <FormGroup>
                   <Label> Unit </Label>
@@ -210,7 +245,7 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                   />
                 </FormGroup>
               </Col>
-              
+            
               
               <Col md="3">
                 <FormGroup>
@@ -223,9 +258,6 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                   />
                 </FormGroup>
               </Col>
-              </Row>
-              
-              <Row>
               <Col md="3">
                 <Label>Most Popular</Label>
                 <FormGroup>
@@ -250,7 +282,8 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                   />
                 </FormGroup>
               </Col>
-
+ </Row>
+              <Row>
               <Col md="3">
                 <Label>Most sellers</Label>
                 <FormGroup>
@@ -301,6 +334,7 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                   />
                 </FormGroup>
               </Col>
+             
 
               <Col md="3">
                 <Label>New Arrivals</Label>
