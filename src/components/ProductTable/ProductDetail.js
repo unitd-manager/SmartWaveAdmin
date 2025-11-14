@@ -199,7 +199,7 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                   />
                 </FormGroup>
               </Col>
-                  <Col md="3">
+                  {/* <Col md="3">
                 <FormGroup>
                   <Label>Destination Port</Label>
                   <Input
@@ -209,7 +209,7 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                     name="destination_ports"
                   />
                 </FormGroup>
-              </Col>
+              </Col> */}
                   <Col md="3">
                 <FormGroup>
                   <Label>HSN</Label>
@@ -221,8 +221,7 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                   />
                 </FormGroup>
               </Col>
-                </Row>
-              <Row>
+               
               <Col md="3">
                 <FormGroup>
                   <Label> Unit </Label>
@@ -234,7 +233,9 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                   />
                 </FormGroup>
               </Col>
-              <Col md="3">
+               </Row>
+              <Row>
+              {/* <Col md="3">
                 <FormGroup>
                   <Label> Short Description </Label>
                   <Input
@@ -244,10 +245,10 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                     name="description_short"
                   />
                 </FormGroup>
-              </Col>
+              </Col> */}
             
               
-              <Col md="3">
+              {/* <Col md="3">
                 <FormGroup>
                   <Label>Description </Label>
                   <Input
@@ -257,7 +258,7 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                     name="description"
                   />
                 </FormGroup>
-              </Col>
+              </Col> */}
               <Col md="3">
                 <Label>Most Popular</Label>
                 <FormGroup>
@@ -282,8 +283,7 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                   />
                 </FormGroup>
               </Col>
- </Row>
-              <Row>
+
               <Col md="3">
                 <Label>Most sellers</Label>
                 <FormGroup>
@@ -308,7 +308,7 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                   />
                 </FormGroup>
               </Col>
-              
+               
 
               <Col md="3">
                 <Label>Published</Label>
@@ -334,7 +334,7 @@ export default function ProductDetail({ productDetails, handleInputs,categoryLin
                   />
                 </FormGroup>
               </Col>
-             
+            
 
               <Col md="3">
                 <Label>New Arrivals</Label>

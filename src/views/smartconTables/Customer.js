@@ -54,7 +54,7 @@ const Customer = () => {
     { name: 'Mobile', selector: row => row.mobile, sortable: true },
     { 
       name: 'Date Of Creation', 
-      selector: row => row.date_of_creation ? moment(row.date_of_creation).format('DD-MM-YYYY') : '', 
+      selector: row => row?.creation_date ? moment(row?.creation_date).format('DD-MM-YYYY') : '', 
       sortable: true 
     }
   ];

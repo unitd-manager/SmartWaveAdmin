@@ -77,7 +77,7 @@ function ViewFileComponentV2({ moduleId, roomName }) {
                         target="_blank"
                         rel="noreferrer"
                       >
-                        {res.name}
+                        {res.originalname}
                       </a>
                   </td>
                   <td style={tableStyle}>
