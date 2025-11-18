@@ -816,6 +816,7 @@ const sendPaymentReminder = () => {
   moduleId={id}
   roomName="EnquiryQuotation"   // 👈 Specific to Quotation tab
   altTagData="Quotation Data"
+  enqCode={enquiryDetails? enquiryDetails.enquiry_code:''}
   desc="Quotation Data"
   attachmentModal={quotationAttachmentModal}
   setAttachmentModal={setQuotationAttachmentModal}
@@ -1035,6 +1036,7 @@ const sendPaymentReminder = () => {
         roomName="Enquiry"
         altTagData="Enquiry Data"
         desc="Enquiry Data"
+        enqCode={enquiryDetails? enquiryDetails.enquiry_code:''}
         modelType={attachmentData.modelType}
         attachmentModal={attachmentModal}
         setAttachmentModal={setAttachmentModal}
@@ -1052,6 +1054,7 @@ const sendPaymentReminder = () => {
       <AttachmentModalV2
         moduleId={id}
         roomName="PaymentReceipt"
+        enqCode={enquiryDetails? enquiryDetails.enquiry_code:''}
         altTagData="PaymentReceipt Data"
         desc="PaymentReceipt Data"
         modelType={PaymentReceiptattachmentData.modelType}
@@ -1074,6 +1077,7 @@ const sendPaymentReminder = () => {
         roomName="OnDocPayment"
         altTagData="OnDocPayment Data"
         desc="OnDocPayment Data"
+        enqCode={enquiryDetails? enquiryDetails.enquiry_code:''}
         modelType={OnDocPaymentattachmentData.modelType}
         attachmentModal={OnDocPaymentattachmentModal}
         setAttachmentModal={setOnDocPaymentAttachmentModal}
@@ -1105,6 +1109,7 @@ const sendPaymentReminder = () => {
         roomName="AfterArrival"
         altTagData="AfterArrival Data"
         desc="AfterArrival Data"
+        enqCode={enquiryDetails? enquiryDetails.enquiry_code:''}
         modelType={AfterArrivalattachmentData.modelType}
         attachmentModal={AfterArrivalattachmentModal}
         setAttachmentModal={setAfterArrivalAttachmentModal}
