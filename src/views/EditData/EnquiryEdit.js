@@ -407,14 +407,51 @@ const [quotationAttachmentModal, setQuotationAttachmentModal] = useState(false);
             });
     };
 const sendPaymentReminder = () => {
-    if (!enquiryDetails || !quote || quote.length === 0) {
-        message('No enquiry or quote details found', 'error');
+    // Validate enquiry details
+    if (!enquiryDetails) {
+        message('Enquiry details not found', 'error');
         return;
     }
 
-    // Get the latest quote (assuming quotes array is sorted by date)
+    // Validate email exists
+    if (!enquiryDetails.email) {
+        message('Customer email not found in enquiry details', 'error');
+        console.error('Missing email:', enquiryDetails);
+        return;
+    }
+
+    // Validate quote exists
+    if (!quote || quote.length === 0) {
+        message('No quotation found for this enquiry', 'error');
+        return;
+    }
+
+    // Get the latest quote
     const latestQuote = quote[0];
-    
+
+    // Validate quote has required fields
+    if (!latestQuote.quote_code) {
+        message('Quote code not found', 'error');
+        return;
+    }
+
+    if (!latestQuote.quote_date) {
+        message('Quote date not found', 'error');
+        return;
+    }
+
+    if (!latestQuote.price) {
+        message('Quote price not found', 'error');
+        return;
+    }
+
+    console.log('📧 Sending payment reminder with data:', {
+        email: enquiryDetails.email,
+        first_name: enquiryDetails.first_name,
+        quote_code: latestQuote.quote_code,
+        price: latestQuote.price
+    });
+
     // Format the date to be more readable
     const formattedDate = moment(latestQuote.quote_date).format('DD/MM/YYYY');
     
@@ -424,44 +461,64 @@ const sendPaymentReminder = () => {
         currency: 'SGD'
     }).format(latestQuote.price);
 
+    // Create email template
+    const emailTemplate = `
+    <html>
+        <body style="font-family: Arial, sans-serif; color: #333;">
+            <p>Dear ${enquiryDetails.first_name || 'Customer'},</p>
+            <p>This is a reminder regarding your quotation <b>${latestQuote.quote_code}</b> dated <b>${formattedDate}</b>.</p>
+            <p>The pending amount is <b>${formattedPrice}</b>.</p>
+            <p>Please proceed with the payment at your earliest convenience.</p>
+            <br>
+            <p>Thank you,<br>SmartWave Admin</p>
+        </body>
+    </html>`;
+
     // First API call to send email
     api
         .post('/enquiry/sendPaymentReminder', {
-            to: enquiryDetails.email,
-            first_name: enquiryDetails.first_name,
+            email: enquiryDetails.email,
+            template: emailTemplate,
+            first_name: enquiryDetails.first_name || 'Customer',
             quote_code: latestQuote.quote_code,
             quote_date: formattedDate,
-            price: formattedPrice,
-            template: `
-            <html>
-                <body>
-                    <p>Dear {{first_name}},</p>
-                    <p>This is a reminder regarding your quotation <b>{{quote_code}}</b> dated <b>{{quote_date}}</b>.</p>
-                    <p>The pending amount is <b>{{price}}</b>.</p>
-                    <p>Please proceed with the payment at your earliest convenience.</p>
-                    <br>
-                    <p>Thank you,<br>SmartWave Admin</p>
-                </body>
-            </html>`
+            price: formattedPrice
         })
         .then((res) => {
-            message(res.data.msg, 'success');
+            console.log('✅ Email sent successfully:', res.data);
+            message('Payment reminder sent successfully', 'success');
             
             // Second API call to log the reminder
+            // Make sure contact_id exists, use id as fallback
+            const contactId = enquiryDetails.contact_id || enquiryDetails.id;
+            
+            console.log('📝 Logging notification with data:', {
+                message: `Payment reminder for quote ${latestQuote.quote_code}`,
+                contact_id: contactId,
+                enquiry_id: id
+            });
+
             api.post('/enquiry/insertNotification', {
                 message: `Payment reminder for quote ${latestQuote.quote_code}`,
-                contact_id: enquiryDetails.contact_id,
+                contact_id: contactId,
                 enquiry_id: id
             })
             .then(() => {
-                message('Reminder logged successfully', 'success');
+                console.log('✅ Notification logged successfully');
+                message('Notification logged successfully', 'success');
             })
-            .catch(() => {
-                message('Failed to log reminder', 'error');
+            .catch((err) => {
+                console.error('❌ Failed to log notification:', err);
+                console.error('Error response data:', err.response?.data);
+                console.error('Error message:', err.message);
+                // Don't show error, just warning since email was sent
+                message('Payment reminder sent (but notification logging failed)', 'warning');
             });
         })
-        .catch(() => {
-            message('Failed to send reminder', 'error');
+        .catch((err) => {
+            console.error('❌ Failed to send reminder:', err);
+            console.error('Error response:', err.response?.data);
+            message(err.response?.data?.message || 'Failed to send reminder', 'error');
         });
 };
 
