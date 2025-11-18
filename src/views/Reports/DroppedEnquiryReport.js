@@ -63,9 +63,37 @@ const OverAllReport = () => {
 
   useEffect(() => {
     getProject();
-   // getCompany();
   }, []);
   const [page, setPage] = useState(0);
+
+  useEffect(() => {
+    if (salesReport && Array.isArray(salesReport)) {
+      // If no start/end date, show current month only
+      if (!startDate && !endDate) {
+        const currentMonth = moment().month();
+        const currentYear = moment().year();
+        const filtered = salesReport.filter((item) => {
+          const date = moment(item.enquiry_date);
+          return date.month() === currentMonth && date.year() === currentYear;
+        });
+        setUserSearchData(filtered);
+      } else {
+        // If from date or end date is selected, show filtered results
+        let newData = [...salesReport];
+        if (startDate && endDate) {
+          newData = newData.filter((x) => {
+            const enquiryDate = moment(x.enquiry_date).format('YYYY-MM-DD');
+            return enquiryDate >= startDate && enquiryDate <= endDate;
+          });
+        } else if (startDate) {
+          newData = newData.filter((x) => moment(x.enquiry_date).format('YYYY-MM-DD') === startDate);
+        } else if (endDate) {
+          newData = newData.filter((x) => moment(x.enquiry_date).format('YYYY-MM-DD') === endDate);
+        }
+        setUserSearchData(newData);
+      }
+    }
+  }, [salesReport, startDate, endDate]);
 
   const employeesPerPage = 20;
   const numberOfEmployeesVistited = page * employeesPerPage;

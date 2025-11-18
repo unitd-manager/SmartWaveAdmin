@@ -71,10 +71,11 @@ function ViewFileComponentForWeb({ moduleId, roomName }) {
                   <td style={tableStyle}>
                       <a
                         href={`https://smartwave.unitdtechnologies.com:2014/category/download/${res.name}`}
+                       //href={`https://smartwave.unitdtechnologies.com/storage/uploads/${res.name}`}
                         target="_blank"
                         rel="noreferrer"
                       >
-                        {res.name}
+                        {res.originalname}
                       </a>
                   </td>
                   {/* <td style={tableStyle}>

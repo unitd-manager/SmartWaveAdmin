@@ -159,7 +159,7 @@ useEffect(() => {
           </FormGroup>
           <FormGroup>
             <Row>
-              <Label sm="2">Qty</Label>
+              <Label sm="2">Container</Label>
               <Col sm="10">
                 <Input
                   type="text"

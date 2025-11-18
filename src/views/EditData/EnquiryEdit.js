@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import React, { useEffect, useState, useContext } from 'react';
 import { Row, Col, Form, FormGroup, Label, Input, Button, TabPane, TabContent, Table } from 'reactstrap';
 import { ToastContainer } from 'react-toastify';
@@ -44,6 +45,7 @@ const EnquiryEdit = () => {
     const [editTrackModelItem, setEditTrackModelItem] = useState(null);
     const [editTrackModal, setEditTrackModal] = useState(false);
     const [attachmentModal, setAttachmentModal] = useState(false);
+const [quotationAttachmentModal, setQuotationAttachmentModal] = useState(false);
 
     const [attachmentData, setDataForAttachment] = useState({
         modelType: '',
@@ -123,11 +125,11 @@ const EnquiryEdit = () => {
     };
     console.log(viewLineToggle, viewTrackToggle);
     const tabs = [
-        { id: '1', name: 'Product' },
-        { id: '2', name: 'Quotation' },
+        { id: '1', name: 'Proforma Invoice' },
+        { id: '2', name: 'Product' },
+        { id: '5', name: 'Attachment for receipt' },
         { id: '3', name: 'Carrier Tracking' },
         { id: '4', name: 'Business And Shipping Document' },
-        { id: '5', name: 'Attachment for receipt' },
 
     ];
     const toggle = (tab) => {
@@ -203,10 +205,18 @@ const EnquiryEdit = () => {
             name: 'Subcategory',
         },
         {
-            name: 'Qty',
+            name: 'Container',
         },
         {
             name: 'Grades',
+        },   {
+            name: 'Count',
+        },
+        {
+            name: 'Origin',
+        },
+         {
+            name: 'Destination Port',
         },
         {
             name: 'Updated By ',
@@ -396,52 +406,121 @@ const EnquiryEdit = () => {
                 setShowOrderButton(false);
             });
     };
-    const sendPaymentReminder = () => {
-        if (!enquiryDetails || !quote || quote.length === 0) {
-            message('No enquiry or quote details found', 'error');
-            return;
-        }
+const sendPaymentReminder = () => {
+    // Validate enquiry details
+    if (!enquiryDetails) {
+        message('Enquiry details not found', 'error');
+        return;
+    }
 
-        // Get the latest quote (assuming quotes array is sorted by date)
-        const latestQuote = quote[0];
-        
-        // Format the date to be more readable
-        const formattedDate = moment(latestQuote.quote_date).format('DD/MM/YYYY');
-        
-        // Format the price to include currency symbol and proper formatting
-        const formattedPrice = new Intl.NumberFormat('en-SG', {
-            style: 'currency',
-            currency: 'SGD'
-        }).format(latestQuote.price);
+    // Validate email exists
+    if (!enquiryDetails.email) {
+        message('Customer email not found in enquiry details', 'error');
+        console.error('Missing email:', enquiryDetails);
+        return;
+    }
 
-        api
-            .post('/enquiry/sendPaymentReminder', {
-                to: enquiryDetails.email,
-                first_name: enquiryDetails.first_name,
-                quote_code: latestQuote.quote_code,
-                quote_date: formattedDate,
-                price: formattedPrice,
-                template: `
-                <html>
-                    <body>
-                        <p>Dear {{first_name}},</p>
-                        <p>This is a reminder regarding your quotation <b>{{quote_code}}</b> dated <b>{{quote_date}}</b>.</p>
-                        <p>The pending amount is <b>{{price}}</b>.</p>
-                        <p>Please proceed with the payment at your earliest convenience.</p>
-                        <br>
-                        <p>Thank you,<br>SmartWave Admin</p>
-                    </body>
-                </html>`
-            })
-            .then((res) => {
-                message(res.data.msg, 'success');
-            })
-            .catch(() => {
-                message('Failed to send reminder', 'error');
+    // Validate quote exists
+    if (!quote || quote.length === 0) {
+        message('No quotation found for this enquiry', 'error');
+        return;
+    }
+
+    // Get the latest quote
+    const latestQuote = quote[0];
+
+    // Validate quote has required fields
+    if (!latestQuote.quote_code) {
+        message('Quote code not found', 'error');
+        return;
+    }
+
+    if (!latestQuote.quote_date) {
+        message('Quote date not found', 'error');
+        return;
+    }
+
+    if (!latestQuote.price) {
+        message('Quote price not found', 'error');
+        return;
+    }
+
+    console.log('📧 Sending payment reminder with data:', {
+        email: enquiryDetails.email,
+        first_name: enquiryDetails.first_name,
+        quote_code: latestQuote.quote_code,
+        price: latestQuote.price
+    });
+
+    // Format the date to be more readable
+    const formattedDate = moment(latestQuote.quote_date).format('DD/MM/YYYY');
+    
+    // Format the price to include currency symbol and proper formatting
+    const formattedPrice = new Intl.NumberFormat('en-SG', {
+        style: 'currency',
+        currency: 'SGD'
+    }).format(latestQuote.price);
+
+    // Create email template
+    const emailTemplate = `
+    <html>
+        <body style="font-family: Arial, sans-serif; color: #333;">
+            <p>Dear ${enquiryDetails.first_name || 'Customer'},</p>
+            <p>This is a reminder regarding your quotation <b>${latestQuote.quote_code}</b> dated <b>${formattedDate}</b>.</p>
+            <p>The pending amount is <b>${formattedPrice}</b>.</p>
+            <p>Please proceed with the payment at your earliest convenience.</p>
+            <br>
+            <p>Thank you,<br>SmartWave Admin</p>
+        </body>
+    </html>`;
+
+    // First API call to send email
+    api
+        .post('/enquiry/sendPaymentReminder', {
+            email: enquiryDetails.email,
+            template: emailTemplate,
+            first_name: enquiryDetails.first_name || 'Customer',
+            quote_code: latestQuote.quote_code,
+            quote_date: formattedDate,
+            price: formattedPrice
+        })
+        .then((res) => {
+            console.log('✅ Email sent successfully:', res.data);
+            message('Payment reminder sent successfully', 'success');
+            
+            // Second API call to log the reminder
+            // Make sure contact_id exists, use id as fallback
+            const contactId = enquiryDetails.contact_id || enquiryDetails.id;
+            
+            console.log('📝 Logging notification with data:', {
+                message: `Payment reminder for quote ${latestQuote.quote_code}`,
+                contact_id: contactId,
+                enquiry_id: id
             });
-    };
 
-
+            api.post('/enquiry/insertNotification', {
+                message: `Payment reminder for quote ${latestQuote.quote_code}`,
+                contact_id: contactId,
+                enquiry_id: id
+            })
+            .then(() => {
+                console.log('✅ Notification logged successfully');
+                message('Notification logged successfully', 'success');
+            })
+            .catch((err) => {
+                console.error('❌ Failed to log notification:', err);
+                console.error('Error response data:', err.response?.data);
+                console.error('Error message:', err.message);
+                // Don't show error, just warning since email was sent
+                message('Payment reminder sent (but notification logging failed)', 'warning');
+            });
+        })
+        .catch((err) => {
+            console.error('❌ Failed to send reminder:', err);
+            console.error('Error response:', err.response?.data);
+            message(err.response?.data?.message || 'Failed to send reminder', 'error');
+        });
+};
 
     useEffect(() => {
         getEnquiryById();
@@ -589,30 +668,41 @@ const EnquiryEdit = () => {
                                 </FormGroup>
                             </Col>
                             <Col md="4">
+                                <FormGroup>
                                     <Label>
                                         Customer <span className="required"> *</span>{' '}
                                     </Label>
-                          <Input
-                            type="select"
-                            name="contact_id"
-                          
-                            value={enquiryDetails && enquiryDetails.contact_id}
-                            onChange={handleInputs}
-                            
-      
-                          >
-                            <option value=''>Please Select</option>
-                            {company &&
-                              company.map((ele) => {
-                                return (
-                                  <option key={ele.contact_id} value={ele.contact_id}>
-                                    {ele.first_name}
-                                  </option>
-                                );
-                              })}
-                          </Input>
-                    
-                        </Col>
+                                    <div className="d-flex align-items-center">
+                                        <Input
+                                            type="select"
+                                            name="contact_id"
+                                            value={enquiryDetails && enquiryDetails.contact_id}
+                                            onChange={handleInputs}
+                                        >
+                                            <option value=''>Please Select</option>
+                                            {company &&
+                                                company.map((ele) => {
+                                                    return (
+                                                        <option key={ele.contact_id} value={ele.contact_id}>
+                                                            {ele.first_name}
+                                                        </option>
+                                                    );
+                                                })}
+                                        </Input>
+                                        {enquiryDetails && enquiryDetails.contact_id && (
+                                            <Button
+                                                color="link"
+                                                className="ms-2 p-0"
+                                                tag={Link}
+                                                to={`/CustomerEdit/${enquiryDetails.contact_id}`}
+                                             target="_blank"
+                        rel="noopener noreferrer">
+                                                Go to Customer
+                                            </Button>
+                                        )}
+                                    </div>
+                                </FormGroup>
+                            </Col>
                           
                       
       
@@ -739,7 +829,65 @@ const EnquiryEdit = () => {
 
   <Tab toggle={toggle} tabs={tabs} />
   <TabContent className="p-4" activeTab={activeTab}>
-    <TabPane tabId="1">
+     <TabPane tabId="1">
+  <TenderQuotation
+    tenderId={id}
+    quote={quote}
+    generateCode={generateCode}
+    setEditQuoteModal={setEditQuoteModal}
+    editQuoteModal={editQuoteModal}
+    viewLineToggle={viewLineToggle}
+    getLineItem={getLineItem}
+    setAddLineItemModal={setAddLineItemModal}
+    addLineItemModal={addLineItemModal}
+    lineItem={lineItem}
+    setLineItem={setLineItem}
+    viewLineModal={viewLineModal}
+    setViewLineModal={setViewLineModal}
+    id={id}
+    handleQuoteForms={handleQuoteForms}
+    getQuote={getQuote}
+  />
+
+  {/* Quotation File Upload Section */}
+  <Form>
+    <FormGroup>
+      <ComponentCard title="Quotation Documents">
+        <Row>
+          <Col xs="12" md="3" className="mb-3">
+           <Button
+  color="primary"
+  onClick={() => {
+    dataForAttachment();
+    setQuotationAttachmentModal(true);
+  }}
+>
+  Add File
+</Button>
+
+          </Col>
+        </Row>
+
+        {/* Upload Modal specific to Quotation */}
+       <AttachmentModalV2
+  moduleId={id}
+  roomName="EnquiryQuotation"   // 👈 Specific to Quotation tab
+  altTagData="Quotation Data"
+  desc="Quotation Data"
+  attachmentModal={quotationAttachmentModal}
+  setAttachmentModal={setQuotationAttachmentModal}
+/>
+
+<ViewFileComponentV2
+  moduleId={id}
+  roomName="EnquiryQuotation"   // 👈 Fetch only Quotation files
+/>
+
+      </ComponentCard>
+    </FormGroup>
+  </Form>
+</TabPane>
+    <TabPane tabId="2">
       <Row>
         <Col md="6">
           <Button
@@ -777,6 +925,9 @@ const EnquiryEdit = () => {
                       <td data-label="Subcategory">{e.sub_category_title}</td>
                       <td data-label="Quantity">{e.quantity}</td>
                       <td data-label="Grades">{e.grades}</td>
+                       <td data-label="Count">{e.counts}</td>
+                      <td data-label="Origin">{e.origins}</td>
+                      <td data-label="Unit Price">{e.destination_port}</td>
                       {/* <td data-label="Unit Price">{e.unit_price}</td>
                       <td data-label="Amount">{e.amount}</td> */}
                       <td data-label="Updated By">
@@ -827,29 +978,6 @@ const EnquiryEdit = () => {
           quoteLine={id}
         ></QuoteLineItem>
       )}
-    </TabPane>
-    <TabPane tabId="2">
-      <TenderQuotation
-        tenderId={id}
-        quote={quote}
-        generateCode={generateCode}
-        setEditQuoteModal={setEditQuoteModal}
-        editQuoteModal={editQuoteModal}
-
-        viewLineToggle={viewLineToggle}
-        getLineItem={getLineItem}
-        setAddLineItemModal={setAddLineItemModal}
-        addLineItemModal={addLineItemModal}
-        lineItem={lineItem}
-        setLineItem={setLineItem}
-      
-        viewLineModal={viewLineModal}
-        setViewLineModal={setViewLineModal}
-        id={id}
-        handleQuoteForms={handleQuoteForms}
-        getQuote={getQuote}
-      ></TenderQuotation>
-    
     </TabPane>
 
     <TabPane tabId="3">
@@ -976,7 +1104,7 @@ const EnquiryEdit = () => {
     <TabPane tabId="5">
     <Form>
   <FormGroup>
-    <ComponentCard title="Payment Receipt">
+    <ComponentCard title="Advance Payment">
     
       <AttachmentModalV2
         moduleId={id}
@@ -1014,7 +1142,7 @@ const EnquiryEdit = () => {
   </FormGroup>
   </Form>
   <Form>
-  <FormGroup>
+  {/* <FormGroup>
     <ComponentCard title="After Arrival">
       {/* <Row>
         <Col xs="12" md="3" className="mb-3">
@@ -1029,7 +1157,7 @@ const EnquiryEdit = () => {
           </Button>
         </Col>
       </Row> */}
-      <AttachmentModalV2
+      {/* <AttachmentModalV2
         moduleId={id}
         roomName="AfterArrival"
         altTagData="AfterArrival Data"
@@ -1041,7 +1169,7 @@ const EnquiryEdit = () => {
       />
       <ViewFileComponentForWeb moduleId={id} roomName="AfterArrival" />
     </ComponentCard>
-  </FormGroup>
+  </FormGroup> */} 
   </Form>
     </TabPane>
   </TabContent>

@@ -27,6 +27,7 @@ const ProductUpdate = () => {
   const [categoryLinked, setCategoryLinked] = useState();
   const [productOwnerLinked, setproductOwnerLinked] = useState([]);
   const [productDescription, setProductDescription] = useState('');
+  const [description, setDescription] = useState('');
   const [RoomName, setRoomName] = useState('');
   const [fileTypes, setFileTypes] = useState('');
   const [attachmentModal, setAttachmentModal] = useState(false);
@@ -66,6 +67,15 @@ const ProductUpdate = () => {
     }
   };
 
+   const convertHtmlsToDraft = (existingQuoteformal) => {
+    const contentBlock = htmlToDraft(existingQuoteformal && existingQuoteformal);
+    if (contentBlock) {
+      const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+      const editorState = EditorState.createWithContent(contentState);
+      setDescription(editorState);
+    }
+  };
+
   // Get Product data By product id
   const getProductById = () => {
     api
@@ -73,6 +83,7 @@ const ProductUpdate = () => {
       .then((res) => {
         setProductDetails(res.data.data[0]);
         convertHtmlToDraft(res.data.data[0].product_description);
+         convertHtmlsToDraft(res.data.data[0].description);
       })
       .catch(() => {
         // message('Product Data Not Found', 'info');
@@ -99,9 +110,9 @@ const ProductUpdate = () => {
 
  
   // getting data from Category
-  const getCategory = (categoryId1) => {
+  const getCategory = () => {
     api
-      .post('/product/getCategoryById1', { product_id: categoryId1 })
+      .get('/product/getCategory')
       .then((res) => {
         setCategoryLinked(res.data.data);
       })
@@ -185,11 +196,21 @@ const ProductUpdate = () => {
           {/* Product Details Form */}
           <Row>
           <Nav tabs>
-            <NavItem>
+             <NavItem>
               <NavLink
                 className={activeTab === '1' ? 'active' : ''}
                 onClick={() => {
                   toggle('1');
+                }}
+              >
+                Product Description
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink
+                className={activeTab === '2' ? 'active' : ''}
+                onClick={() => {
+                  toggle('2');
                 }}
               >
                 Additional information
@@ -198,9 +219,9 @@ const ProductUpdate = () => {
        
             <NavItem>
               <NavLink
-                className={activeTab === '4' ? 'active' : ''}
+                className={activeTab === '3' ? 'active' : ''}
                 onClick={() => {
-                  toggle('4');
+                  toggle('3');
                 }}
               >
                 Attachments
@@ -210,7 +231,21 @@ const ProductUpdate = () => {
         </Row>
         {/* Delivery address Form */}
         <TabPane tabId="1">
-        <ComponentCard title="Additional Info">
+      <ComponentCard title="Product Description">
+                <Editor
+                  editorState={description}
+                  wrapperClassName="demo-wrapper mb-0"
+                  editorClassName="demo-editor border mb-4 edi-height"
+                  onEditorStateChange={(e) => {
+                    handleDataEditor(e, 'description');
+                    setDescription(e);
+                  }}
+                />
+              </ComponentCard>
+        </TabPane>
+           <TabPane tabId="2">
+        
+                <ComponentCard title="Additional Info">
                 <Editor
                   editorState={productDescription}
                   wrapperClassName="demo-wrapper mb-0"
@@ -223,7 +258,7 @@ const ProductUpdate = () => {
               </ComponentCard>
         </TabPane>
 
-        <TabPane tabId="4">
+        <TabPane tabId="3">
         <ComponentCard title="Attachments">
             <Row>
               <Col xs="12" md="3" className="mb-3">

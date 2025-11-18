@@ -48,9 +48,12 @@ function ViewFileComponentV2({ moduleId, roomName }) {
     });
   };
 
-  useEffect(() => {
+ useEffect(() => {
+  if (moduleId && roomName) {
     getFiles();
-  }, []);
+  }
+}, [moduleId, roomName]);  // ✅ runs again when props change
+
 
   return (
     <>
@@ -74,7 +77,7 @@ function ViewFileComponentV2({ moduleId, roomName }) {
                         target="_blank"
                         rel="noreferrer"
                       >
-                        {res.name}
+                        {res.originalname}
                       </a>
                   </td>
                   <td style={tableStyle}>

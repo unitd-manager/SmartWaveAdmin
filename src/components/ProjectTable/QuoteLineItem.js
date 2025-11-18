@@ -290,7 +290,7 @@ const QuoteLineItem = ({
                                                     <th scope="col">Product Name </th>
                                                     <th scope="col">Category </th>
                                                     <th scope="col">Subcategory</th>
-                                                    <th scope="col">Qty</th>
+                                                    <th scope="col">Container</th>
                                                     <th scope="col"></th>
                                                 </tr>
                                             </thead>
