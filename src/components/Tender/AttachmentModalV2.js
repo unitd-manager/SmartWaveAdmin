@@ -5,7 +5,7 @@ import { FileUploader } from "react-drag-drop-files";
 import api from '../../constants/api';
 import message from '../Message';
 
-const AttachmentModalV2 = ({attachmentModal,setAttachmentModal,moduleId,roomName,fileTypes,altTagData, desc}) => {
+const AttachmentModalV2 = ({attachmentModal,setAttachmentModal,moduleId,roomName,fileTypes,altTagData, desc,enqCode}) => {
 
     AttachmentModalV2.propTypes = {
         attachmentModal: PropTypes.bool,
@@ -14,6 +14,7 @@ const AttachmentModalV2 = ({attachmentModal,setAttachmentModal,moduleId,roomName
         roomName:PropTypes.string,
         altTagData:PropTypes.string,
         desc:PropTypes.string,
+        enqCode:PropTypes.string,
         fileTypes:PropTypes.any,
       }
       
@@ -41,7 +42,9 @@ const AttachmentModalV2 = ({attachmentModal,setAttachmentModal,moduleId,roomName
                 const data = new FormData() 
                 const arrayOfObj = Object.entries(file).map((e) => (  e[1] ));
 
+                data.append('enq_code', enqCode);
                 arrayOfObj.forEach((ele) => {
+                    
                     data.append(`files`, ele);
                   });
                 //data.append('file', file)
@@ -49,7 +52,6 @@ const AttachmentModalV2 = ({attachmentModal,setAttachmentModal,moduleId,roomName
                 data.append('room_name', roomName)
                 data.append('alt_tag_data', altTagData)
                 data.append('description', desc)
-
                 api.post('/file/uploadFiles',data,{onUploadProgress:(filedata)=>{
                     console.log( Math.round((filedata.loaded/filedata.total)*100))
                     setUploaded( Math.round((filedata.loaded/filedata.total)*100))
@@ -60,7 +62,7 @@ const AttachmentModalV2 = ({attachmentModal,setAttachmentModal,moduleId,roomName
                     message('Files Uploaded Successfully','success')
                     
                     setTimeout(() => {
-                        window.location.reload()
+                        //window.location.reload()
                     }, 400);
                 }).catch(()=>{
                     setAttachmentModal(false)
