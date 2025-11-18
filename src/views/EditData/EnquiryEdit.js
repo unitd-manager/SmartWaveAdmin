@@ -421,10 +421,10 @@ const sendPaymentReminder = () => {
     }
 
     // Validate quote exists
-    if (!quote || quote.length === 0) {
-        message('No quotation found for this enquiry', 'error');
-        return;
-    }
+    // if (!quote || quote.length === 0) {
+    //     message('No quotation found for this enquiry', 'error');
+    //     return;
+    // }
 
     // Get the latest quote
     const latestQuote = quote[0];
@@ -473,7 +473,24 @@ const sendPaymentReminder = () => {
             <p>Thank you,<br>SmartWave Admin</p>
         </body>
     </html>`;
+const adminTemplate = `
+    <html>
+        <body style="font-family: Arial, sans-serif; color: #333;">
+            <p>Dear Admin,</p>
+            <p>A payment reminder has been sent to the customer <b>${enquiryDetails.first_name || 'Customer'}</b>.</p>
 
+            <p><b>Quote Details:</b></p>
+            <p>Quotation Code: <b>${latestQuote.quote_code}</b></p>
+            <p>Quotation Date: <b>${formattedDate}</b></p>
+            <p>Pending Amount: <b>${formattedPrice}</b></p>
+
+            <br>
+            <p>Customer Email: <b>${enquiryDetails.email}</b></p>
+
+            <br>
+            <p>Regards,<br>SmartWave System</p>
+        </body>
+    </html>`;
     // First API call to send email
     api
         .post('/enquiry/sendPaymentReminder', {
@@ -487,7 +504,20 @@ const sendPaymentReminder = () => {
         .then((res) => {
             console.log('✅ Email sent successfully:', res.data);
             message('Payment reminder sent successfully', 'success');
-            
+            api.post('/enquiry/sendPaymentReminder', {
+                email: "notification@unitdtechnologies.com",
+                template: adminTemplate,
+                first_name: enquiryDetails.first_name || 'Customer',
+                quote_code: latestQuote.quote_code,
+                quote_date: formattedDate,
+                price: formattedPrice
+            })
+            .then(() => {
+                console.log("📩 Admin notified successfully");
+            })
+            .catch((err) => {
+                console.error("❌ Failed to notify admin:", err);
+            });
             // Second API call to log the reminder
             // Make sure contact_id exists, use id as fallback
             const contactId = enquiryDetails.contact_id || enquiryDetails.id;
@@ -498,22 +528,22 @@ const sendPaymentReminder = () => {
                 enquiry_id: id
             });
 
-            api.post('/enquiry/insertNotification', {
-                message: `Payment reminder for quote ${latestQuote.quote_code}`,
-                contact_id: contactId,
-                enquiry_id: id
-            })
-            .then(() => {
-                console.log('✅ Notification logged successfully');
-                message('Notification logged successfully', 'success');
-            })
-            .catch((err) => {
-                console.error('❌ Failed to log notification:', err);
-                console.error('Error response data:', err.response?.data);
-                console.error('Error message:', err.message);
-                // Don't show error, just warning since email was sent
-                message('Payment reminder sent (but notification logging failed)', 'warning');
-            });
+            // api.post('/enquiry/insertNotification', {
+            //     message: `Payment reminder for quote ${latestQuote.quote_code}`,
+            //     contact_id: contactId,
+            //     enquiry_id: id
+            // })
+            // .then(() => {
+            //     console.log('✅ Notification logged successfully');
+            //     message('Notification logged successfully', 'success');
+            // })
+            // .catch((err) => {
+            //     console.error('❌ Failed to log notification:', err);
+            //     console.error('Error response data:', err.response?.data);
+            //     console.error('Error message:', err.message);
+            //     // Don't show error, just warning since email was sent
+            //     message('Payment reminder sent (but notification logging failed)', 'warning');
+            // });
         })
         .catch((err) => {
             console.error('❌ Failed to send reminder:', err);
