@@ -116,11 +116,11 @@ const QuoteLineItem = ({
     //Invoice item values
     const getAllValues = () => {
         const result = [];
-        $('.lineitem tbody tr').each(function () {
+        $('.lineitem tbody tr').each(function collectRow() {
             const allValues = {};
             $(this)
                 .find('input, select')
-                .each(function () {
+                .each(function collectField() {
                     const fieldName = $(this).attr('name');
                     allValues[fieldName] = $(this).val();
                 });
