@@ -313,6 +313,13 @@ const [quotationAttachmentModal, setQuotationAttachmentModal] = useState(false);
         });
     };
 
+  const [files, setGetFile] = useState(null);
+
+  const getFiles = () => {
+    api.post('/file/getListOfFiles', { record_id: id, room_name: "EnquiryQuotation" }).then((res) => {
+      setGetFile(res.data);
+    });
+  };
 
     const [quoteForm, setQuoteForm] = useState({
         quote_date: '',
@@ -424,14 +431,15 @@ const sendPaymentReminder = () => {
 
     // Check conditions
     const hasQuote = quote && quote.length > 0;
-    const hasFile = showOrderButton === true; // Your existing file condition
+    const hasFile = files?.length > 0 === true; // Your existing file condition
 
     // If NO quote and NO file → error
     if (!hasQuote && !hasFile) {
         message("Please add a quote or upload a file before sending reminder", "error");
         return;
     }
-
+console.log('hasquote',hasQuote);
+console.log('hasFile',hasFile);
     // If NO quote but file exists → send simple email without quote details
     if (!hasQuote && hasFile) {
         const emailTemplate = `
@@ -575,6 +583,7 @@ const adminTemplate = `
         getCompany();
         getQuote();
            checkMediaCondition();
+           getFiles();
     }, [id]);
 
     return (
