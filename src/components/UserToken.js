@@ -4,14 +4,21 @@ function UserToken() {
   const getToken = () => {
     const tokenString = localStorage.getItem('token');
     if (!tokenString) return null;
+    const trimmed = tokenString.trim();
+    const looksJson = trimmed.startsWith('{') || trimmed.startsWith('[') || trimmed.startsWith('"');
+    if (!looksJson) {
+      // Treat any non-JSON-looking value as a raw token (handles numerics like 123, JWTs, etc.)
+      return tokenString;
+    }
     try {
       const parsed = JSON.parse(tokenString);
-      if (typeof parsed === 'string') {
-        return parsed;
+      if (typeof parsed === 'string') return parsed;
+      if (parsed && typeof parsed === 'object') {
+        return parsed.token ?? null;
       }
-      return parsed && parsed.token ? parsed.token : null;
+      return null;
     } catch (_err) {
-      // Stored as raw JWT string (e.g., "eyJhbGciOi...")
+      // Fallback to raw string if parse fails
       return tokenString;
     }
   };
