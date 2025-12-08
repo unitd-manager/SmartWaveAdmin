@@ -62,7 +62,7 @@ const AttachmentModalV2 = ({attachmentModal,setAttachmentModal,moduleId,roomName
                     message('Files Uploaded Successfully','success')
                     
                     setTimeout(() => {
-                        //window.location.reload()
+                        window.location.reload()
                     }, 400);
                 }).catch(()=>{
                     setAttachmentModal(false)
